@@ -30,6 +30,7 @@ import {
   Scale,
   MessageSquareQuote,
   Cpu,
+  Wrench,
 } from 'lucide-react';
 
 const commonsTools = [
@@ -52,6 +53,7 @@ const toolSections = [
       { id: "check-notability", href: "/check-notability", name: "Notability Checker", description: "Assesses whether a topic is significant enough for its own Wikipedia article by searching for significant coverage in reliable sources.", icon: <BadgeCheck className="h-8 w-8 text-lime-400" /> },
       { id: "detect-inconsistencies", href: "/detect-inconsistencies", name: "Cross-Wiki Inconsistency Detector", description: "Finds factual discrepancies between two language versions of the same article, helping you synchronize information across wikis.", icon: <GitCompareArrows className="h-8 w-8 text-fuchsia-400" /> },
       { id: "translate-text", href: "/translate-text", name: "Wikitext Translator", description: "Translates text between languages while perfectly preserving complex table and template formatting, a critical tool for multilingual editors.", icon: <ArrowRightLeft className="h-8 w-8 text-indigo-400" /> },
+      { id: "maintenance-task-finder", href: "/maintenance-task-finder", name: "Maintenance Task Finder", description: "Finds pages on Hindi Wikipedia that need maintenance, such as uncategorized or short articles, to help you find easy edits.", icon: <Wrench className="h-8 w-8 text-teal-400" /> },
     ]
   },
   {

@@ -20,3 +20,4 @@ import '@/ai/flows/suggest-category.ts';
 import '@/ai/flows/validate-image.ts';
 import '@/ai/flows/suggest-depicts.ts';
 import '@/ai/flows/generate-api-query.ts';
+import '@/ai/flows/find-maintenance-tasks.ts';
