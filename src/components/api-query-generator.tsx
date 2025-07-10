@@ -21,14 +21,14 @@ type ButtonState = 'idle' | 'loading' | 'success' | 'error';
 
 const demoQueries = [
   "Get the first 10 revisions of the page 'Albert Einstein'",
-  "Find all pages that are in the 'Category:Living people'",
+  "Find all pages in 'Category:Living people'",
   "Search for 5 pages with 'global warming' in the title",
   "Get basic page information for 'Mars' and 'Jupiter'",
-  "List all user groups on the wiki",
-  "Find the last 3 edits made by the user 'Jimbo Wales'",
+  "Get the last 5 edits by user 'Jimbo Wales'",
+  "Parse the wikitext of the main page",
+  "List 10 most recently changed pages",
+  "OpenSearch for 'artificial intelligence'",
   "Get a list of 5 random pages",
-  "Check which user rights I currently have",
-  "Get the content of the 'Main Page'",
   "Find all pages that link to 'United States'",
 ];
 
