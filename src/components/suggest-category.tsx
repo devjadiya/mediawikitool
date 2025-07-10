@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -41,11 +42,11 @@ export function CategorySuggester() {
     setSuggestedCategories([]);
     setPreview(null);
     try {
-        const imageUrl = 'https://placehold.co/600x600.png';
-        setPreview(imageUrl); // Show placeholder immediately
+        const imageUrl = 'https://source.unsplash.com/random/600x600?microscope-slide';
+        setPreview(imageUrl);
         const response = await fetch(imageUrl);
         const blob = await response.blob();
-        const file = new File([blob], "demo-microscope.png", { type: "image/png" });
+        const file = new File([blob], "demo-microscope.png", { type: blob.type });
 
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
@@ -166,7 +167,6 @@ export function CategorySuggester() {
                   width={200}
                   height={200}
                   className="rounded-lg mx-auto object-cover aspect-square"
-                  data-ai-hint="microscope lab"
                 />
               </div>
             )}

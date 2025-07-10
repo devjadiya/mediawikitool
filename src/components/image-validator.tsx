@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -44,11 +45,11 @@ export function ImageValidator() {
     setValidationResult(null);
     setPreview(null);
     try {
-        const imageUrl = 'https://placehold.co/400x400.png';
-        setPreview(imageUrl); // Show placeholder immediately
+        const imageUrl = 'https://source.unsplash.com/random/400x400?blurry-photo';
+        setPreview(imageUrl); 
         const response = await fetch(imageUrl);
         const blob = await response.blob();
-        const file = new File([blob], "demo-image.png", { type: "image/png" });
+        const file = new File([blob], "demo-image.png", { type: blob.type });
 
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
@@ -169,7 +170,6 @@ export function ImageValidator() {
                   width={200}
                   height={200}
                   className="rounded-lg mx-auto object-cover aspect-square"
-                  data-ai-hint="sample image"
                 />
               </div>
             )}

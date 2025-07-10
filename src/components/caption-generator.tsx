@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -48,21 +49,19 @@ export function CaptionGenerator() {
     form.setValue('context', context);
 
     try {
-        const imageUrl = 'https://placehold.co/600x400.png';
-        setPreview(imageUrl); // Show placeholder immediately
+        const imageUrl = 'https://source.unsplash.com/random/600x400?bengal-tiger';
+        setPreview(imageUrl);
         const response = await fetch(imageUrl);
         const blob = await response.blob();
-        const file = new File([blob], "demo-tiger.png", { type: "image/png" });
+        const file = new File([blob], "demo-tiger.png", { type: blob.type });
 
-        // Create a FileList
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
         const fileList = dataTransfer.files;
 
         form.setValue('image', fileList);
-        await form.trigger('image'); // Manually trigger validation
+        await form.trigger('image');
         
-        // Wait for validation to pass before submitting
         const isValid = await form.trigger();
         if (isValid) {
             onSubmit(form.getValues());
@@ -192,7 +191,6 @@ export function CaptionGenerator() {
                   width={600}
                   height={400}
                   className="rounded-lg mx-auto object-cover aspect-video"
-                  data-ai-hint="bengal tiger"
                 />
               </div>
             )}
