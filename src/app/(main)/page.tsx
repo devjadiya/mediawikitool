@@ -68,8 +68,9 @@ const toolSections = [
   }
 ];
 
-export default function HomePage() {
-  const flipWords = [
+const HeroSection = () => {
+   const headline = "Wikimedia AI Toolkit".split(" ");
+   const flipWords = [
     "Find Citations",
     "Expand Articles",
     "Detect Copyvio",
@@ -78,17 +79,56 @@ export default function HomePage() {
   ];
 
   return (
-    <>
-      <header className="py-24 text-center">
-        <h1 className="text-4xl md:text-6xl font-bold mx-auto mb-4 font-headline tracking-tighter">
-          Wikimedia AI Toolkit
+     <div className="relative mx-auto my-10 flex max-w-7xl flex-col items-center justify-center">
+      {/* Decorative lines */}
+      <div className="absolute inset-y-0 left-0 h-full w-px bg-neutral-200/20 dark:bg-neutral-800/20">
+        <div className="absolute top-0 h-40 w-px bg-gradient-to-b from-transparent via-primary to-transparent" />
+      </div>
+      <div className="absolute inset-y-0 right-0 h-full w-px bg-neutral-200/20 dark:bg-neutral-800/20">
+        <div className="absolute h-40 w-px bg-gradient-to-b from-transparent via-primary to-transparent" />
+      </div>
+
+      {/* Content */}
+      <div className="px-4 py-10 md:py-20 text-center">
+        <h1 className="relative z-10 mx-auto max-w-4xl text-2xl font-bold md:text-4xl lg:text-7xl font-headline tracking-tighter">
+          {headline.map((word, index) => (
+            <motion.span
+              key={index}
+              initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
+              animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+              transition={{
+                duration: 0.3,
+                delay: index * 0.1,
+                ease: "easeInOut",
+              }}
+              className="mr-2 inline-block"
+            >
+              {word}
+            </motion.span>
+          ))}
         </h1>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-          AI-powered tools to
-          <FlipWords words={flipWords} className="text-primary" /> <br />
-          A suite of powerful, modern tools designed to accelerate editing workflows, assist with development, and analyze community data.
-        </p>
-      </header>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3, delay: 0.8 }}
+          className="relative z-10 mx-auto max-w-3xl py-4 text-lg md:text-xl"
+        >
+          <span className="text-muted-foreground">AI-powered tools to </span>
+          <FlipWords words={flipWords} className="text-primary" />
+          <p className="text-muted-foreground mt-2">
+             A suite of powerful, modern tools designed to accelerate editing workflows, assist with development, and analyze community data.
+          </p>
+        </motion.div>
+      </div>
+    </div>
+  )
+}
+
+export default function HomePage() {
+  return (
+    <>
+      <HeroSection />
+      
       <div className="container mx-auto px-4 max-w-6xl -mt-12 relative z-10">
         <TracingBeam className="px-6">
           <div className="space-y-24 mb-24 relative">
@@ -102,7 +142,7 @@ export default function HomePage() {
                       whileHover={{ y: -5, scale: 1.02 }}
                       transition={{ type: 'spring', stiffness: 300 }}
                       >
-                      <Link href={tool.href}>
+                      <Link href={`/${tool.id}`}>
                           <Card className="min-h-[250px] bg-card/50 backdrop-blur-sm border-white/10 shadow-lg hover:border-primary/50 transition-colors duration-300 flex flex-col">
                           <CardHeader className="flex flex-row items-center gap-4">
                               <div className="p-2 bg-secondary rounded-lg">
