@@ -1,4 +1,4 @@
-import { Bot, PenSquare, ScanSearch, ShieldCheck, Languages, FileText, Code, GitCommit, FileType, BookCopy, FileSearch, Sparkles, Wand2 } from 'lucide-react';
+import { Bot, PenSquare, ScanSearch, ShieldCheck, Languages, FileText, Code, BookCopy, FileSearch, Sparkles, Wand2, ShieldQuestion } from 'lucide-react';
 
 export type Tool = {
   href: string;
@@ -9,7 +9,7 @@ export type Tool = {
 };
 
 export const tools: Tool[] = [
-  // Existing Tools
+  // Media Tools
   {
     href: '/suggest-category',
     title: 'Category Suggester',
@@ -32,13 +32,20 @@ export const tools: Tool[] = [
     icon: <Bot className="h-8 w-8 text-primary" />,
   },
   {
-    href: '/anonymize-text',
-    title: 'Wiki-Anonymizer',
-    description: 'Redact Personally Identifiable Information (PII) from text.',
-    category: 'Privacy & Security',
+    href: '/suggest-license',
+    title: 'License Suggester',
+    description: 'Suggest appropriate content licenses for your uploaded image.',
+    category: 'Media',
     icon: <ShieldCheck className="h-8 w-8 text-primary" />,
   },
-  // New Tools
+  // Content & Editing Tools
+  {
+    href: '/fact-checker',
+    title: 'Fact Checker',
+    description: 'Verify claims in an article against reliable sources.',
+    category: 'Content',
+    icon: <ShieldQuestion className="h-8 w-8 text-primary" />,
+  },
   {
     href: '/translate-text',
     title: 'Translation Assistant',
@@ -61,19 +68,28 @@ export const tools: Tool[] = [
     icon: <Sparkles className="h-8 w-8 text-primary" />,
   },
   {
-    href: '/detect-copyvio',
-    title: 'Copyvio Detector',
-    description: 'Check if a piece of text is likely a copyright violation.',
-    category: 'Privacy & Security',
-    icon: <BookCopy className="h-8 w-8 text-primary" />,
-  },
-   {
     href: '/draft-article',
     title: 'Drafting Assistant',
     description: 'Generate a short, sourced draft article on a topic.',
     category: 'Content',
     icon: <FileText className="h-8 w-8 text-primary" />,
   },
+  // Privacy & Security Tools
+  {
+    href: '/anonymize-text',
+    title: 'Wiki-Anonymizer',
+    description: 'Redact Personally Identifiable Information (PII) from text.',
+    category: 'Privacy & Security',
+    icon: <ShieldCheck className="h-8 w-8 text-primary" />,
+  },
+  {
+    href: '/detect-copyvio',
+    title: 'Copyvio Detector',
+    description: 'Check if a piece of text is likely a copyright violation.',
+    category: 'Privacy & Security',
+    icon: <BookCopy className="h-8 w-8 text-primary" />,
+  },
+  // Development Tools
   {
     href: '/debug-regex',
     title: 'Regex Debugger',
@@ -86,27 +102,6 @@ export const tools: Tool[] = [
     title: 'Code Explainer',
     description: 'Explain a snippet of Lua or JS code used in Wikimedia projects.',
     category: 'Development',
-    icon: <Wand2 className="h-8 w-8 text-primary" />,
-  },
-   {
-    href: '/generate-commit',
-    title: 'Commit Message Generator',
-    description: 'Create a conventional commit message from your code changes.',
-    category: 'Development',
-    icon: <GitCommit className="h-8 w-8 text-primary" />,
-  },
-  {
-    href: '/generate-svg',
-    title: 'SVG Generator',
-    description: 'Create simple SVG icons from a text description.',
-    category: 'Media',
-    icon: <FileType className="h-8 w-8 text-primary" />,
-  },
-  {
-    href: '/suggest-license',
-    title: 'License Suggester',
-    description: 'Suggest appropriate content licenses for your uploaded image.',
-    category: 'Media',
-    icon: <ShieldCheck className="h-8 w-8 text-primary" />,
+icon: <Wand2 className="h-8 w-8 text-primary" />,
   },
 ];

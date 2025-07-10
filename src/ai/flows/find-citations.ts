@@ -10,6 +10,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import {format} from 'date-fns';
 
 const FindCitationInputSchema = z.object({
   statement: z.string().describe('The statement that needs a citation.'),
@@ -33,20 +34,28 @@ export async function findCitation(input: FindCitationInput): Promise<FindCitati
 const findSourceTool = ai.defineTool(
     {
         name: 'findSourceTool',
-        description: 'Finds a reliable source for a given statement.',
+        description: 'Finds a reliable source for a given statement by searching the web.',
         inputSchema: z.object({
-            statement: z.string(),
+            query: z.string().describe("The statement to search for."),
         }),
         outputSchema: z.object({
-            url: z.string().url(),
-            title: z.string(),
+            url: z.string().url().describe("The URL of the top search result."),
+            title: z.string().describe("The title of the page found."),
         }),
     },
-    async ({ statement }) => {
+    async ({ query }) => {
         // This is a mock. A real implementation would use a search API.
+        console.log(`Simulating search for: ${query}`);
+        // Let's make the mock a bit more realistic based on the query.
+        if (query.toLowerCase().includes("sun")) {
+             return {
+                url: 'https://science.nasa.gov/sun/facts/',
+                title: 'Sun Fact Sheet - NASA',
+            };
+        }
         return {
             url: 'https://www.example.com/source-for-statement',
-            title: 'A Reliable Source for the Statement',
+            title: 'A Reliable Source for Your Statement',
         };
     }
 );
@@ -57,7 +66,13 @@ const prompt = ai.definePrompt({
   input: {schema: FindCitationInputSchema},
   output: {schema: FindCitationOutputSchema},
   tools: [findSourceTool],
-  prompt: `You are a Wikipedia editor who is an expert at finding reliable sources. For the statement "{{{statement}}}", find the best possible source and format it as a citation. Use the findSourceTool to perform the search. Then, evaluate the source to determine if it truly supports the statement and provide a confidence score. Finally, create a {{cite web}} template.`,
+  prompt: `You are a Wikipedia editor who is an expert at finding reliable sources.
+
+1.  Take the user's statement: "{{{statement}}}"
+2.  Use the findSourceTool with the user's statement as the query to find a relevant source online.
+3.  Analyze the result from the tool. Based on the title and URL, determine how likely it is that this source supports the original statement. Provide a confidence score between 0.0 and 1.0.
+4.  Create a complete {{cite web}} template using the information from the tool. Use today's date for the access-date. Today's date is ${format(new Date(), 'yyyy-MM-dd')}.
+5.  Return the source URL, title, formatted citation, and your confidence score.`,
 });
 
 const findCitationFlow = ai.defineFlow(

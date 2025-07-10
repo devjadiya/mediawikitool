@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Bot, PenSquare, ScanSearch, ShieldQuestion } from 'lucide-react';
+import { ArrowRight, Bot } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { tools } from '@/lib/data.tsx';
+import { tools } from '@/lib/data';
 
 export default function HomePage() {
   return (
