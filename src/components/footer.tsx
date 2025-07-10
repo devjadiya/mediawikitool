@@ -3,14 +3,20 @@ import { Logo } from './logo';
 import { Button } from './ui/button';
 import { Twitter, Facebook } from 'lucide-react';
 
-const links = [
+const mainLinks = [
   { href: '/gallery', label: 'Gallery' },
   { href: '/about', label: 'About' },
   { href: '/timeline', label: 'Timeline' },
   { href: '/contribute', label: 'Contribute' },
-  { href: '/suggest-category', label: 'Suggest Category' },
   { href: '/contact', label: 'Contact' },
 ];
+
+const toolLinks = [
+    { href: '/suggest-category', label: 'Category Suggester' },
+    { href: '/generate-caption', label: 'Caption Writer' },
+    { href: '/validate-image', label: 'Image Validator' },
+    { href: '/prize-ideas', label: 'Prize Idea Generator' },
+]
 
 export function Footer() {
   return (
@@ -30,11 +36,11 @@ export function Footer() {
           </div>
           
           {/* Links */}
-          <div className="grid grid-cols-2 gap-8">
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <h3 className="font-semibold mb-3">Navigate</h3>
               <ul className="space-y-2">
-                {links.slice(0, 3).map((link) => (
+                {mainLinks.map((link) => (
                   <li key={link.href}>
                     <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                       {link.label}
@@ -44,9 +50,9 @@ export function Footer() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-3">Participate</h3>
+              <h3 className="font-semibold mb-3">AI Tools</h3>
               <ul className="space-y-2">
-                {links.slice(3).map((link) => (
+                {toolLinks.map((link) => (
                   <li key={link.href}>
                     <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                       {link.label}
@@ -69,7 +75,7 @@ export function Footer() {
               </Button>
             </div>
             <p className="text-xs text-muted-foreground text-left md:text-right">
-              Powered by Wikimedia volunteers.
+              Powered by Wikimedia volunteers in India.
               <br/>
               This website is a project for the Indian community.
             </p>
