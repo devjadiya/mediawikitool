@@ -39,13 +39,6 @@ export const tools: Tool[] = [
     icon: <ShieldCheck className="h-8 w-8 text-primary" />,
   },
   // Content & Editing Tools
-   {
-    href: '/pageviews-analysis',
-    title: 'Pageviews Analyzer',
-    description: 'Visualize daily pageview statistics for any Wikimedia article.',
-    category: 'Content',
-    icon: <AreaChart className="h-8 w-8 text-primary" />,
-  },
   {
     href: '/fact-checker',
     title: 'Fact Checker',

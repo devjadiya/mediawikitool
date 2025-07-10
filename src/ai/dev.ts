@@ -17,3 +17,4 @@ import '@/ai/flows/fact-checker.ts';
 import '@/ai/flows/code-guardian.ts';
 import '@/ai/flows/detect-inconsistencies.ts';
 import '@/ai/flows/check-notability.ts';
+import '@/ai/flows/trust-visualizer.ts';
