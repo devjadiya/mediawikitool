@@ -19,5 +19,4 @@ import '@/ai/flows/generate-caption.ts';
 import '@/ai/flows/suggest-category.ts';
 import '@/ai/flows/validate-image.ts';
 import '@/ai/flows/generate-prizes.ts';
-
-    
+import '@/ai/flows/suggest-depicts.ts';
