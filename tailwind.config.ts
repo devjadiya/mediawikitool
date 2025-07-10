@@ -39,9 +39,8 @@ export default {
         },
       },
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
-        code: ['Roboto Mono', 'monospace'],
+        body: ['Alegreya', 'serif'],
+        headline: ['Belleza', 'sans-serif'],
       },
       colors: {
         background: 'hsl(var(--background))',
