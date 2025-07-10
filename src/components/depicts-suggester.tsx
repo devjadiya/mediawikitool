@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -42,11 +43,11 @@ export function DepictsSuggester() {
     form.setValue('context', 'Photo of the Eiffel Tower in Paris');
 
     try {
-        const imageUrl = 'https://source.unsplash.com/random/600x400/?eiffel-tower';
+        const imageUrl = 'https://placehold.co/600x400.png';
         setPreview(imageUrl);
         const response = await fetch(imageUrl);
         const blob = await response.blob();
-        const file = new File([blob], "demo-image.jpg", { type: blob.type });
+        const file = new File([blob], "demo-image.png", { type: blob.type });
 
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
@@ -190,6 +191,7 @@ export function DepictsSuggester() {
                         width={300}
                         height={200}
                         className="rounded-lg object-cover aspect-video"
+                        data-ai-hint="eiffel tower"
                         />
                     </div>
                 )}
