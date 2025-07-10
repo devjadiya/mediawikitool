@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -11,7 +12,7 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
-export const GeneratePrizesInputSchema = z.object({
+const GeneratePrizesInputSchema = z.object({
   category: z.string().describe('The competition category to generate prize ideas for.'),
 });
 export type GeneratePrizesInput = z.infer<typeof GeneratePrizesInputSchema>;
@@ -22,7 +23,7 @@ const PrizeIdeaSchema = z.object({
     icon: z.enum(['Telescope', 'Microscope', 'FlaskConical', 'Camera', 'BookOpenCheck']).describe("An icon representing the prize idea category.")
 });
 
-export const GeneratePrizesOutputSchema = z.object({
+const GeneratePrizesOutputSchema = z.object({
   prizes: z
     .array(PrizeIdeaSchema)
     .describe('A list of 3 creative and relevant prize ideas for the given category.'),
