@@ -45,11 +45,11 @@ const toolSections = [
     title: "Content & Editing",
     id: "content-editing",
     tools: [
-      { id: "citation-finder", href: "/find-citations", name: "Citation Finder", description: "Turns any statement into a sourced citation in seconds. This saves valuable research time, helping you add references quickly.", icon: <FileSearch className="h-8 w-8 text-rose-400" /> },
-      { id: "stub-expander", href: "/expand-stub", name: "Article Stub Expander", description: "Analyzes short 'stub' articles and provides a clear, sourced roadmap with section suggestions to help you expand them into comprehensive pages.", icon: <Sparkles className="h-8 w-8 text-amber-400" /> },
+      { id: "find-citations", href: "/find-citations", name: "Citation Finder", description: "Turns any statement into a sourced citation in seconds. This saves valuable research time, helping you add references quickly.", icon: <FileSearch className="h-8 w-8 text-rose-400" /> },
+      { id: "expand-stub", href: "/expand-stub", name: "Article Stub Expander", description: "Analyzes short 'stub' articles and provides a clear, sourced roadmap with section suggestions to help you expand them into comprehensive pages.", icon: <Sparkles className="h-8 w-8 text-amber-400" /> },
       { id: "fact-checker", href: "/fact-checker", name: "Fact Checker", description: "Verifies factual claims within a text against online sources. This ensures the information you're adding is accurate and maintains the encyclopedia's integrity.", icon: <ShieldQuestion className="h-8 w-8 text-teal-400" /> },
       { id: "draft-article", href: "/draft-article", name: "Drafting Assistant", description: "Generates a well-structured starter article on any topic, complete with wikitext formatting and citations, giving you a huge head start on new content.", icon: <FileText className="h-8 w-8 text-sky-400" /> },
-      { id: "translation-enhancer", href: "/enhance-translation", name: "Translation Enhancer", description: "Compares two articles in different languages and automatically finds and translates the missing content, perfect for cross-wiki work.", icon: <Languages className="h-8 w-8 text-indigo-400" /> },
+      { id: "enhance-translation", href: "/enhance-translation", name: "Translation Enhancer", description: "Compares two articles in different languages and automatically finds and translates the missing content, perfect for cross-wiki work.", icon: <Languages className="h-8 w-8 text-indigo-400" /> },
       { id: "check-notability", href: "/check-notability", name: "Notability Checker", description: "Assesses whether a topic is significant enough for its own Wikipedia article by searching for significant coverage in reliable sources.", icon: <BadgeCheck className="h-8 w-8 text-lime-400" /> },
       { id: "detect-inconsistencies", href: "/detect-inconsistencies", name: "Cross-Wiki Inconsistency Detector", description: "Finds factual discrepancies between two language versions of the same article, helping you synchronize information across wikis.", icon: <GitCompareArrows className="h-8 w-8 text-fuchsia-400" /> },
       { id: "translate-text", href: "/translate-text", name: "Wikitext Translator", description: "Translates text between languages while perfectly preserving complex table and template formatting, a critical tool for multilingual editors.", icon: <ArrowRightLeft className="h-8 w-8 text-indigo-400" /> },
@@ -146,7 +146,7 @@ const ToolGrid = ({ tools }: { tools: any[] }) => (
                 whileHover={{ y: -5, scale: 1.02 }}
                 transition={{ type: 'spring', stiffness: 300 }}
             >
-                <Link href={tool.comingSoon ? '#' : `/${tool.id}`} className="block h-full">
+                <Link href={tool.comingSoon ? '#' : `/${tool.href.replace(/^\//, '')}`} className="block h-full">
                     <Card className="h-full bg-card/50 backdrop-blur-sm border-white/10 shadow-lg hover:border-primary/50 transition-colors duration-300 flex flex-col relative overflow-hidden">
                         {tool.comingSoon && (
                              <div className="absolute top-2 right-2 bg-primary/80 text-primary-foreground text-xs font-bold px-2 py-1 rounded-full">
