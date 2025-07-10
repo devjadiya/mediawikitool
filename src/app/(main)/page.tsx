@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { FlipWords } from '@/components/ui/flip-words';
 import { TracingBeam } from '@/components/ui/tracing-beam';
-import { GoogleGeminiEffect } from '@/components/ui/google-gemini-effect';
 import { 
   FileSearch, 
   Sparkles, 
@@ -80,17 +79,17 @@ export default function HomePage() {
 
   return (
     <>
-      <GoogleGeminiEffect
-        title="Wikimedia AI Toolkit"
-        description={
-          <>
-            AI-powered tools to
-            <FlipWords words={flipWords} className="text-primary" /> <br />
-            A suite of powerful, modern tools designed to accelerate editing workflows, assist with development, and analyze community data.
-          </>
-        }
-      />
-      <div className="container mx-auto px-4 max-w-6xl -mt-48 relative z-10">
+      <header className="py-24 text-center">
+        <h1 className="text-4xl md:text-6xl font-bold mx-auto mb-4 font-headline tracking-tighter">
+          Wikimedia AI Toolkit
+        </h1>
+        <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
+          AI-powered tools to
+          <FlipWords words={flipWords} className="text-primary" /> <br />
+          A suite of powerful, modern tools designed to accelerate editing workflows, assist with development, and analyze community data.
+        </p>
+      </header>
+      <div className="container mx-auto px-4 max-w-6xl -mt-12 relative z-10">
         <TracingBeam className="px-6">
           <div className="space-y-24 mb-24 relative">
               {toolSections.map((section) => (
