@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -10,7 +11,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Terminal, Copy, Link as LinkIcon, Info } from 'lucide-react';
+import { Terminal, Copy, Link as LinkIcon, Info, Wand2 } from 'lucide-react';
 import { Input } from './ui/input';
 
 const formSchema = z.object({
@@ -30,6 +31,9 @@ const demoQueries = [
   "OpenSearch for 'artificial intelligence'",
   "Get a list of 5 random pages",
   "Find all pages that link to 'United States'",
+  "Get a feed of the 5 most recent page creations",
+  "Check the token needed to edit a page",
+  "Find all subcategories of 'Category:Physics'",
 ];
 
 export function ApiQueryGenerator() {
@@ -44,9 +48,10 @@ export function ApiQueryGenerator() {
     },
   });
 
-  const handleDemoClick = (description: string) => {
-    form.setValue('taskDescription', description);
-    onSubmit({ taskDescription: description });
+  const handleDemoClick = () => {
+    const randomQuery = demoQueries[Math.floor(Math.random() * demoQueries.length)];
+    form.setValue('taskDescription', randomQuery);
+    onSubmit({ taskDescription: randomQuery });
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -80,8 +85,16 @@ export function ApiQueryGenerator() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardHeader>
-            <CardTitle className="font-headline">Describe Your Task</CardTitle>
-            <CardDescription>Enter a plain English description of what you want to do with the API.</CardDescription>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="font-headline">Describe Your Task</CardTitle>
+                <CardDescription>Enter a plain English description of what you want to do with the API.</CardDescription>
+              </div>
+              <Button type="button" variant="outline" size="sm" onClick={handleDemoClick} disabled={buttonState === 'loading'}>
+                <Wand2 className="mr-2 h-4 w-4" />
+                Try Demo
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="space-y-6">
             <FormField
@@ -101,25 +114,6 @@ export function ApiQueryGenerator() {
                 </FormItem>
               )}
             />
-
-            <div>
-                <FormLabel>Or try a demo query</FormLabel>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 mt-2">
-                    {demoQueries.map((query, index) => (
-                        <Button 
-                            key={index}
-                            type="button" 
-                            variant="outline" 
-                            size="sm"
-                            className="text-xs h-auto py-2"
-                            onClick={() => handleDemoClick(query)}
-                            disabled={buttonState === 'loading'}
-                        >
-                            {query}
-                        </Button>
-                    ))}
-                </div>
-            </div>
 
             {result && (
               <div className="pt-4 space-y-4">
