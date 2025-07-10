@@ -4,7 +4,7 @@ import './globals.css';
 import { FloatingDock } from '@/components/ui/floating-dock';
 import { CursorFollower } from '@/components/cursor-follower';
 import { FloatingNav } from '@/components/ui/floating-navbar';
-import { BookOpen, GalleryHorizontal, Info, Mail } from 'lucide-react';
+import { Home, Info, Mail } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'WLS India Archive',
@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 const navItems = [
+    { name: "Home", href: "/", icon: <Home className="h-4 w-4" /> },
     { name: "About", href: "/about", icon: <Info className="h-4 w-4" /> },
     { name: "Contact", href: "/contact", icon: <Mail className="h-4 w-4" /> },
 ];

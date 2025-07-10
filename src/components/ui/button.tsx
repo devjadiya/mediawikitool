@@ -82,16 +82,10 @@ const StatefulButton = React.forwardRef<HTMLButtonElement, StatefulButtonProps>(
     
     const getVariant = () => {
         if (buttonState === 'error') return 'destructive';
-        if (buttonState === 'success') return 'secondary';
         return props.variant || 'default';
     }
 
     return (
-      <motion.div
-        initial={false}
-        animate={{ width: buttonState === 'idle' ? '100%' : '100%' }}
-        transition={{ duration: 0.3, ease: 'easeInOut' }}
-      >
         <Button
           ref={ref}
           disabled={buttonState === 'loading'}
@@ -101,7 +95,6 @@ const StatefulButton = React.forwardRef<HTMLButtonElement, StatefulButtonProps>(
         >
           {renderContent()}
         </Button>
-      </motion.div>
     );
   }
 );

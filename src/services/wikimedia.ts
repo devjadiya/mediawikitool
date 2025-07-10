@@ -26,7 +26,6 @@ async function getSimpleUserInfo(username: string) {
         const project = data.project?.replace('www.', '');
         return { project, total_edits: data.total_edits };
     } catch (error) {
-        console.error(`Failed to get simple user info for ${username}:`, error);
         return { project: null, total_edits: 0 };
     }
 }
@@ -46,7 +45,6 @@ async function getUserRegistrationDate(username: string) {
         const registration = data.query.users[0]?.registration;
         return registration ? new Date(registration).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A';
     } catch (error) {
-        console.error(`Failed to get registration date for ${username}:`, error);
         return 'N/A';
     }
 }
@@ -74,7 +72,6 @@ async function getNamespaceData(project: string, username: string) {
             .sort((a, b) => b.edits - a.edits)
             .slice(0, 6); // Take top 6 for pie chart readability
     } catch (error) {
-        console.error(`Failed to get namespace data for ${username} on ${project}:`, error);
         return [];
     }
 }
@@ -108,7 +105,6 @@ async function getMonthlyEdits(project: string, username: string) {
             .filter(d => d.fullDate >= oneYearAgo)
             .sort((a, b) => a.fullDate.getTime() - b.fullDate.getTime());
     } catch (error) {
-        console.error(`Failed to get monthly edits for ${username} on ${project}:`, error);
         return [];
     }
 }
@@ -132,7 +128,6 @@ async function getTopPages(project: string, username: string) {
             namespace: p.namespace
         })) : [];
     } catch (error) {
-        console.error(`Failed to get top pages for ${username} on ${project}:`, error);
         return [];
     }
 }
@@ -180,7 +175,6 @@ export async function getUserContributionData(username: string) {
         };
 
     } catch(error: any) {
-        console.error('Failed to get user contribution data:', error);
         throw new Error(error.message || `Could not fetch data for user "${username}". The API might be unavailable.`);
     }
 }
@@ -244,7 +238,6 @@ export async function getPageviews(params: PageviewsParams): Promise<PageviewDat
         });
 
     } catch (error: any) {
-        console.error(`Failed to get pageviews on ${project}:`, error);
         throw error;
     }
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useTransition } from 'react';
+import { useState, useEffect, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Search, Link as LinkIcon } from 'lucide-react';
-import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from './ui/command';
 import { useDebounce } from '@/hooks/use-debounce';
@@ -35,7 +35,6 @@ const loadingSteps = [
 ];
 
 export function TrustVisualizer() {
-  const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingState, setLoadingState] = useState({ progress: 0, text: '' });
   const [result, setResult] = useState<VisualizeTrustOutput | null>(null);
@@ -83,13 +82,9 @@ export function TrustVisualizer() {
 
     let stepIndex = 0;
     const interval = setInterval(() => {
-        if (stepIndex < loadingSteps.length) {
-            setLoadingState(loadingSteps[stepIndex]);
-            stepIndex++;
-        } else {
-            clearInterval(interval);
-        }
-    }, 500);
+        setLoadingState(loadingSteps[stepIndex]);
+        stepIndex = (stepIndex + 1) % loadingSteps.length;
+    }, 800);
 
     try {
       const apiResult = await visualizeTrust(values);
@@ -111,7 +106,7 @@ export function TrustVisualizer() {
   const MOCK_REVERT_DATA = result ? [ { name: 'Reverted', value: Math.round(result.revertRate * 100) }, { name: 'Unreverted', value: Math.round((1 - result.revertRate) * 100) } ] : [];
 
   return (
-    <Card className="border-2 border-white/10 bg-card/50">
+    <Card>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardHeader>
@@ -178,7 +173,7 @@ export function TrustVisualizer() {
             
             {result && !isLoading && (
               <div className="pt-8 space-y-6">
-                <div className="p-4 bg-secondary rounded-lg">
+                <div className="p-4 bg-secondary/20 dark:bg-secondary/50 rounded-lg">
                     <h2 className="text-2xl font-bold font-headline">{result.username}</h2>
                     <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
                         <span>Project: <span className="font-semibold text-foreground">{result.project}</span></span>
@@ -193,7 +188,7 @@ export function TrustVisualizer() {
                             <CardTitle>Contributions by Namespace</CardTitle>
                         </CardHeader>
                         <CardContent>
-                             <ChartContainer config={{}} className="h-[200px] w-full">
+                             <ResponsiveContainer width="100%" height={200}>
                                 <PieChart>
                                 <Tooltip
                                     cursor={false}
@@ -206,7 +201,7 @@ export function TrustVisualizer() {
                                 </Pie>
                                 <Legend />
                                 </PieChart>
-                            </ChartContainer>
+                            </ResponsiveContainer>
                         </CardContent>
                     </Card>
 
@@ -215,7 +210,7 @@ export function TrustVisualizer() {
                             <CardTitle>Revert Analysis</CardTitle>
                         </CardHeader>
                         <CardContent>
-                             <ChartContainer config={{}} className="h-[200px] w-full">
+                            <ResponsiveContainer width="100%" height={200}>
                                 <PieChart>
                                 <Tooltip
                                     cursor={false}
@@ -228,7 +223,7 @@ export function TrustVisualizer() {
                                 </Pie>
                                 <Legend />
                                 </PieChart>
-                            </ChartContainer>
+                            </ResponsiveContainer>
                         </CardContent>
                     </Card>
 
@@ -258,7 +253,7 @@ export function TrustVisualizer() {
                         <CardTitle>Edit Activity Timeline (Last 12 Months)</CardTitle>
                     </CardHeader>
                     <CardContent>
-                         <ChartContainer config={{}} className="w-full h-[300px]">
+                        <ResponsiveContainer width="100%" height={300}>
                             <LineChart data={result.monthlyEdits}>
                                 <XAxis dataKey="date" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
                                 <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
@@ -266,7 +261,7 @@ export function TrustVisualizer() {
                                 <Legend />
                                 <Line type="monotone" dataKey="edits" stroke="hsl(var(--primary))" activeDot={{ r: 8 }} />
                             </LineChart>
-                        </ChartContainer>
+                        </ResponsiveContainer>
                     </CardContent>
                 </Card>
               </div>

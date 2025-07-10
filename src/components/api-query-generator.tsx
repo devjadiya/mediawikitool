@@ -51,7 +51,8 @@ export function ApiQueryGenerator() {
   const handleDemoClick = () => {
     const randomQuery = demoQueries[Math.floor(Math.random() * demoQueries.length)];
     form.setValue('taskDescription', randomQuery);
-    onSubmit({ taskDescription: randomQuery });
+    // Automatically trigger the submission with the new value
+    form.handleSubmit(onSubmit)();
   };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -63,7 +64,6 @@ export function ApiQueryGenerator() {
       setResult(apiResult);
       setButtonState('success');
     } catch (error) {
-      console.error('Error generating API query:', error);
       toast({
         title: 'Error',
         description: 'Could not generate the API query. The AI may be busy, please try again.',
@@ -81,7 +81,7 @@ export function ApiQueryGenerator() {
   }
 
   return (
-    <Card className="border-2">
+    <Card>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardHeader>
@@ -118,7 +118,7 @@ export function ApiQueryGenerator() {
             {result && (
               <div className="pt-4 space-y-4">
                 <h3 className="font-semibold text-lg">Generated Query:</h3>
-                <Card className="bg-secondary/50">
+                <Card className="bg-secondary/20 dark:bg-secondary/50">
                     <CardContent className="p-4 space-y-4">
                         <div>
                              <FormLabel>Generated API URL</FormLabel>
