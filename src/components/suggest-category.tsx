@@ -42,7 +42,7 @@ export function CategorySuggester() {
     setSuggestedCategories([]);
     setPreview(null);
     try {
-        const imageUrl = 'https://picsum.photos/600/600';
+        const imageUrl = 'https://picsum.photos/300/300';
         setPreview(imageUrl);
         const response = await fetch(imageUrl);
         const blob = await response.blob();

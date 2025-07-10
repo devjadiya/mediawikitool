@@ -41,7 +41,7 @@ export function LicenseSuggester() {
     setPreview(null);
     form.setValue('context', '');
     try {
-        const imageUrl = 'https://picsum.photos/500/500';
+        const imageUrl = 'https://picsum.photos/200/200';
         setPreview(imageUrl);
         const response = await fetch(imageUrl);
         const blob = await response.blob();
@@ -163,7 +163,7 @@ export function LicenseSuggester() {
               )}
             />
             {preview && (
-              <div className="mt-4">
+              <div className="mt-4 flex justify-center">
                 <Image
                   src={preview}
                   alt="Image preview"

@@ -45,7 +45,7 @@ export function ImageValidator() {
     setValidationResult(null);
     setPreview(null);
     try {
-        const imageUrl = 'https://picsum.photos/400/400';
+        const imageUrl = 'https://picsum.photos/200/200';
         setPreview(imageUrl); 
         const response = await fetch(imageUrl);
         const blob = await response.blob();
@@ -163,7 +163,7 @@ export function ImageValidator() {
               )}
             />
             {preview && (
-              <div className="mt-4">
+              <div className="mt-4 flex justify-center">
                 <Image
                   src={preview}
                   alt="Image preview"
