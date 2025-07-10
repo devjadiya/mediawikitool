@@ -24,6 +24,12 @@ import {
   Trophy,
   Database,
   Terminal,
+  FileAudio,
+  Accessibility,
+  Glasses,
+  Scale,
+  MessageSquareQuote,
+  Cpu,
 } from 'lucide-react';
 
 const commonsTools = [
@@ -68,6 +74,14 @@ const toolSections = [
     ]
   }
 ];
+
+const futureConcepts = [
+    { id: "#", name: "POV & Tone Analyzer", description: "Paste an article draft and get feedback on its neutrality, objectivity, and encyclopedic tone to ensure compliance with Wikipedia's NPOV policy.", icon: <Scale className="h-8 w-8 text-rose-400" />, comingSoon: true },
+    { id: "#", name: "Edit Summary Generator", description: "Automatically generates a concise, accurate edit summary by analyzing the changes (diff) you've made to a page, saving time and improving edit history.", icon: <MessageSquareQuote className="h-8 w-8 text-amber-400" />, comingSoon: true },
+    { id: "#", name: "Disambiguation Helper", description: "Analyzes the context of an article to suggest the most appropriate link for an ambiguous term, helping you create correct internal links.", icon: <GitCompareArrows className="h-8 w-8 text-teal-400" />, comingSoon: true },
+    { id: "#", name: "License Suggester", description: "Guides you through a series of questions about your media file to recommend the correct Creative Commons license, simplifying the upload process.", icon: <BadgeCheck className="h-8 w-8 text-sky-400" />, comingSoon: true },
+    { id: "#", name: "Pageview Predictor", description: "Estimates the potential monthly pageviews for a new article topic, helping editors prioritize creating content that the public is searching for.", icon: <BarChartHorizontal className="h-8 w-8 text-indigo-400" />, comingSoon: true },
+]
 
 const HeroSection = () => {
    const headline = "Wikimedia AI Toolkit".split(" ");
@@ -130,8 +144,13 @@ const ToolGrid = ({ tools }: { tools: any[] }) => (
                 whileHover={{ y: -5, scale: 1.02 }}
                 transition={{ type: 'spring', stiffness: 300 }}
             >
-                <Link href={`/${tool.id}`} className="block h-full">
-                    <Card className="h-full bg-card/50 backdrop-blur-sm border-white/10 shadow-lg hover:border-primary/50 transition-colors duration-300 flex flex-col">
+                <Link href={tool.comingSoon ? '#' : `/${tool.id}`} className="block h-full">
+                    <Card className="h-full bg-card/50 backdrop-blur-sm border-white/10 shadow-lg hover:border-primary/50 transition-colors duration-300 flex flex-col relative overflow-hidden">
+                        {tool.comingSoon && (
+                             <div className="absolute top-2 right-2 bg-primary/80 text-primary-foreground text-xs font-bold px-2 py-1 rounded-full">
+                                SOON
+                            </div>
+                        )}
                         <CardHeader className="flex flex-row items-center gap-4">
                             <div className="p-3 bg-secondary rounded-lg">
                                 {tool.icon}
@@ -167,6 +186,11 @@ export default function HomePage() {
                   <ToolGrid tools={section.tools} />
               </section>
               ))}
+
+              <section id="future-concepts">
+                 <h2 className="text-3xl font-headline font-bold mb-8 text-center">Future Concepts</h2>
+                 <ToolGrid tools={futureConcepts} />
+              </section>
           </div>
         </TracingBeam>
       </div>
