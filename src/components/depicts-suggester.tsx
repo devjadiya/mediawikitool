@@ -40,14 +40,14 @@ export function DepictsSuggester() {
     form.reset();
     setGeneratedContent(null);
     setPreview(null);
-    form.setValue('context', 'A cute puppy in a field');
+    form.setValue('context', 'A wooden pier extending into the sea on a clear day.');
 
     try {
-        const imageUrl = `https://picsum.photos/600/400?random=${new Date().getTime()}`;
+        const imageUrl = 'https://placehold.co/600x400.png';
         setPreview(imageUrl);
         const response = await fetch(imageUrl);
         const blob = await response.blob();
-        const file = new File([blob], "demo-image.jpg", { type: blob.type });
+        const file = new File([blob], "demo-image.png", { type: blob.type });
 
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
@@ -191,7 +191,7 @@ export function DepictsSuggester() {
                         width={300}
                         height={200}
                         className="rounded-lg object-cover aspect-video"
-                        data-ai-hint="eiffel tower"
+                        data-ai-hint="wooden pier ocean"
                         />
                     </div>
                 )}
