@@ -36,7 +36,7 @@ import {
 const commonsTools = [
     { id: "generate-caption", href: "/generate-caption", name: "AI Caption Writer", description: "Generates encyclopedic, high-quality titles and descriptions for images, making your uploads more valuable to the community.", icon: <PenSquare className="h-8 w-8 text-cyan-400" /> },
     { id: "suggest-category", href: "/suggest-category", name: "Category Suggester", description: "Analyzes an image and suggests the most relevant categories, helping with proper organization and discoverability on Wikimedia Commons.", icon: <Lightbulb className="h-8 w-8 text-yellow-400" /> },
-    { id: "validate-image", href: "/validate-image", name: "Image Validator", description: "Automatically checks images for common issues like watermarks or low quality, and provides constructive feedback before you upload.", icon: <GitCompare className="h-8 w-8 text-orange-400" /> },
+    { id: "validate-image", href: "/validate-image", name: "Image Validator", description: "Automatically checks for common issues like watermarks or low quality, and provides constructive feedback before you upload.", icon: <GitCompare className="h-8 w-8 text-orange-400" /> },
     { id: "suggest-depicts", href: "/suggest-depicts", name: "Depicts Suggester", description: "Analyzes an image to suggest structured 'depicts' statements, linking its content to Wikidata entities for better discoverability.", icon: <Database className="h-8 w-8 text-violet-400" /> },
 ];
 
