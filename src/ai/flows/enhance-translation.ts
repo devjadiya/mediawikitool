@@ -52,13 +52,14 @@ const extractArticleTool = ai.defineTool(
     }
 );
 
+const PromptInputSchema = z.object({
+  sourceArticle: z.object({ title: z.any(), content: z.any() }),
+  targetArticle: z.object({ title: z.any(), content: z.any() })
+});
 
 const prompt = ai.definePrompt({
     name: 'enhanceTranslationPrompt',
-    input: { schema: z.object({
-        sourceArticle: z.object({ title: z.any(), content: z.any() }),
-        targetArticle: z.object({ title: z.any(), content: z.any() })
-    })},
+    input: { schema: PromptInputSchema },
     output: { schema: EnhanceTranslationOutputSchema },
     prompt: `You are an expert Wikipedia editor and translator. Your task is to enhance a Hindi Wikipedia article by comparing it to its English counterpart and translating missing sections.
 
