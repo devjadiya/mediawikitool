@@ -10,16 +10,12 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { getUserInfo } from '@/app/actions/wikimedia';
 
 const VisualizeTrustInputSchema = z.object({
   username: z.string().describe('The Wikimedia username to analyze.'),
 });
 export type VisualizeTrustInput = z.infer<typeof VisualizeTrustInputSchema>;
-
-const NamespaceStatSchema = z.object({
-    name: z.string().describe("The name of the namespace (e.g., 'Main', 'User')."),
-    edits: z.number().describe("The number of edits in this namespace."),
-});
 
 const CategoryStatSchema = z.object({
     name: z.string().describe("The name of the category."),
@@ -46,19 +42,22 @@ const getUserDataTool = ai.defineTool(
       project: z.string(),
       joinDate: z.string(),
       totalEdits: z.number(),
+      // Mocks for data not yet implemented
       revertRate: z.number(),
       topCategories: z.array(CategoryStatSchema),
     }),
   },
   async ({ username }) => {
-    // This is a mock. In a real app, this would call the MediaWiki API.
-    console.log(`Simulating API call for user: ${username}`);
+    // Get real data from the API
+    const userInfo = await getUserInfo(username);
+
+    // For now, we'll keep some data mocked as we build out the APIs
+    // In a real app, this would call the MediaWiki API.
+    console.log(`Fetching data for user: ${username}`);
     // Let's return different data for a known user.
     if (username.toLowerCase().includes("dev jadiya")) {
         return {
-            project: 'hi.wikipedia.org',
-            joinDate: '2022-01-15',
-            totalEdits: 1230,
+            ...userInfo,
             revertRate: 0.13,
             topCategories: [
                 { name: 'Cybersecurity', pages: 40 },
@@ -69,9 +68,7 @@ const getUserDataTool = ai.defineTool(
     }
     // Default mock data for other users.
     return {
-      project: 'en.wikipedia.org',
-      joinDate: '2023-05-20',
-      totalEdits: 542,
+      ...userInfo,
       revertRate: 0.08,
       topCategories: [
           { name: 'Music', pages: 50 },
