@@ -43,7 +43,7 @@ export function DepictsSuggester() {
     form.setValue('context', 'A cute puppy in a field');
 
     try {
-        const imageUrl = 'https://picsum.photos/seed/picsum/600/400';
+        const imageUrl = 'https://picsum.photos/600/400';
         setPreview(imageUrl);
         const response = await fetch(imageUrl);
         const blob = await response.blob();
