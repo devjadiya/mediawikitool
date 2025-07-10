@@ -79,7 +79,7 @@ const HeroSection = () => {
   ];
 
   return (
-     <div className="relative mx-auto my-10 flex max-w-7xl flex-col items-center justify-center">
+     <div className="relative mx-auto my-4 flex max-w-7xl flex-col items-center justify-center">
       {/* Decorative lines */}
       <div className="absolute inset-y-0 left-0 h-full w-px bg-neutral-200/20 dark:bg-neutral-800/20">
         <div className="absolute top-0 h-40 w-px bg-gradient-to-b from-transparent via-primary to-transparent" />
@@ -90,7 +90,7 @@ const HeroSection = () => {
 
       {/* Content */}
       <div className="px-4 py-10 md:py-20 text-center">
-        <h1 className="relative z-10 mx-auto max-w-4xl text-2xl font-bold md:text-4xl lg:text-7xl font-headline tracking-tighter">
+        <h1 className="relative z-10 mx-auto max-w-4xl text-3xl font-bold md:text-5xl lg:text-7xl font-headline tracking-tighter">
           {headline.map((word, index) => (
             <motion.span
               key={index}
@@ -111,11 +111,11 @@ const HeroSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3, delay: 0.8 }}
-          className="relative z-10 mx-auto max-w-3xl py-4 text-lg md:text-xl"
+          className="relative z-10 mx-auto max-w-3xl py-4 text-xl md:text-2xl"
         >
           <span className="text-muted-foreground">AI-powered tools to </span>
           <FlipWords words={flipWords} className="text-primary" />
-          <p className="text-muted-foreground mt-2">
+          <p className="text-muted-foreground mt-2 text-lg">
              A suite of powerful, modern tools designed to accelerate editing workflows, assist with development, and analyze community data.
           </p>
         </motion.div>
