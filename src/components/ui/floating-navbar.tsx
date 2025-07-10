@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState } from "react";
 import {
@@ -28,22 +29,16 @@ export const FloatingNav = ({
   const [visible, setVisible] = useState(false);
 
   useMotionValueEvent(scrollY, "change", (current) => {
-    // If the user is on a tool page (not the homepage), show the nav immediately
-    if (pathname !== '/') {
-        setVisible(true);
-        return;
-    }
-
     if (typeof current === "number") {
       const previous = scrollY.getPrevious() ?? 0;
       const direction = current - previous;
 
-      // When at the top of the page, hide the nav
-      if (current < 100) {
+      // When at the top of the page, or if on a tool page, start with nav hidden
+      if (current < 100 && pathname === '/') {
          setVisible(false);
       } else {
         // When scrolling up, show the nav
-        if (direction < 0) {
+        if (direction < 0 || pathname !== '/') {
           setVisible(true);
         } else {
         // When scrolling down, hide the nav

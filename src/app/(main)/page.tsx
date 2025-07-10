@@ -173,22 +173,24 @@ const ToolGrid = ({ tools }: { tools: any[] }) => (
 export default function HomePage() {
   return (
     <GridBackground>
-      <HeroSection />
-      
-      <div className="max-w-7xl mx-auto -mt-12 relative z-10">
-          <div className="space-y-24 mb-24 relative p-6">
-              <section>
-                 <h2 className="text-3xl font-headline font-bold mb-8 text-center">Wikimedia Commons Tools</h2>
-                 <ToolGrid tools={commonsTools} />
-              </section>
+      <div className="container mx-auto px-4 py-24">
+        <HeroSection />
+        
+        <div className="max-w-7xl mx-auto -mt-12 relative z-10">
+            <div className="space-y-24 mb-24 relative p-6">
+                <section>
+                   <h2 className="text-3xl font-headline font-bold mb-8 text-center">Wikimedia Commons Tools</h2>
+                   <ToolGrid tools={commonsTools} />
+                </section>
 
-              {toolSections.map((section) => (
-              <section key={section.title}>
-                  <h2 className="text-3xl font-headline font-bold mb-8 text-center">{section.title}</h2>
-                  <ToolGrid tools={section.tools} />
-              </section>
-              ))}
-          </div>
+                {toolSections.map((section) => (
+                <section key={section.title}>
+                    <h2 className="text-3xl font-headline font-bold mb-8 text-center">{section.title}</h2>
+                    <ToolGrid tools={section.tools} />
+                </section>
+                ))}
+            </div>
+        </div>
       </div>
     </GridBackground>
   );

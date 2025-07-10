@@ -4,6 +4,8 @@ import './globals.css';
 import { CursorFollower } from '@/components/cursor-follower';
 import { FloatingNav } from '@/components/ui/floating-navbar';
 import { Home } from 'lucide-react';
+import { FloatingDock } from '@/components/ui/floating-dock';
+import { AnimatePresence } from 'framer-motion';
 
 export const metadata: Metadata = {
   title: 'AI Toolkit for Wikimedians',
@@ -24,7 +26,7 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Belleza&family=Alegreya:wght@400;500;700&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body antialiased flex flex-col min-h-screen bg-background text-foreground" suppressHydrationWarning={true}>
         <CursorFollower />
@@ -32,6 +34,7 @@ export default function RootLayout({
         <main className="flex-grow">
           {children}
         </main>
+        <FloatingDock />
         <Toaster />
       </body>
     </html>
