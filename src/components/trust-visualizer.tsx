@@ -239,7 +239,7 @@ export function TrustVisualizer() {
                         <CardTitle>Edit Activity Timeline (Last 12 Months)</CardTitle>
                     </CardHeader>
                     <CardContent>
-                         <ResponsiveContainer width="100%" height={300}>
+                         <ChartContainer config={{}} className="w-full h-[300px]">
                             <LineChart data={result.monthlyEdits}>
                                 <XAxis dataKey="date" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
                                 <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
@@ -247,7 +247,7 @@ export function TrustVisualizer() {
                                 <Legend />
                                 <Line type="monotone" dataKey="edits" stroke="hsl(var(--primary))" activeDot={{ r: 8 }} />
                             </LineChart>
-                        </ResponsiveContainer>
+                        </ChartContainer>
                     </CardContent>
                 </Card>
               </div>
