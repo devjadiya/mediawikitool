@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -15,6 +16,7 @@ import Image from 'next/image';
 import { LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { ChartContainer, ChartTooltipContent } from './ui/chart';
 import { Badge } from './ui/badge';
+import { format, parseISO } from 'date-fns';
 
 const formSchema = z.object({
   image: z.any().refine(files => files?.length > 0, 'Image is required.'),
@@ -180,7 +182,7 @@ export function PageviewPredictor() {
                                <div className="flex justify-around text-center text-sm">
                                     <div>
                                         <p className="font-bold text-lg">{item.totalViews.toLocaleString()}</p>
-                                        <p className="text-muted-foreground">Monthly Views</p>
+                                        <p className="text-muted-foreground">Yearly Views</p>
                                     </div>
                                     <div>
                                         <p className="font-bold text-lg">{(item.relevanceScore * 100).toFixed(0)}%</p>
@@ -188,9 +190,10 @@ export function PageviewPredictor() {
                                     </div>
                                </div>
                                <div>
-                                 <h4 className="text-sm font-medium mb-2 text-center">Last 30 Days Traffic</h4>
+                                 <h4 className="text-sm font-medium mb-2 text-center">Last 12 Months Traffic</h4>
                                  <ChartContainer config={{}} className="w-full h-[150px]">
                                     <LineChart data={item.pageviews} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
+                                        <XAxis dataKey="date" stroke="hsl(var(--muted-foreground))" fontSize={10} tickLine={false} axisLine={false} tickFormatter={(str) => format(parseISO(str), "MMM")} />
                                         <YAxis stroke="hsl(var(--muted-foreground))" fontSize={10} tickLine={false} axisLine={false} />
                                         <Tooltip content={<ChartTooltipContent indicator="dot" />} />
                                         <Line type="monotone" dataKey="views" stroke="hsl(var(--primary))" strokeWidth={2} dot={false} />

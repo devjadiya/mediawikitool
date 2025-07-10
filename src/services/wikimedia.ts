@@ -1,3 +1,4 @@
+
 'use server';
 
 import { format, subYears } from 'date-fns';
@@ -9,7 +10,6 @@ import { format, subYears } from 'date-fns';
 
 const WIKI_API_USER_AGENT = 'Wikimedia-AI-Toolkit/1.0 (https://w.wiki/9sE9; )';
 const XTOOLS_BASE_URL = 'https://xtools.wmcloud.org/api';
-const PAGEVIEWS_API_BASE_URL = 'https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article';
 
 /**
  * Fetches basic user info for a given username to find their home project.
@@ -185,42 +185,66 @@ export async function getUserContributionData(username: string) {
     }
 }
 
+type PageviewsParams = {
+    project: string;
+    pageNames: string[];
+};
+
+type PageviewData = {
+    title: string;
+    pageviews: { date: string; views: number }[];
+    totalViews: number;
+    averageDailyViews: number;
+};
 
 /**
- * Fetches daily pageview data for a specific article.
+ * Fetches monthly pageview data for specific articles over the last year.
  * @param params The parameters for the pageviews API call.
- * @returns A promise resolving to an array of pageview data.
+ * @returns A promise resolving to an array of pageview data for each article.
  */
-export async function getPageviews(params: {
-    project: string;
-    pageName: string;
-    startDate: string;
-    endDate: string;
-    platform: string;
-    agent: string;
-}) {
-    const { project, pageName, startDate, endDate, platform, agent } = params;
-    
-    // The Pageviews API needs YYYYMMDD format without dashes.
-    const start = startDate.replace(/-/g, '');
-    const end = endDate.replace(/-/g, '');
+export async function getPageviews(params: PageviewsParams): Promise<PageviewData[]> {
+    const { project, pageNames } = params;
+    const endDate = format(new Date(), 'yyyy-MM-dd');
+    const startDate = format(subYears(new Date(), 1), 'yyyy-MM-dd');
 
-    const url = `${PAGEVIEWS_API_BASE_URL}/${project}/${platform}/${agent}/${encodeURIComponent(pageName)}/daily/${start}/${end}`;
+    // Encode page names and join with '|'
+    const pages = pageNames.map(name => encodeURIComponent(name)).join('|');
+    const url = `${XTOOLS_BASE_URL}/page/article_views/${project}/${pages}?start=${startDate}&end=${endDate}`;
 
     try {
         const response = await fetch(url, { headers: { 'User-Agent': WIKI_API_USER_AGENT } });
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.title || `Failed to fetch pageviews for "${pageName}".`);
+            const errorMessage = errorData?.error || `Failed to fetch pageviews for "${pageNames.join(', ')}".`;
+            throw new Error(errorMessage);
         }
+
         const data = await response.json();
-        const pageviews = (data.items || []).map((item: any) => ({
-            date: `${item.year}-${item.month}-${item.day}`,
-            views: item.views,
-        }));
-        return { pageviews };
+        
+        if (data.error) {
+             throw new Error(data.error);
+        }
+
+        // The API returns an object with page titles as keys
+        return Object.entries(data.items[0]?.views || {}).map(([title, viewsData]: [string, any]) => {
+            const pageviews = Object.entries(viewsData).map(([date, views]) => ({
+                date,
+                views: views as number,
+            }));
+
+            const totalViews = pageviews.reduce((sum, day) => sum + day.views, 0);
+            const averageDailyViews = Math.round(totalViews / (pageviews.length || 1));
+
+            return {
+                title: title.replace(/_/g, ' '),
+                pageviews,
+                totalViews,
+                averageDailyViews,
+            };
+        });
+
     } catch (error: any) {
-        console.error(`Failed to get pageviews for ${pageName} on ${project}:`, error);
+        console.error(`Failed to get pageviews on ${project}:`, error);
         throw error;
     }
 }

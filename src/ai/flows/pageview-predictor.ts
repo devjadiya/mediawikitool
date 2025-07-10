@@ -12,7 +12,6 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import { getPageviews } from '@/services/wikimedia';
-import { format, subMonths } from 'date-fns';
 
 const PageviewPredictorInputSchema = z.object({
     photoDataUri: z.string().describe("The image to analyze, as a data URI."),
@@ -23,7 +22,7 @@ export type PageviewPredictorInput = z.infer<typeof PageviewPredictorInputSchema
 
 const ArticleAnalysisSchema = z.object({
     title: z.string(),
-    totalViews: z.number().describe("Total pageviews over the last month."),
+    totalViews: z.number().describe("Total pageviews over the last year."),
     averageDailyViews: z.number().describe("Average daily pageviews."),
     relevanceScore: z.number().min(0).max(1).describe("A score (0-1) indicating how relevant the image is to the article's topic."),
     pageviews: z.array(z.object({ date: z.string(), views: z.number() }))
@@ -36,29 +35,24 @@ const PageviewPredictorOutputSchema = z.object({
 });
 export type PageviewPredictorOutput = z.infer<typeof PageviewPredictorOutputSchema>;
 
-// Tool to get pageviews for an article
+// Tool to get pageviews for articles
 const getPageviewsTool = ai.defineTool(
     {
-        name: 'getPageviewsForArticle',
-        description: 'Fetches the daily pageviews for a given Wikipedia article over the last 30 days.',
-        inputSchema: z.object({ pageName: z.string(), project: z.string() }),
-        outputSchema: z.object({
-            pageviews: z.array(z.object({ date: z.string(), views: z.number() }))
+        name: 'getPageviewsForArticles',
+        description: 'Fetches the monthly pageviews for a list of Wikipedia articles over the last year.',
+        inputSchema: z.object({
+            pageNames: z.array(z.string()),
+            project: z.string() 
         }),
+        outputSchema: z.array(z.object({
+            title: z.string(),
+            pageviews: z.array(z.object({ date: z.string(), views: z.number() })),
+            totalViews: z.number(),
+            averageDailyViews: z.number(),
+        })),
     },
-    async ({ pageName, project }) => {
-        const endDate = new Date();
-        const startDate = subMonths(endDate, 1);
-        
-        const params = {
-            project,
-            pageName,
-            startDate: format(startDate, 'yyyy-MM-dd'),
-            endDate: format(endDate, 'yyyy-MM-dd'),
-            platform: 'all-access',
-            agent: 'user'
-        };
-        return await getPageviews(params);
+    async ({ pageNames, project }) => {
+        return await getPageviews({ pageNames, project });
     }
 );
 
@@ -69,25 +63,19 @@ const pageviewPredictorFlow = ai.defineFlow(
     outputSchema: PageviewPredictorOutputSchema,
   },
   async (input) => {
-    // 1. Fetch pageview data for all articles in parallel
-    const pageviewData = await Promise.all(
-        input.articleTitles.map(title => getPageviewsTool({
-            pageName: title,
-            project: input.project,
-        }))
-    );
+    // 1. Fetch pageview data for all articles in a single call
+    const pageviewData = await getPageviewsTool({
+        pageNames: input.articleTitles,
+        project: input.project,
+    });
 
     const promptInput = {
         photoDataUri: input.photoDataUri,
-        articles: input.articleTitles.map((title, index) => {
-            const views = pageviewData[index].pageviews;
-            const totalViews = views.reduce((sum, day) => sum + day.views, 0);
-            return {
-                title,
-                totalViews,
-                averageDailyViews: Math.round(totalViews / (views.length || 1)),
-            };
-        })
+        articles: pageviewData.map(data => ({
+            title: data.title,
+            totalViews: data.totalViews,
+            averageDailyViews: data.averageDailyViews,
+        }))
     };
 
     // 2. Ask the LLM to analyze relevance and make a recommendation
@@ -104,7 +92,7 @@ Your task is to recommend the best article for the provided image based on two f
 **Article Data:**
 {{#each articles}}
 - **{{title}}**: 
-  - Total Monthly Views: {{totalViews}}
+  - Total Yearly Views: {{totalViews}}
   - Average Daily Views: {{averageDailyViews}}
 {{/each}}
 
@@ -121,8 +109,13 @@ Your task is to recommend the best article for the provided image based on two f
 
     // 3. Combine LLM analysis with the fetched pageview data
     if (result) {
-        result.analysis.forEach((analysisItem, index) => {
-            analysisItem.pageviews = pageviewData[index].pageviews;
+        result.analysis.forEach((analysisItem) => {
+            const matchingData = pageviewData.find(d => d.title === analysisItem.title);
+            if (matchingData) {
+                analysisItem.pageviews = matchingData.pageviews;
+                analysisItem.totalViews = matchingData.totalViews; // Ensure totalViews is also set
+                analysisItem.averageDailyViews = matchingData.averageDailyViews; // and averageDailyViews
+            }
         });
         return result;
     }
