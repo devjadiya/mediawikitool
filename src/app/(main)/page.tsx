@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { FlipWords } from '@/components/ui/flip-words';
+import { GridBackground } from '@/components/ui/grid-background';
 import { 
   FileSearch, 
   Sparkles, 
@@ -72,20 +73,22 @@ const toolSections = [
       { href: "/anonymize-text", name: "Text Anonymizer", description: "Automatically redacts Personally Identifiable Information (PII) from text to protect user privacy in discussions and reports.", icon: <ShieldCheck className="h-8 w-8 text-blue-400" /> },
       { href: "/trust-visualizer", name: "Contribution Trust Visualizer", description: "Visualizes the contribution patterns and edit history of a user to help assess their reliability and areas of expertise.", icon: <BarChartHorizontal className="h-8 w-8 text-purple-400" /> },
     ]
+  },
+    {
+    title: "Future Concepts",
+    tools: [
+        { href: "#", name: "POV & Tone Analyzer", description: "Paste an article draft and get feedback on its neutrality, objectivity, and encyclopedic tone to ensure compliance with Wikipedia's NPOV policy.", icon: <Scale className="h-8 w-8 text-rose-400" />, comingSoon: true },
+        { href: "#", name: "Edit Summary Generator", description: "Automatically generates a concise, accurate edit summary by analyzing the changes (diff) you've made to a page, saving time and improving edit history.", icon: <MessageSquareQuote className="h-8 w-8 text-amber-400" />, comingSoon: true },
+        { href: "#", name: "Disambiguation Helper", description: "Analyzes the context of an article to suggest the most appropriate link for an ambiguous term, helping you create correct internal links.", icon: <GitCompareArrows className="h-8 w-8 text-teal-400" />, comingSoon: true },
+        { href: "#", name: "Copyright Status Assessor", description: "Assesses an image's likely copyright status based on its source and metadata to help users make better licensing decisions.", icon: <BadgeCheck className="h-8 w-8 text-sky-400" />, comingSoon: true },
+        { href: "#", name: "Audio Pronunciation Generator", description: "Generates a spoken audio file for a name or term, which can then be added to articles to improve accessibility.", icon: <FileAudio className="h-8 w-8 text-indigo-400" />, comingSoon: true },
+        { href: "#", name: "Accessibility Alt-Text Generator", description: "Generates descriptive alt-text for images to make them accessible to screen readers for visually impaired users.", icon: <Accessibility className="h-8 w-8 text-fuchsia-400" />, comingSoon: true },
+        { href: "#", name: "Object Locator & Identifier", description: "Draws bounding boxes around multiple objects in an image and identifies each one with its Wikidata ID.", icon: <Locate className="h-8 w-8 text-emerald-400" />, comingSoon: true },
+        { href: "#", name: "Page History Summarizer", description: "Analyzes a page's entire revision history and provides a summary of its development, major contributors, and edit wars.", icon: <History className="h-8 w-8 text-cyan-400" />, comingSoon: true },
+        { href: "#", name: "Template Optimizer", description: "Analyzes complex template wikitext for performance issues and suggests optimizations to reduce server load.", icon: <Cpu className="h-8 w-8 text-slate-400" />, comingSoon: true },
+    ]
   }
 ];
-
-const futureConcepts = [
-    { href: "#", name: "POV & Tone Analyzer", description: "Paste an article draft and get feedback on its neutrality, objectivity, and encyclopedic tone to ensure compliance with Wikipedia's NPOV policy.", icon: <Scale className="h-8 w-8 text-rose-400" />, comingSoon: true },
-    { href: "#", name: "Edit Summary Generator", description: "Automatically generates a concise, accurate edit summary by analyzing the changes (diff) you've made to a page, saving time and improving edit history.", icon: <MessageSquareQuote className="h-8 w-8 text-amber-400" />, comingSoon: true },
-    { href: "#", name: "Disambiguation Helper", description: "Analyzes the context of an article to suggest the most appropriate link for an ambiguous term, helping you create correct internal links.", icon: <GitCompareArrows className="h-8 w-8 text-teal-400" />, comingSoon: true },
-    { href: "#", name: "Copyright Status Assessor", description: "Assesses an image's likely copyright status based on its source and metadata to help users make better licensing decisions.", icon: <BadgeCheck className="h-8 w-8 text-sky-400" />, comingSoon: true },
-    { href: "#", name: "Audio Pronunciation Generator", description: "Generates a spoken audio file for a name or term, which can then be added to articles to improve accessibility.", icon: <FileAudio className="h-8 w-8 text-indigo-400" />, comingSoon: true },
-    { href: "#", name: "Accessibility Alt-Text Generator", description: "Generates descriptive alt-text for images to make them accessible to screen readers for visually impaired users.", icon: <Accessibility className="h-8 w-8 text-fuchsia-400" />, comingSoon: true },
-    { href: "#", name: "Object Locator & Identifier", description: "Draws bounding boxes around multiple objects in an image and identifies each one with its Wikidata ID.", icon: <Locate className="h-8 w-8 text-emerald-400" />, comingSoon: true },
-    { href: "#", name: "Page History Summarizer", description: "Analyzes a page's entire revision history and provides a summary of its development, major contributors, and edit wars.", icon: <History className="h-8 w-8 text-cyan-400" />, comingSoon: true },
-    { href: "#", name: "Template Optimizer", description: "Analyzes complex template wikitext for performance issues and suggests optimizations to reduce server load.", icon: <Cpu className="h-8 w-8 text-slate-400" />, comingSoon: true },
-]
 
 const HeroSection = () => {
    const headline = "AI Toolkit for Wikimedians".split(" ");
@@ -97,7 +100,7 @@ const HeroSection = () => {
   ];
 
   return (
-     <div className="relative mx-auto flex max-w-7xl flex-col items-center justify-center my-4 text-center">
+     <div className="relative mx-auto flex max-w-7xl flex-col items-center justify-center text-center">
       <div className="px-4 py-10 md:py-20">
         <h1 className="relative z-10 mx-auto max-w-4xl text-4xl font-bold md:text-6xl lg:text-8xl font-headline tracking-tighter">
           {headline.map((word, index) => (
@@ -135,16 +138,19 @@ const HeroSection = () => {
 
 const ToolGrid = ({ tools }: { tools: any[] }) => (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {tools.map((tool) => (
+        {tools.map((tool, i) => (
             <motion.div
                 key={tool.href}
-                whileHover={{ y: -5, scale: 1.02 }}
-                transition={{ type: 'spring', stiffness: 300 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: i * 0.05 }}
             >
                 <Link href={tool.href} className="block h-full">
-                    <Card className="h-full bg-card/90 backdrop-blur-sm border-white/10 shadow-lg hover:border-primary/50 transition-colors duration-300 flex flex-col relative overflow-hidden">
+                    <Card className="h-full bg-card/90 backdrop-blur-sm border-white/10 shadow-lg hover:border-primary/50 transition-colors duration-300 flex flex-col relative overflow-hidden group">
+                         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent transform -translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent transform translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                         {tool.comingSoon && (
-                             <div className="absolute top-2 right-2 bg-primary/20 text-primary-foreground text-xs font-bold px-2 py-1 rounded-full">
+                             <div className="absolute top-2 right-2 bg-secondary text-secondary-foreground text-xs font-bold px-2 py-1 rounded-full">
                                 SOON
                             </div>
                         )}
@@ -166,7 +172,7 @@ const ToolGrid = ({ tools }: { tools: any[] }) => (
 
 export default function HomePage() {
   return (
-    <>
+    <GridBackground>
       <HeroSection />
       
       <div className="max-w-7xl mx-auto -mt-12 relative z-10">
@@ -182,13 +188,8 @@ export default function HomePage() {
                   <ToolGrid tools={section.tools} />
               </section>
               ))}
-
-              <section>
-                 <h2 className="text-3xl font-headline font-bold mb-8 text-center">Future Concepts</h2>
-                 <ToolGrid tools={futureConcepts} />
-              </section>
           </div>
       </div>
-    </>
+    </GridBackground>
   );
 }
