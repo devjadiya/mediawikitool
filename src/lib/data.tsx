@@ -1,4 +1,4 @@
-import { Bot, PenSquare, ScanSearch, ShieldCheck, Languages, FileText, Code, BookCopy, FileSearch, Sparkles, Wand2, ShieldQuestion } from 'lucide-react';
+import { Bot, PenSquare, ScanSearch, ShieldCheck, Languages, FileText, Code, BookCopy, FileSearch, Sparkles, Wand2, ShieldQuestion, Shield } from 'lucide-react';
 
 export type Tool = {
   href: string;
@@ -75,6 +75,13 @@ export const tools: Tool[] = [
     icon: <FileText className="h-8 w-8 text-primary" />,
   },
   // Privacy & Security Tools
+   {
+    href: '/code-guardian',
+    title: 'Code Guardian',
+    description: 'Analyze MediaWiki JS/Lua for security, performance, and best practices.',
+    category: 'Privacy & Security',
+    icon: <Shield className="h-8 w-8 text-primary" />,
+  },
   {
     href: '/anonymize-text',
     title: 'Wiki-Anonymizer',
@@ -102,6 +109,6 @@ export const tools: Tool[] = [
     title: 'Code Explainer',
     description: 'Explain a snippet of Lua or JS code used in Wikimedia projects.',
     category: 'Development',
-icon: <Wand2 className="h-8 w-8 text-primary" />,
+    icon: <Wand2 className="h-8 w-8 text-primary" />,
   },
 ];

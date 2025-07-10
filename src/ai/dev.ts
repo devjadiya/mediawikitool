@@ -14,3 +14,4 @@ import '@/ai/flows/debug-regex.ts';
 import '@/ai/flows/explain-code.ts';
 import '@/ai/flows/suggest-license.ts';
 import '@/ai/flows/fact-checker.ts';
+import '@/ai/flows/code-guardian.ts';
