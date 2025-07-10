@@ -59,6 +59,13 @@ const findSourceTool = ai.defineTool(
                 title: 'History of Vidisha - Official District Website',
             };
         }
+        if (query.includes("कारखाना")) {
+            return {
+                url: 'https://example-hindi-encylopedia.com/factory-article',
+                title: 'कारखानों का इतिहास और विकास',
+            }
+        }
+        // Generic fallback for any other query
         return {
             url: 'https://www.example.com/source-for-statement',
             title: 'A Reliable Source for Your Statement',
