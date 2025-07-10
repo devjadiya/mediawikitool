@@ -17,6 +17,7 @@ import '@/ai/flows/translate-text.ts';
 import '@/ai/flows/trust-visualizer.ts';
 import '@/ai/flows/generate-caption.ts';
 import '@/ai/flows/suggest-category.ts';
-import '@/ai/flows/pageview-predictor.ts';
 import '@/ai/flows/validate-image.ts';
 import '@/ai/flows/generate-prizes.ts';
+
+    

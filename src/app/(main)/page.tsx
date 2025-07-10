@@ -22,15 +22,15 @@ import {
   GitCompare,
   ArrowRightLeft,
   Trophy,
-  TrendingUp
+  BookOpen
 } from 'lucide-react';
 
 const commonsTools = [
     { id: "generate-caption", href: "/generate-caption", name: "AI Caption Writer", description: "Generates encyclopedic, high-quality titles and descriptions for images, making your uploads more valuable to the community.", icon: <PenSquare className="h-8 w-8 text-cyan-400" /> },
     { id: "suggest-category", href: "/suggest-category", name: "Category Suggester", description: "Analyzes an image and suggests the most relevant categories, helping with proper organization and discoverability on Wikimedia Commons.", icon: <Lightbulb className="h-8 w-8 text-yellow-400" /> },
-    { id: "pageview-predictor", href: "/pageview-predictor", name: "Pageview Predictor", description: "Analyzes an image and predicts which Wikipedia article it would have the most impact on based on pageview data.", icon: <TrendingUp className="h-8 w-8 text-green-400" /> },
     { id: "validate-image", href: "/validate-image", name: "Image Validator", description: "Automatically checks images for common issues like watermarks or low quality, and provides constructive feedback before you upload.", icon: <GitCompare className="h-8 w-8 text-orange-400" /> },
     { id: "generate-prizes", href: "/generate-prizes", name: "Prize Generator", description: "Brainstorm creative, themed prize ideas for photography competitions and edit-a-thons to engage your community.", icon: <Trophy className="h-8 w-8 text-amber-500" /> },
+    { id: "contribution-guide", href: "/contribution-guide", name: "Contribution Guide", description: "Learn the rules, best practices, and steps for submitting your photos to the Wiki Loves Science competition.", icon: <BookOpen className="h-8 w-8 text-green-400" /> },
 ];
 
 const toolSections = [
@@ -172,3 +172,5 @@ export default function HomePage() {
     </>
   );
 }
+
+    

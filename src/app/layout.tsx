@@ -4,11 +4,19 @@ import './globals.css';
 import { FloatingDock } from '@/components/ui/floating-dock';
 import { CursorFollower } from '@/components/cursor-follower';
 import { FloatingNav } from '@/components/ui/floating-navbar';
+import { BookOpen, GalleryHorizontal, Info, Mail } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Wikimedia AI Toolkit',
-  description: 'A personal suite of AI-powered tools for Wikimedians, developed by Dev Jadiya.',
+  title: 'WLS India Archive',
+  description: 'An archive and toolkit for the Wiki Loves Science competition in India.',
 };
+
+const navItems = [
+    { name: "Gallery", href: "/", icon: <GalleryHorizontal className="h-4 w-4" /> },
+    { name: "About", href: "/about", icon: <Info className="h-4 w-4" /> },
+    { name: "Guide", href: "/contribution-guide", icon: <BookOpen className="h-4 w-4" /> },
+    { name: "Contact", href: "/contact", icon: <Mail className="h-4 w-4" /> },
+];
 
 export default function RootLayout({
   children,
@@ -24,7 +32,7 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased flex flex-col min-h-screen bg-background text-foreground" suppressHydrationWarning={true}>
         <CursorFollower />
-        <FloatingNav />
+        <FloatingNav navItems={navItems} />
         <main className="flex-grow">
           {children}
         </main>
@@ -34,3 +42,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+    
