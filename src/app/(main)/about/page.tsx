@@ -3,9 +3,9 @@ import Image from 'next/image';
 
 export default function AboutPage() {
   return (
-    <div className="container mx-auto space-y-8">
+    <div className="container mx-auto space-y-12">
       <header className="text-center">
-        <h1 className="text-5xl font-headline font-bold text-primary mb-2">About Wiki Loves Science</h1>
+        <h1 className="text-5xl font-headline font-bold mb-2">About Wiki Science Competition</h1>
         <p className="text-xl text-muted-foreground">Celebrating science through the lens of open knowledge.</p>
       </header>
 
@@ -15,7 +15,7 @@ export default function AboutPage() {
         </CardHeader>
         <CardContent className="text-lg space-y-4">
           <p>
-            Wiki Loves Science is an annual international photographic competition that invites people to
+            Wiki Science Competition is an annual international photographic competition that invites people to
             contribute high-quality, freely licensed images related to science. In India, the competition
             aims to build a rich repository of scientific images that reflect the country's research,
             biodiversity, and technological advancements.
@@ -30,9 +30,9 @@ export default function AboutPage() {
       
       <div className="grid md:grid-cols-2 gap-8 items-center">
         <div className="space-y-4">
-            <h2 className="text-3xl font-headline font-bold text-primary">The Impact</h2>
+            <h2 className="text-3xl font-headline font-bold">The Impact</h2>
             <p className="text-lg">
-                Your contributions have a lasting impact. Images from Wiki Loves Science India have been
+                Your contributions have a lasting impact. Images from Wiki Science Competition India have been
                 featured in thousands of Wikipedia articles, viewed millions of times, and have helped
                 students, researchers, and the curious public better understand complex scientific topics.
                 Each photo is a step towards democratizing science.

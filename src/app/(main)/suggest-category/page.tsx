@@ -5,10 +5,10 @@ export default function SuggestCategoryPage() {
   return (
     <div className="container mx-auto">
       <header className="mb-8 text-center">
-        <div className="inline-flex items-center justify-center p-3 bg-primary/10 rounded-full mb-4">
+        <div className="inline-flex items-center justify-center p-3 bg-secondary rounded-full mb-4">
             <Lightbulb className="h-10 w-10 text-primary" />
         </div>
-        <h1 className="text-5xl font-headline font-bold text-primary mb-2">AI-Powered Category Suggestion</h1>
+        <h1 className="text-5xl font-headline font-bold mb-2">AI-Powered Category Suggestion</h1>
         <p className="text-xl text-muted-foreground">
           Not sure where your photo fits? Upload it and let our AI suggest the best categories.
         </p>

@@ -8,8 +8,8 @@ export default function ContactPage() {
   return (
     <div className="container mx-auto space-y-12">
       <header className="text-center">
-        <h1 className="text-5xl font-headline font-bold text-primary mb-2">Contact & Team</h1>
-        <p className="text-xl text-muted-foreground">Meet the people behind WLS India and get in touch.</p>
+        <h1 className="text-5xl font-headline font-bold mb-2">Contact & Team</h1>
+        <p className="text-xl text-muted-foreground">Meet the people behind the competition and get in touch.</p>
       </header>
 
       <Card>
@@ -23,13 +23,13 @@ export default function ContactPage() {
               You can reach out to us via email or our social media channels.
             </p>
             <div className="flex flex-col gap-4">
-              <a href="mailto:wls-india@example.com" className="flex items-center gap-2 text-primary hover:underline">
+              <a href="mailto:wsc-india@example.com" className="flex items-center gap-2 text-primary hover:underline">
                 <Mail className="h-5 w-5" />
-                <span>wls-india@example.com</span>
+                <span>wsc-india@example.com</span>
               </a>
-              <a href="https://twitter.com/wlsindia" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline">
+              <a href="https://twitter.com/wscindia" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline">
                 <Twitter className="h-5 w-5" />
-                <span>@WLSIndia on Twitter</span>
+                <span>@WSCIndia on Twitter</span>
               </a>
             </div>
           </div>
@@ -47,10 +47,10 @@ export default function ContactPage() {
       </Card>
 
       <section>
-        <h2 className="text-4xl font-headline font-bold text-center mb-8">Our Team</h2>
+        <h2 className="text-4xl font-headline font-bold text-center mb-8">Organizing Team (India)</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {teamMembers.map(member => (
-            <Card key={member.id} className="text-center">
+            <Card key={member.id} className="text-center border-2">
               <CardContent className="pt-6 flex flex-col items-center gap-4">
                 <Avatar className="h-24 w-24 border-2 border-primary">
                   <AvatarImage src={member.avatar} alt={member.name} data-ai-hint={member.hint} />
@@ -58,7 +58,7 @@ export default function ContactPage() {
                 </Avatar>
                 <div>
                   <p className="font-bold text-lg">{member.name}</p>
-                  <p className="text-sm text-accent font-semibold">{member.role}</p>
+                  <p className="text-sm text-muted-foreground font-semibold">{member.role}</p>
                   <p className="text-sm text-muted-foreground mt-2">{member.bio}</p>
                 </div>
               </CardContent>
