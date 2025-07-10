@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { FlipWords } from '@/components/ui/flip-words';
-import { TracingBeam } from '@/components/ui/tracing-beam';
 import { 
   FileSearch, 
   Sparkles, 
@@ -89,12 +88,12 @@ const futureConcepts = [
 ]
 
 const HeroSection = () => {
-   const headline = "WLS India Archive".split(" ");
+   const headline = "AI Toolkit for Wikimedians".split(" ");
    const flipWords = [
-    "Image Galleries",
-    "Competition Timelines",
-    "Contribution Guides",
-    "AI-Powered Tools",
+    "Editing",
+    "Content",
+    "Development",
+    "Contributions",
   ];
 
   return (
@@ -123,10 +122,10 @@ const HeroSection = () => {
           transition={{ duration: 0.3, delay: 0.8 }}
           className="relative z-10 mx-auto max-w-3xl py-4 text-xl md:text-3xl"
         >
-          <span className="text-muted-foreground">Featuring </span>
-          <FlipWords words={flipWords} className="text-primary" />
+          <span className="text-muted-foreground">Supercharge Your </span>
+          <FlipWords words={flipWords} className="text-foreground" />
           <p className="text-muted-foreground mt-2 text-xl">
-             Explore winning images, learn about the competition, and use powerful AI tools to enhance your Wikimedia contributions.
+             Explore powerful AI tools designed to enhance your Wikimedia contributions.
           </p>
         </motion.div>
       </div>
@@ -145,7 +144,7 @@ const ToolGrid = ({ tools }: { tools: any[] }) => (
                 <Link href={tool.href} className="block h-full">
                     <Card className="h-full bg-card/90 backdrop-blur-sm border-white/10 shadow-lg hover:border-primary/50 transition-colors duration-300 flex flex-col relative overflow-hidden">
                         {tool.comingSoon && (
-                             <div className="absolute top-2 right-2 bg-primary/80 text-primary-foreground text-xs font-bold px-2 py-1 rounded-full">
+                             <div className="absolute top-2 right-2 bg-primary/20 text-primary-foreground text-xs font-bold px-2 py-1 rounded-full">
                                 SOON
                             </div>
                         )}
@@ -171,8 +170,7 @@ export default function HomePage() {
       <HeroSection />
       
       <div className="max-w-7xl mx-auto -mt-12 relative z-10">
-        <TracingBeam className="px-6">
-          <div className="space-y-24 mb-24 relative">
+          <div className="space-y-24 mb-24 relative p-6">
               <section>
                  <h2 className="text-3xl font-headline font-bold mb-8 text-center">Wikimedia Commons Tools</h2>
                  <ToolGrid tools={commonsTools} />
@@ -190,7 +188,6 @@ export default function HomePage() {
                  <ToolGrid tools={futureConcepts} />
               </section>
           </div>
-        </TracingBeam>
       </div>
     </>
   );

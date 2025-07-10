@@ -51,7 +51,6 @@ export function ApiQueryGenerator() {
   const handleDemoClick = () => {
     const randomQuery = demoQueries[Math.floor(Math.random() * demoQueries.length)];
     form.setValue('taskDescription', randomQuery);
-    // Automatically trigger the submission with the new value
     form.handleSubmit(onSubmit)();
   };
 
@@ -87,7 +86,7 @@ export function ApiQueryGenerator() {
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
-                <CardTitle className="font-headline">Describe Your Task</CardTitle>
+                <CardTitle>Describe Your Task</CardTitle>
                 <CardDescription>Enter a plain English description of what you want to do with the API.</CardDescription>
               </div>
               <Button type="button" variant="outline" size="sm" onClick={handleDemoClick} disabled={buttonState === 'loading'}>
@@ -147,7 +146,7 @@ export function ApiQueryGenerator() {
             <StatefulButton
               type="submit"
               buttonState={buttonState}
-              idleContent={<><Terminal />Generate Query</>}
+              idleContent={<><Terminal className="h-4 w-4" />Generate Query</>}
             />
           </CardFooter>
         </form>

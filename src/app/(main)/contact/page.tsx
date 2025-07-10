@@ -1,75 +1,99 @@
+import type {Config} from 'tailwindcss';
 
-'use client';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Github, Linkedin, Mail, Twitter } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-
-const teamMembers = [
-    {
-        name: 'Dev Jadiya',
-        role: 'Lead Developer & Project Maintainer',
-        avatar: 'https://avatars.githubusercontent.com/u/81258656?v=4',
-        social: {
-            github: 'https://github.com/devjadiya',
-            linkedin: 'https://www.linkedin.com/in/dev-jadiya-9922a5214/',
-            twitter: 'https://x.com/dev_jadiya',
+export default {
+  darkMode: ['class'],
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      fontFamily: {
+        body: ['Inter', 'sans-serif'],
+        headline: ['Inter', 'sans-serif'],
+        code: ['Roboto Mono', 'monospace'],
+      },
+      colors: {
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
         },
-    }
-];
-
-export default function ContactPage() {
-  return (
-    <div className="space-y-12">
-      <header className="text-center">
-        <h1 className="text-5xl font-headline font-bold mb-2">Contact Us</h1>
-        <p className="text-xl text-muted-foreground">Get in touch with the team behind the WLS India Archive.</p>
-      </header>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <Card>
-            <CardHeader>
-                <CardTitle>Contact Information</CardTitle>
-                <CardDescription>For general inquiries, partnerships, or feedback, please reach out to us.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-                 <div className="flex items-center gap-4">
-                    <Mail className="h-6 w-6 text-primary" />
-                    <a href="mailto:contact@wlsindia.org" className="hover:underline">contact@wlsindia.org</a>
-                 </div>
-                 <div className="flex items-center gap-4">
-                    <Twitter className="h-6 w-6 text-primary" />
-                    <a href="https://twitter.com/WLS_India" target="_blank" rel="noopener noreferrer" className="hover:underline">@WLS_India</a>
-                 </div>
-            </CardContent>
-        </Card>
-        <Card>
-             <CardHeader>
-                <CardTitle>Our Team</CardTitle>
-                <CardDescription>The core contributors to this project.</CardDescription>
-            </CardHeader>
-             <CardContent>
-                {teamMembers.map(member => (
-                    <div key={member.name} className="flex items-center gap-4">
-                        <Avatar className="h-16 w-16">
-                            <AvatarImage src={member.avatar} alt={member.name} />
-                            <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                            <h3 className="font-bold">{member.name}</h3>
-                            <p className="text-sm text-muted-foreground">{member.role}</p>
-                            <div className="flex gap-2 mt-1">
-                                <Link href={member.social.github} target="_blank"><Button variant="ghost" size="icon"><Github className="h-4 w-4"/></Button></Link>
-                                <Link href={member.social.linkedin} target="_blank"><Button variant="ghost" size="icon"><Linkedin className="h-4 w-4"/></Button></Link>
-                                <Link href={member.social.twitter} target="_blank"><Button variant="ghost" size="icon"><Twitter className="h-4 w-4"/></Button></Link>
-                            </div>
-                        </div>
-                    </div>
-                ))}
-            </CardContent>
-        </Card>
-      </div>
-    </div>
-  );
-}
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
+        },
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
+        },
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        chart: {
+          '1': 'hsl(var(--chart-1))',
+          '2': 'hsl(var(--chart-2))',
+          '3': 'hsl(var(--chart-3))',
+          '4': 'hsl(var(--chart-4))',
+          '5': 'hsl(var(--chart-5))',
+        },
+        sidebar: {
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))',
+        },
+      },
+      borderRadius: {
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
+      },
+      keyframes: {
+        'accordion-down': {
+          from: {
+            height: '0',
+          },
+          to: {
+            height: 'var(--radix-accordion-content-height)',
+          },
+        },
+        'accordion-up': {
+          from: {
+            height: 'var(--radix-accordion-content-height)',
+          },
+          to: {
+            height: '0',
+          },
+        },
+      },
+      animation: {
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
+      },
+    },
+  },
+  plugins: [require('tailwindcss-animate')],
+} satisfies Config;

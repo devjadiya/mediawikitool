@@ -7,7 +7,7 @@ import { Loader2, Check, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -69,11 +69,11 @@ const StatefulButton = React.forwardRef<HTMLButtonElement, StatefulButtonProps>(
     const renderContent = () => {
       switch (buttonState) {
         case 'loading':
-          return loadingContent || <><Loader2 className="animate-spin" /> Processing...</>;
+          return loadingContent || <><Loader2 className="animate-spin h-4 w-4" /> Processing...</>;
         case 'success':
-          return successContent || <><Check /> Success</>;
+          return successContent || <><Check className="h-4 w-4" /> Success</>;
         case 'error':
-          return errorContent || <><X /> Error</>;
+          return errorContent || <><X className="h-4 w-4" /> Error</>;
         case 'idle':
         default:
           return idleContent;

@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, FileText, Copy } from 'lucide-react';
+import { FileText, Copy } from 'lucide-react';
 
 const formSchema = z.object({
   topic: z.string().min(3, 'Please enter a topic.'),
@@ -40,7 +40,6 @@ export function DraftingAssistant() {
       setArticle(result);
       setButtonState('success');
     } catch (error) {
-      console.error('Error drafting article:', error);
       toast({
         title: 'Error',
         description: 'Could not draft the article. Please try another topic.',
@@ -58,11 +57,11 @@ export function DraftingAssistant() {
   }
 
   return (
-    <Card className="border-2">
+    <Card>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardHeader>
-            <CardTitle className="font-headline">Draft an Article</CardTitle>
+            <CardTitle>Draft an Article</CardTitle>
             <CardDescription>Enter a topic to generate a starter article with sources.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -107,7 +106,7 @@ export function DraftingAssistant() {
             <StatefulButton
                 type="submit"
                 buttonState={buttonState}
-                idleContent={<><FileText />Generate Draft</>}
+                idleContent={<><FileText className="h-4 w-4"/>Generate Draft</>}
             />
           </CardFooter>
         </form>

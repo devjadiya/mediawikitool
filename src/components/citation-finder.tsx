@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, FileSearch, Link, Copy, Wand2 } from 'lucide-react';
+import { FileSearch, Link, Copy, Wand2 } from 'lucide-react';
 import { Progress } from './ui/progress';
 
 const formSchema = z.object({
@@ -47,7 +47,6 @@ export function CitationFinder() {
       setCitation(result);
       setButtonState('success');
     } catch (error) {
-      console.error('Error finding citation:', error);
       toast({
         title: 'Error',
         description: 'Could not find a citation. Please try a different statement.',
@@ -65,13 +64,13 @@ export function CitationFinder() {
   }
 
   return (
-    <Card className="border-2 border-white/10 bg-card/50">
+    <Card>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
-                <CardTitle className="font-headline">Find Citation</CardTitle>
+                <CardTitle>Find Citation</CardTitle>
                 <CardDescription>Enter a statement to find a reliable source.</CardDescription>
               </div>
               <Button type="button" variant="outline" size="sm" onClick={handleDemo} disabled={buttonState === 'loading'}>
@@ -135,7 +134,7 @@ export function CitationFinder() {
             <StatefulButton
                 type="submit"
                 buttonState={buttonState}
-                idleContent={<><FileSearch />Find Source</>}
+                idleContent={<><FileSearch className="h-4 w-4"/>Find Source</>}
              />
           </CardFooter>
         </form>
