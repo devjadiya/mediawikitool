@@ -22,7 +22,6 @@ import {
   GitCompare,
   ArrowRightLeft
 } from 'lucide-react';
-import { FloatingNav } from '@/components/ui/floating-navbar';
 
 const toolSections = [
   {
@@ -164,15 +163,15 @@ export default function HomePage() {
     "Check Facts",
     "Draft Content",
   ];
-  const navItems = toolSections.flatMap(section => section.tools.map(tool => ({ name: tool.name, link: tool.href, icon: tool.icon })));
 
   return (
-    <>
-    <FloatingNav navItems={navItems.map(item => ({name: item.name, link: item.link}))} />
     <TracingBeam className="px-6">
-      <div className="container mx-auto space-y-24">
-        <header className="text-center pt-24 md:pt-32">
-           <div className="text-4xl md:text-6xl font-bold mx-auto mb-4">
+      <div className="container mx-auto space-y-24 my-24">
+        <header className="text-center pt-12 md:pt-20">
+           <h1 className="text-4xl md:text-6xl font-bold mx-auto mb-4 font-headline tracking-tighter">
+            Unum
+          </h1>
+           <div className="text-3xl md:text-5xl font-bold mx-auto mb-4">
             Build better with AI to
             <FlipWords words={flipWords} />
           </div>
@@ -184,7 +183,7 @@ export default function HomePage() {
         {toolSections.map((section) => (
           <section key={section.title}>
             <h2 className="text-3xl font-headline font-bold mb-8 text-center">{section.title}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {section.tools.map((tool) => (
                 <Link key={tool.href} id={tool.href.substring(1)} href={tool.href} className="group block">
                   <motion.div
@@ -210,6 +209,5 @@ export default function HomePage() {
         ))}
       </div>
     </TracingBeam>
-    </>
   );
 }
