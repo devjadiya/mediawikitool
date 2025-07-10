@@ -44,7 +44,7 @@ export function ImageValidator() {
     setValidationResult(null);
     setPreview(null);
     try {
-        const imageUrl = 'https://placehold.co/500x500.png';
+        const imageUrl = 'https://placehold.co/400x400.png';
         setPreview(imageUrl); // Show placeholder immediately
         const response = await fetch(imageUrl);
         const blob = await response.blob();
