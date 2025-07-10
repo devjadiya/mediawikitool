@@ -40,14 +40,14 @@ export function DepictsSuggester() {
     form.reset();
     setGeneratedContent(null);
     setPreview(null);
-    form.setValue('context', 'Photo of the Eiffel Tower in Paris');
+    form.setValue('context', 'A cute puppy in a field');
 
     try {
-        const imageUrl = 'https://placehold.co/600x400.png';
+        const imageUrl = 'https://picsum.photos/seed/picsum/600/400';
         setPreview(imageUrl);
         const response = await fetch(imageUrl);
         const blob = await response.blob();
-        const file = new File([blob], "demo-image.png", { type: blob.type });
+        const file = new File([blob], "demo-image.jpg", { type: blob.type });
 
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
