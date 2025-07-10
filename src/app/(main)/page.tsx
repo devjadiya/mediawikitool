@@ -22,7 +22,6 @@ import {
   GitCompare,
   ArrowRightLeft,
   Trophy,
-  BookOpen,
   Database
 } from 'lucide-react';
 
@@ -32,7 +31,6 @@ const commonsTools = [
     { id: "validate-image", href: "/validate-image", name: "Image Validator", description: "Automatically checks images for common issues like watermarks or low quality, and provides constructive feedback before you upload.", icon: <GitCompare className="h-8 w-8 text-orange-400" /> },
     { id: "suggest-depicts", href: "/suggest-depicts", name: "Depicts Suggester", description: "Analyzes an image to suggest structured 'depicts' statements, linking its content to Wikidata entities for better discoverability.", icon: <Database className="h-8 w-8 text-violet-400" /> },
     { id: "generate-prizes", href: "/generate-prizes", name: "Prize Generator", description: "Brainstorm creative, themed prize ideas for photography competitions and edit-a-thons to engage your community.", icon: <Trophy className="h-8 w-8 text-amber-500" /> },
-    { id: "contribution-guide", href: "/contribution-guide", name: "Contribution Guide", description: "Learn the rules, best practices, and steps for submitting your photos to the Wiki Loves Science competition.", icon: <BookOpen className="h-8 w-8 text-green-400" /> },
 ];
 
 const toolSections = [

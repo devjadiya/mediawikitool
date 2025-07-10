@@ -12,9 +12,7 @@ export const metadata: Metadata = {
 };
 
 const navItems = [
-    { name: "Gallery", href: "/", icon: <GalleryHorizontal className="h-4 w-4" /> },
     { name: "About", href: "/about", icon: <Info className="h-4 w-4" /> },
-    { name: "Guide", href: "/contribution-guide", icon: <BookOpen className="h-4 w-4" /> },
     { name: "Contact", href: "/contact", icon: <Mail className="h-4 w-4" /> },
 ];
 
@@ -42,5 +40,3 @@ export default function RootLayout({
     </html>
   );
 }
-
-    

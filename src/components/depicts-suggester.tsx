@@ -35,6 +35,40 @@ export function DepictsSuggester() {
     }
   });
 
+  const handleDemo = async () => {
+    form.reset();
+    setGeneratedContent(null);
+    setPreview(null);
+    form.setValue('context', 'Photo of the Eiffel Tower in Paris');
+
+    try {
+        const imageUrl = 'https://source.unsplash.com/random/600x400/?eiffel-tower';
+        setPreview(imageUrl);
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+        const file = new File([blob], "demo-image.jpg", { type: blob.type });
+
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        const fileList = dataTransfer.files;
+
+        form.setValue('image', fileList);
+        await form.trigger('image');
+        
+        const isValid = await form.trigger();
+        if (isValid) {
+            onSubmit(form.getValues());
+        }
+    } catch(e) {
+        toast({
+            title: 'Demo Error',
+            description: 'Could not fetch the demo image. Please try again.',
+            variant: 'destructive',
+        });
+    }
+  };
+
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     setGeneratedContent(null);
@@ -93,8 +127,16 @@ export function DepictsSuggester() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardHeader>
-            <CardTitle className="font-headline">Suggest "Depicts" Statements</CardTitle>
-            <CardDescription>Upload an image to get structured data suggestions.</CardDescription>
+             <div className="flex justify-between items-start">
+                <div>
+                    <CardTitle className="font-headline">Suggest "Depicts" Statements</CardTitle>
+                    <CardDescription>Upload an image to get structured data suggestions.</CardDescription>
+                </div>
+                 <Button type="button" variant="outline" size="sm" onClick={handleDemo} disabled={isLoading}>
+                    <Wand2 className="mr-2 h-4 w-4" />
+                    Try Demo
+                </Button>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <FormField
