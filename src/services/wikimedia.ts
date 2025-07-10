@@ -6,7 +6,7 @@ import { format, subYears } from 'date-fns';
  * @fileOverview Services for interacting with the MediaWiki and XTools APIs.
  */
 
-export const WIKI_API_USER_AGENT = 'Wikimedia-AI-Toolkit/1.0 (https://w.wiki/9sE9; )';
+const WIKI_API_USER_AGENT = 'Wikimedia-AI-Toolkit/1.0 (https://w.wiki/9sE9; )';
 const XTOOLS_BASE_URL = 'https://xtools.wmcloud.org/api';
 
 /**

@@ -1,10 +1,9 @@
 'use server';
 
-import { WIKI_API_USER_AGENT } from "@/services/wikimedia";
-
 /**
  * @fileOverview Server actions for interacting with the MediaWiki API, specifically for UI components.
  */
+const WIKI_API_USER_AGENT = 'Wikimedia-AI-Toolkit/1.0 (https://w.wiki/9sE9; )';
 
 /**
  * Searches for Wikimedia users based on a prefix.
