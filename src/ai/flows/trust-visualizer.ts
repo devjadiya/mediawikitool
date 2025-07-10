@@ -52,7 +52,7 @@ const getUserDataTool = ai.defineTool(
     name: 'getWikimediaUserData',
     description: 'Fetches comprehensive contribution statistics for a given Wikimedia username.',
     inputSchema: z.object({ username: z.string() }),
-    outputSchema: VisualizeTrustOutputSchema.omit({ revertRate: true }), // Revert rate is complex, mock for now.
+    outputSchema: VisualizeTrustOutputSchema.omit({ revertRate: true }),
   },
   async ({ username }) => {
     return await getUserContributionData(username);
