@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, FileSearch, Link, Copy } from 'lucide-react';
+import { Loader2, FileSearch, Link, Copy, Wand2 } from 'lucide-react';
 import { Progress } from './ui/progress';
 
 const formSchema = z.object({
@@ -30,6 +30,13 @@ export function CitationFinder() {
       statement: '',
     },
   });
+
+  const handleDemo = async () => {
+    const demoStatement = 'The Sun is a star at the center of the Solar System.';
+    form.setValue('statement', demoStatement);
+    await form.trigger('statement');
+    onSubmit({ statement: demoStatement });
+  };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setButtonState('loading');
@@ -62,8 +69,16 @@ export function CitationFinder() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardHeader>
-            <CardTitle className="font-headline">Find Citation</CardTitle>
-            <CardDescription>Enter a statement to find a reliable source.</CardDescription>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="font-headline">Find Citation</CardTitle>
+                <CardDescription>Enter a statement to find a reliable source.</CardDescription>
+              </div>
+              <Button type="button" variant="outline" size="sm" onClick={handleDemo} disabled={buttonState === 'loading'}>
+                <Wand2 className="mr-2 h-4 w-4" />
+                Try Demo
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <FormField

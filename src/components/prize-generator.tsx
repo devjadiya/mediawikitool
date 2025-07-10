@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Telescope, Microscope, FlaskConical, Camera, BookOpenCheck, Zap } from 'lucide-react';
+import { Loader2, Telescope, Microscope, FlaskConical, Camera, BookOpenCheck, Zap, Wand2 } from 'lucide-react';
 import { categories } from '@/lib/data';
 
 const formSchema = z.object({
@@ -43,6 +43,12 @@ export function PrizeGenerator() {
     }
   });
 
+  const handleDemo = () => {
+    const demoCategory = 'Astronomy';
+    form.setValue('category', demoCategory);
+    onSubmit({ category: demoCategory });
+  };
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     setPrizeIdeas([]);
@@ -66,8 +72,16 @@ export function PrizeGenerator() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardHeader>
-            <CardTitle className="font-headline">Generate Prize Ideas</CardTitle>
-            <CardDescription>Select a category to brainstorm some creative, science-themed prizes.</CardDescription>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="font-headline">Generate Prize Ideas</CardTitle>
+                <CardDescription>Select a category to brainstorm some creative, science-themed prizes.</CardDescription>
+              </div>
+              <Button type="button" variant="outline" size="sm" onClick={handleDemo} disabled={isLoading}>
+                <Wand2 className="mr-2 h-4 w-4" />
+                Try Demo
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
             <FormField
@@ -76,7 +90,7 @@ export function PrizeGenerator() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Competition Category</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select onValueChange={field.onChange} defaultValue={field.value} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a category..." />

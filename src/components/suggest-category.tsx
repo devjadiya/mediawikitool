@@ -4,31 +4,28 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { validateImage } from '@/ai/flows/validate-image';
+import { suggestCategory } from '@/ai/flows/suggest-category';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Upload, CheckCircle, XCircle, MessageSquareQuote, Wand2 } from 'lucide-react';
+import { Loader2, Upload, Tag, Wand2 } from 'lucide-react';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
 
 const formSchema = z.object({
   image: z.any()
     .refine(files => files?.length > 0, 'Image is required.')
-    .refine(files => files?.[0]?.size <= 5000000, `Max file size is 5MB.`),
+    .refine(files => files?.[0]?.size <= 5000000, `Max file size is 5MB.`)
+    .refine(
+      files => ['image/jpeg', 'image/png', 'image/webp'].includes(files?.[0]?.type),
+      '.jpg, .png, and .webp files are accepted.'
+    ),
 });
 
-type ValidationResult = {
-  hasWatermark: boolean;
-  isClear: boolean;
-  feedback: string;
-}
-
-export function ImageValidator() {
+export function CategorySuggester() {
   const [isLoading, setIsLoading] = useState(false);
-  const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
+  const [suggestedCategories, setSuggestedCategories] = useState<string[]>([]);
   const [preview, setPreview] = useState<string | null>(null);
   const { toast } = useToast();
 
@@ -41,14 +38,14 @@ export function ImageValidator() {
 
   const handleDemo = async () => {
     form.reset();
-    setValidationResult(null);
+    setSuggestedCategories([]);
     setPreview(null);
     try {
         const imageUrl = 'https://placehold.co/500x500.png';
         setPreview(imageUrl); // Show placeholder immediately
         const response = await fetch(imageUrl);
         const blob = await response.blob();
-        const file = new File([blob], "demo-image.png", { type: "image/png" });
+        const file = new File([blob], "demo-microscope.png", { type: "image/png" });
 
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
@@ -72,7 +69,7 @@ export function ImageValidator() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
-    setValidationResult(null);
+    setSuggestedCategories([]);
 
     const file = values.image[0];
     const reader = new FileReader();
@@ -80,13 +77,13 @@ export function ImageValidator() {
     reader.onloadend = async () => {
       const dataUri = reader.result as string;
       try {
-        const result = await validateImage({ photoDataUri: dataUri });
-        setValidationResult(result);
+        const result = await suggestCategory({ photoDataUri: dataUri });
+        setSuggestedCategories(result.categories);
       } catch (error) {
-        console.error('Error validating image:', error);
+        console.error('Error suggesting category:', error);
         toast({
           title: 'Error',
-          description: 'Could not validate the image. Please try again.',
+          description: 'Could not suggest categories. Please try again.',
           variant: 'destructive',
         });
       } finally {
@@ -112,7 +109,7 @@ export function ImageValidator() {
     if (file) {
       const url = URL.createObjectURL(file);
       setPreview(url);
-      setValidationResult(null);
+      setSuggestedCategories([]);
     } else {
       setPreview(null);
     }
@@ -125,8 +122,8 @@ export function ImageValidator() {
           <CardHeader>
              <div className="flex justify-between items-start">
               <div>
-                <CardTitle className="font-headline">Upload for Validation</CardTitle>
-                <CardDescription>We'll check for common issues like watermarks and image clarity.</CardDescription>
+                <CardTitle className="font-headline">AI-Powered Category Suggestion</CardTitle>
+                <CardDescription>We'll analyze your photo and suggest relevant categories.</CardDescription>
               </div>
               <Button type="button" variant="outline" size="sm" onClick={handleDemo} disabled={isLoading}>
                 <Wand2 className="mr-2 h-4 w-4" />
@@ -169,35 +166,20 @@ export function ImageValidator() {
                   width={200}
                   height={200}
                   className="rounded-lg mx-auto object-cover aspect-square"
-                  data-ai-hint="sample image"
+                  data-ai-hint="microscope lab"
                 />
               </div>
             )}
-            {validationResult && (
-                <div className="pt-4 space-y-4">
-                    <h3 className="font-semibold mb-2">Validation Results:</h3>
-                    <div className="space-y-3">
-                        <div className={cn("flex items-center gap-3 p-3 rounded-md", validationResult.hasWatermark ? 'bg-destructive/10' : 'bg-green-600/10')}>
-                            {validationResult.hasWatermark ? <XCircle className="h-5 w-5 text-destructive" /> : <CheckCircle className="h-5 w-5 text-green-600" />}
-                            <div>
-                                <h4 className="font-semibold">Watermark Check</h4>
-                                <p className="text-sm text-muted-foreground">{validationResult.hasWatermark ? "Potential watermark or text detected. Submissions should not have watermarks." : "No watermarks detected. Good to go!"}</p>
-                            </div>
+            {suggestedCategories.length > 0 && (
+                <div className="pt-4">
+                    <h3 className="font-semibold mb-2">Suggested Categories:</h3>
+                    <div className="flex flex-wrap gap-2">
+                    {suggestedCategories.map(cat => (
+                        <div key={cat} className="flex items-center gap-2 bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-sm">
+                            <Tag className="h-4 w-4" />
+                            <span>{cat}</span>
                         </div>
-                        <div className={cn("flex items-center gap-3 p-3 rounded-md", !validationResult.isClear ? 'bg-destructive/10' : 'bg-green-600/10')}>
-                            {!validationResult.isClear ? <XCircle className="h-5 w-5 text-destructive" /> : <CheckCircle className="h-5 w-5 text-green-600" />}
-                            <div>
-                                <h4 className="font-semibold">Clarity Check</h4>
-                                <p className="text-sm text-muted-foreground">{!validationResult.isClear ? "The subject may not be perfectly clear or in focus." : "Image appears clear and in focus."}</p>
-                            </div>
-                        </div>
-                        <div className="flex items-start gap-3 p-3 rounded-md bg-secondary">
-                            <MessageSquareQuote className="h-5 w-5 text-secondary-foreground mt-1 flex-shrink-0" />
-                            <div>
-                                <h4 className="font-semibold">AI Feedback</h4>
-                                <p className="text-sm text-muted-foreground">{validationResult.feedback}</p>
-                            </div>
-                        </div>
+                    ))}
                     </div>
                 </div>
             )}
@@ -207,10 +189,10 @@ export function ImageValidator() {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Validating...
+                  Analyzing...
                 </>
               ) : (
-                'Validate Image'
+                'Suggest Categories'
               )}
             </Button>
           </CardFooter>

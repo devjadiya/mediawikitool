@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Upload, ShieldCheck, Link as LinkIcon, Lightbulb } from 'lucide-react';
+import { Loader2, Upload, ShieldCheck, Link as LinkIcon, Lightbulb, Wand2 } from 'lucide-react';
 import Image from 'next/image';
 
 const formSchema = z.object({
@@ -33,6 +33,38 @@ export function LicenseSuggester() {
       context: '',
     }
   });
+
+  const handleDemo = async () => {
+    form.reset();
+    setSuggestions(null);
+    setPreview(null);
+    const context = "This is a photo I took myself of a public monument.";
+    form.setValue('context', context);
+    try {
+        const imageUrl = 'https://placehold.co/500x500.png';
+        setPreview(imageUrl); // Show placeholder immediately
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+        const file = new File([blob], "demo-monument.png", { type: "image/png" });
+        
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        const fileList = dataTransfer.files;
+
+        form.setValue('image', fileList);
+        
+        const isValid = await form.trigger();
+        if (isValid) {
+            onSubmit(form.getValues());
+        }
+    } catch(e) {
+        toast({
+            title: 'Demo Error',
+            description: 'Could not fetch the demo image. Please try again.',
+            variant: 'destructive',
+        });
+    }
+  };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
@@ -76,8 +108,16 @@ export function LicenseSuggester() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardHeader>
-            <CardTitle className="font-headline">License Suggester</CardTitle>
-            <CardDescription>Upload an image to get license suggestions.</CardDescription>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="font-headline">License Suggester</CardTitle>
+                <CardDescription>Upload an image to get license suggestions.</CardDescription>
+              </div>
+              <Button type="button" variant="outline" size="sm" onClick={handleDemo} disabled={isLoading}>
+                <Wand2 className="mr-2 h-4 w-4" />
+                Try Demo
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <FormField
@@ -130,6 +170,7 @@ export function LicenseSuggester() {
                   width={200}
                   height={200}
                   className="rounded-lg mx-auto object-cover aspect-square"
+                  data-ai-hint="public monument"
                 />
               </div>
             )}

@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Sparkles, Lightbulb, Check } from 'lucide-react';
+import { Loader2, Sparkles, Lightbulb, Check, Wand2 } from 'lucide-react';
 
 const formSchema = z.object({
   articleTitle: z.string().min(3, 'Please enter a title.'),
@@ -32,6 +32,17 @@ export function StubExpander() {
       existingContent: '',
     },
   });
+
+  const handleDemo = async () => {
+    const demoValues = {
+        articleTitle: 'Mumbai',
+        existingContent: 'Mumbai (also known as Bombay, the official name until 1995) is the capital city of the Indian state of Maharashtra. Mumbai lies on the Konkan coast on the west coast of India and has a deep natural harbour.'
+    };
+    form.setValue('articleTitle', demoValues.articleTitle);
+    form.setValue('existingContent', demoValues.existingContent);
+    await form.trigger();
+    onSubmit(demoValues);
+  };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setButtonState('loading');
@@ -59,8 +70,16 @@ export function StubExpander() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardHeader>
-            <CardTitle className="font-headline">Expand Article Stub</CardTitle>
-            <CardDescription>Provide an article title and its current content to get expansion ideas.</CardDescription>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="font-headline">Expand Article Stub</CardTitle>
+                <CardDescription>Provide an article title and its current content to get expansion ideas.</CardDescription>
+              </div>
+              <Button type="button" variant="outline" size="sm" onClick={handleDemo} disabled={buttonState === 'loading'}>
+                <Wand2 className="mr-2 h-4 w-4" />
+                Try Demo
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <FormField

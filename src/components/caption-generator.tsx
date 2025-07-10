@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Upload, Pilcrow, Type } from 'lucide-react';
+import { Loader2, Upload, Pilcrow, Type, Wand2 } from 'lucide-react';
 import Image from 'next/image';
 
 const formSchema = z.object({
@@ -39,6 +39,43 @@ export function CaptionGenerator() {
       context: '',
     }
   });
+  
+  const handleDemo = async () => {
+    form.reset();
+    setGeneratedContent(null);
+    setPreview(null);
+    const context = 'A photo of a bengal tiger in the wild, taken in India.';
+    form.setValue('context', context);
+
+    try {
+        const imageUrl = 'https://placehold.co/500x500.png';
+        setPreview(imageUrl); // Show placeholder immediately
+        const response = await fetch(imageUrl);
+        const blob = await response.blob();
+        const file = new File([blob], "demo-tiger.png", { type: "image/png" });
+
+        // Create a FileList
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        const fileList = dataTransfer.files;
+
+        form.setValue('image', fileList);
+        await form.trigger('image'); // Manually trigger validation
+        
+        // Wait for validation to pass before submitting
+        const isValid = await form.trigger();
+        if (isValid) {
+            onSubmit(form.getValues());
+        }
+    } catch(e) {
+        toast({
+            title: 'Demo Error',
+            description: 'Could not fetch the demo image. Please try again.',
+            variant: 'destructive',
+        });
+    }
+  };
+
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
@@ -93,8 +130,16 @@ export function CaptionGenerator() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardHeader>
-            <CardTitle className="font-headline">Generate Title & Description</CardTitle>
-            <CardDescription>Upload an image and add optional context to get a great title and description.</CardDescription>
+             <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="font-headline">Generate Title & Description</CardTitle>
+                <CardDescription>Upload an image and add optional context to get a great title and description.</CardDescription>
+              </div>
+              <Button type="button" variant="outline" size="sm" onClick={handleDemo} disabled={isLoading}>
+                <Wand2 className="mr-2 h-4 w-4" />
+                Try Demo
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <FormField
@@ -147,6 +192,7 @@ export function CaptionGenerator() {
                   width={200}
                   height={200}
                   className="rounded-lg mx-auto object-cover aspect-square"
+                  data-ai-hint="bengal tiger"
                 />
               </div>
             )}
