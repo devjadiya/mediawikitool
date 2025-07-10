@@ -1,3 +1,4 @@
+
 'use client';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -127,7 +128,7 @@ const ToolGrid = ({ tools }: { tools: any[] }) => (
                 whileHover={{ y: -5, scale: 1.02 }}
                 transition={{ type: 'spring', stiffness: 300 }}
             >
-                <Link href={`/${tool.id}`}>
+                <Link href={tool.href}>
                     <Card className="min-h-[250px] bg-card/50 backdrop-blur-sm border-white/10 shadow-lg hover:border-primary/50 transition-colors duration-300 flex flex-col">
                         <CardHeader className="flex flex-row items-center gap-4">
                             <div className="p-2 bg-secondary rounded-lg">
