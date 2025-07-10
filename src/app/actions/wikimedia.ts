@@ -42,7 +42,7 @@ export async function searchUsers(prefix: string): Promise<string[]> {
  * @returns A promise that resolves to the user's info.
  */
 export async function getUserInfo(username: string) {
-    const url = `https://xtools.wmcloud.org/api/user/simple_editcount/en.wikipedia.org/${encodeURIComponent(username)}?format=json&origin=*`;
+    const url = `https://xtools.wmcloud.org/api/user/simple_editcount/global/${encodeURIComponent(username)}?format=json&origin=*`;
     
     try {
         const response = await fetch(url, {
@@ -56,7 +56,8 @@ export async function getUserInfo(username: string) {
         const data = await response.json();
         
         // The registration date is not in this API, let's get it from the main API
-        const userDetailsUrl = `https://en.wikipedia.org/w/api.php?action=query&list=users&ususers=${encodeURIComponent(username)}&usprop=registration&format=json&origin=*`;
+        // We will check meta wiki for global user registration
+        const userDetailsUrl = `https://meta.wikimedia.org/w/api.php?action=query&list=users&ususers=${encodeURIComponent(username)}&usprop=registration&format=json&origin=*`;
         const userDetailsResponse = await fetch(userDetailsUrl, {
              headers: {
                 'User-Agent': WIKI_API_USER_AGENT
@@ -67,7 +68,7 @@ export async function getUserInfo(username: string) {
         const formattedDate = registration ? new Date(registration).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : 'N/A';
 
         return {
-            project: 'en.wikipedia.org',
+            project: data.project || 'global',
             joinDate: formattedDate,
             totalEdits: data.total_edits || 0,
         }

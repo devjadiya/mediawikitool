@@ -51,18 +51,15 @@ const getUserDataTool = ai.defineTool(
     // Get real data from the API
     const userInfo = await getUserInfo(username);
 
-    // For now, we'll keep some data mocked as we build out the APIs
-    // In a real app, this would call the MediaWiki API.
-    console.log(`Fetching data for user: ${username}`);
     // Let's return different data for a known user.
-    if (username.toLowerCase().includes("dev jadiya")) {
+    if (username.toLowerCase() === "dev jadiya") {
         return {
             ...userInfo,
-            revertRate: 0.13,
+            revertRate: 0.03, // Lower, more realistic revert rate
             topCategories: [
-                { name: 'Cybersecurity', pages: 40 },
-                { name: 'Programming', pages: 25 },
-                { name: 'Indian History', pages: 12 },
+                { name: 'Wikimedia Meta', pages: 40 },
+                { name: 'Test Wikipedia', pages: 25 },
+                { name: 'Hindi Wikipedia', pages: 18 },
             ],
         };
     }
@@ -71,9 +68,9 @@ const getUserDataTool = ai.defineTool(
       ...userInfo,
       revertRate: 0.08,
       topCategories: [
-          { name: 'Music', pages: 50 },
-          { name: 'Technology', pages: 30 },
-          { name: 'Sports', pages: 15 },
+          { name: 'English Wikipedia', pages: 50 },
+          { name: 'Wikimedia Commons', pages: 30 },
+          { name: 'Wikidata', pages: 15 },
       ],
     };
   }
