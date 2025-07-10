@@ -72,7 +72,7 @@ const pageviewPredictorFlow = ai.defineFlow(
     const pageviewData = await Promise.all(
         input.articleTitles.map(title => getPageviewsTool({
             pageName: title,
-            project: input.project
+            project: input.project,
         }))
     );
 
