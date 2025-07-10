@@ -1,4 +1,4 @@
-import { Bot, PenSquare, ScanSearch, ShieldCheck, Languages, FileText, Code, BookCopy, FileSearch, Sparkles, Wand2, ShieldQuestion, Shield } from 'lucide-react';
+import { Bot, PenSquare, ScanSearch, ShieldCheck, Languages, FileText, Code, BookCopy, FileSearch, Sparkles, Wand2, ShieldQuestion, Shield, GitCompareArrows, BadgeCheck } from 'lucide-react';
 
 export type Tool = {
   href: string;
@@ -73,6 +73,20 @@ export const tools: Tool[] = [
     description: 'Generate a short, sourced draft article on a topic.',
     category: 'Content',
     icon: <FileText className="h-8 w-8 text-primary" />,
+  },
+  {
+    href: '/detect-inconsistencies',
+    title: 'Inconsistency Detector',
+    description: 'Compare articles across different languages to find factual discrepancies.',
+    category: 'Content',
+    icon: <GitCompareArrows className="h-8 w-8 text-primary" />,
+  },
+  {
+    href: '/check-notability',
+    title: 'Notability Checker',
+    description: 'Assess if a topic meets Wikipedia\'s notability guidelines based on available sources.',
+    category: 'Content',
+    icon: <BadgeCheck className="h-8 w-8 text-primary" />,
   },
   // Privacy & Security Tools
    {

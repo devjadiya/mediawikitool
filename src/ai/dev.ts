@@ -15,3 +15,5 @@ import '@/ai/flows/explain-code.ts';
 import '@/ai/flows/suggest-license.ts';
 import '@/ai/flows/fact-checker.ts';
 import '@/ai/flows/code-guardian.ts';
+import '@/ai/flows/detect-inconsistencies.ts';
+import '@/ai/flows/check-notability.ts';
