@@ -189,9 +189,9 @@ export function CaptionGenerator() {
                 <Image
                   src={preview}
                   alt="Image preview"
-                  width={200}
-                  height={200}
-                  className="rounded-lg mx-auto object-cover aspect-square"
+                  width={600}
+                  height={400}
+                  className="rounded-lg mx-auto object-cover aspect-video"
                   data-ai-hint="bengal tiger"
                 />
               </div>
