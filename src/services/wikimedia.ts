@@ -3,12 +3,13 @@
 import { format, subYears } from 'date-fns';
 
 /**
- * @fileOverview Services for interacting with the MediaWiki and XTools APIs.
+ * @fileOverview Services for interacting with the MediaWiki and other APIs.
  * This file is marked with "use server" and only exports async functions.
  */
 
 const WIKI_API_USER_AGENT = 'Wikimedia-AI-Toolkit/1.0 (https://w.wiki/9sE9; )';
 const XTOOLS_BASE_URL = 'https://xtools.wmcloud.org/api';
+const PAGEVIEWS_API_BASE_URL = 'https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article';
 
 /**
  * Fetches basic user info for a given username to find their home project.
@@ -181,5 +182,45 @@ export async function getUserContributionData(username: string) {
     } catch(error: any) {
         console.error('Failed to get user contribution data:', error);
         throw new Error(error.message || `Could not fetch data for user "${username}". The API might be unavailable.`);
+    }
+}
+
+
+/**
+ * Fetches daily pageview data for a specific article.
+ * @param params The parameters for the pageviews API call.
+ * @returns A promise resolving to an array of pageview data.
+ */
+export async function getPageviews(params: {
+    project: string;
+    pageName: string;
+    startDate: string;
+    endDate: string;
+    platform: string;
+    agent: string;
+}) {
+    const { project, pageName, startDate, endDate, platform, agent } = params;
+    
+    // The Pageviews API needs YYYYMMDD format without dashes.
+    const start = startDate.replace(/-/g, '');
+    const end = endDate.replace(/-/g, '');
+
+    const url = `${PAGEVIEWS_API_BASE_URL}/${project}/${platform}/${agent}/${encodeURIComponent(pageName)}/daily/${start}/${end}`;
+
+    try {
+        const response = await fetch(url, { headers: { 'User-Agent': WIKI_API_USER_AGENT } });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.title || `Failed to fetch pageviews for "${pageName}".`);
+        }
+        const data = await response.json();
+        const pageviews = (data.items || []).map((item: any) => ({
+            date: `${item.year}-${item.month}-${item.day}`,
+            views: item.views,
+        }));
+        return { pageviews };
+    } catch (error: any) {
+        console.error(`Failed to get pageviews for ${pageName} on ${project}:`, error);
+        throw error;
     }
 }

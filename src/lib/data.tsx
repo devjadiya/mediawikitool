@@ -1,4 +1,4 @@
-import { Bot, PenSquare, ScanSearch, ShieldCheck, Languages, FileText, Code, BookCopy, FileSearch as FileSearchIcon, Sparkles, Wand2, ShieldQuestion, Shield, GitCompareArrows, BadgeCheck, BarChartHorizontal } from 'lucide-react';
+import { Bot, PenSquare, ScanSearch, ShieldCheck, Languages, FileText, Code, BookCopy, FileSearch as FileSearchIcon, Sparkles, Wand2, ShieldQuestion, Shield, GitCompareArrows, BadgeCheck, BarChartHorizontal, AreaChart } from 'lucide-react';
 
 export type Tool = {
   href: string;
@@ -39,6 +39,13 @@ export const tools: Tool[] = [
     icon: <ShieldCheck className="h-8 w-8 text-primary" />,
   },
   // Content & Editing Tools
+   {
+    href: '/pageviews-analysis',
+    title: 'Pageviews Analyzer',
+    description: 'Visualize daily pageview statistics for any Wikimedia article.',
+    category: 'Content',
+    icon: <AreaChart className="h-8 w-8 text-primary" />,
+  },
   {
     href: '/fact-checker',
     title: 'Fact Checker',
