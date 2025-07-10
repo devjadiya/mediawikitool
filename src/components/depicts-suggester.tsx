@@ -58,7 +58,7 @@ export function DepictsSuggester() {
         
         const isValid = await form.trigger();
         if (isValid) {
-            onSubmit(form.getValues());
+            await onSubmit(form.getValues());
         }
     } catch(e) {
         toast({
