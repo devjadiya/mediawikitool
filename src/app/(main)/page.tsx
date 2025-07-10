@@ -78,7 +78,7 @@ const HeroSection = () => {
   ];
 
   return (
-     <div className="relative mx-auto my-4 flex max-w-7xl flex-col items-center justify-center">
+     <div className="relative mx-auto flex max-w-7xl flex-col items-center justify-center my-4">
       <div className="absolute inset-y-0 left-0 h-full w-px bg-neutral-200/20 dark:bg-neutral-800/20">
         <div className="absolute top-0 h-40 w-px bg-gradient-to-b from-transparent via-primary to-transparent" />
       </div>
@@ -86,7 +86,7 @@ const HeroSection = () => {
         <div className="absolute h-40 w-px bg-gradient-to-b from-transparent via-primary to-transparent" />
       </div>
       <div className="px-4 py-10 md:py-20 text-center">
-        <h1 className="relative z-10 mx-auto max-w-4xl text-3xl font-bold md:text-5xl lg:text-7xl font-headline tracking-tighter">
+        <h1 className="relative z-10 mx-auto max-w-4xl text-4xl font-bold md:text-6xl lg:text-8xl font-headline tracking-tighter">
           {headline.map((word, index) => (
             <motion.span
               key={index}
@@ -107,11 +107,11 @@ const HeroSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.3, delay: 0.8 }}
-          className="relative z-10 mx-auto max-w-3xl py-4 text-xl md:text-2xl"
+          className="relative z-10 mx-auto max-w-3xl py-4 text-xl md:text-3xl"
         >
           <span className="text-muted-foreground">AI-powered tools to </span>
           <FlipWords words={flipWords} className="text-primary" />
-          <p className="text-muted-foreground mt-2 text-lg">
+          <p className="text-muted-foreground mt-2 text-xl">
              A suite of powerful, modern tools designed to accelerate editing workflows, assist with development, and analyze community data.
           </p>
         </motion.div>
@@ -121,17 +121,17 @@ const HeroSection = () => {
 }
 
 const ToolGrid = ({ tools }: { tools: any[] }) => (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {tools.map((tool) => (
             <motion.div
                 key={tool.id}
                 whileHover={{ y: -5, scale: 1.02 }}
                 transition={{ type: 'spring', stiffness: 300 }}
             >
-                <Link href={`/${tool.id}`}>
-                    <Card className="min-h-[250px] bg-card/50 backdrop-blur-sm border-white/10 shadow-lg hover:border-primary/50 transition-colors duration-300 flex flex-col">
+                <Link href={`/${tool.id}`} className="block h-full">
+                    <Card className="h-full bg-card/50 backdrop-blur-sm border-white/10 shadow-lg hover:border-primary/50 transition-colors duration-300 flex flex-col">
                         <CardHeader className="flex flex-row items-center gap-4">
-                            <div className="p-2 bg-secondary rounded-lg">
+                            <div className="p-3 bg-secondary rounded-lg">
                                 {tool.icon}
                             </div>
                             <CardTitle className="font-headline text-2xl">{tool.name}</CardTitle>
