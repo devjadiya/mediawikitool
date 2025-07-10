@@ -182,7 +182,7 @@ export function DepictsSuggester() {
                 </FormItem>
               )}
             />
-            <div className="flex justify-center gap-4 items-center">
+            <div className="flex justify-center gap-4 items-start">
                 {preview && (
                     <div className="mt-4">
                         <Image
