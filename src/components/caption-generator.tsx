@@ -183,13 +183,13 @@ export function CaptionGenerator() {
               )}
             />
             {preview && (
-              <div className="mt-4">
+              <div className="mt-4 flex justify-center">
                 <Image
                   src={preview}
                   alt="Image preview"
-                  width={600}
-                  height={400}
-                  className="rounded-lg mx-auto object-cover aspect-video"
+                  width={300}
+                  height={200}
+                  className="rounded-lg object-cover aspect-video"
                 />
               </div>
             )}

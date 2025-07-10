@@ -160,13 +160,13 @@ export function CategorySuggester() {
               )}
             />
             {preview && (
-              <div className="mt-4">
+              <div className="mt-4 flex justify-center">
                 <Image
                   src={preview}
                   alt="Image preview"
-                  width={200}
-                  height={200}
-                  className="rounded-lg mx-auto object-cover aspect-square"
+                  width={300}
+                  height={300}
+                  className="rounded-lg object-cover aspect-square"
                 />
               </div>
             )}
