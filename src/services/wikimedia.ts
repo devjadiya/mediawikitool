@@ -186,7 +186,7 @@ export async function getUserContributionData(username: string) {
 }
 
 type PageviewsParams = {
-    project: string;
+    project?: string;
     pageNames: string[];
 };
 
@@ -203,7 +203,7 @@ type PageviewData = {
  * @returns A promise resolving to an array of pageview data for each article.
  */
 export async function getPageviews(params: PageviewsParams): Promise<PageviewData[]> {
-    const { project, pageNames } = params;
+    const { pageNames, project = 'en.wikipedia.org' } = params;
     const endDate = format(new Date(), 'yyyy-MM-dd');
     const startDate = format(subYears(new Date(), 1), 'yyyy-MM-dd');
 
