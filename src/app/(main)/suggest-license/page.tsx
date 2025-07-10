@@ -3,7 +3,7 @@ import { ShieldCheck } from 'lucide-react';
 
 export default function SuggestLicensePage() {
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto" id="suggest-license">
       <header className="mb-8 text-center">
         <div className="inline-flex items-center justify-center p-3 bg-secondary rounded-full mb-4">
             <ShieldCheck className="h-10 w-10 text-primary" />

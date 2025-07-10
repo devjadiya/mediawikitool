@@ -3,7 +3,7 @@ import { Lightbulb } from 'lucide-react';
 
 export default function SuggestCategoryPage() {
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto" id="suggest-category">
       <header className="mb-8 text-center">
         <div className="inline-flex items-center justify-center p-3 bg-secondary rounded-full mb-4">
             <Lightbulb className="h-10 w-10 text-primary" />

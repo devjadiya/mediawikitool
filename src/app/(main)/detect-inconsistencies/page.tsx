@@ -3,7 +3,7 @@ import { GitCompareArrows } from 'lucide-react';
 
 export default function DetectInconsistenciesPage() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-12" id="detect-inconsistencies">
       <header className="text-center p-8 rounded-lg" style={{ background: 'radial-gradient(circle, hsl(var(--chart-4) / 0.1), transparent 70%)' }}>
         <div className="inline-flex items-center justify-center p-4 bg-fuchsia-500/10 text-fuchsia-400 rounded-full mb-4 ring-2 ring-fuchsia-500/20">
             <GitCompareArrows className="h-10 w-10" />

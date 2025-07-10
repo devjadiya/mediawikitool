@@ -1,6 +1,8 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
+import { motion } from "framer-motion"
+import { Loader2, Check, X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -53,4 +55,57 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 )
 Button.displayName = "Button"
 
-export { Button, buttonVariants }
+
+export interface StatefulButtonProps extends ButtonProps {
+  buttonState: 'idle' | 'loading' | 'success' | 'error';
+  idleContent: React.ReactNode;
+  loadingContent?: React.ReactNode;
+  successContent?: React.ReactNode;
+  errorContent?: React.ReactNode;
+}
+
+const StatefulButton = React.forwardRef<HTMLButtonElement, StatefulButtonProps>(
+  ({ buttonState, idleContent, loadingContent, successContent, errorContent, className, ...props }, ref) => {
+    const renderContent = () => {
+      switch (buttonState) {
+        case 'loading':
+          return loadingContent || <><Loader2 className="animate-spin" /> Processing...</>;
+        case 'success':
+          return successContent || <><Check /> Success</>;
+        case 'error':
+          return errorContent || <><X /> Error</>;
+        case 'idle':
+        default:
+          return idleContent;
+      }
+    };
+    
+    const getVariant = () => {
+        if (buttonState === 'error') return 'destructive';
+        if (buttonState === 'success') return 'secondary';
+        return props.variant || 'default';
+    }
+
+    return (
+      <motion.div
+        initial={false}
+        animate={{ width: buttonState === 'idle' ? '100%' : '100%' }}
+        transition={{ duration: 0.3, ease: 'easeInOut' }}
+      >
+        <Button
+          ref={ref}
+          disabled={buttonState === 'loading'}
+          className={cn("w-full", className)}
+          variant={getVariant()}
+          {...props}
+        >
+          {renderContent()}
+        </Button>
+      </motion.div>
+    );
+  }
+);
+StatefulButton.displayName = "StatefulButton";
+
+
+export { Button, StatefulButton, buttonVariants }

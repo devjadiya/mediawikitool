@@ -1,12 +1,11 @@
 import type { Metadata } from 'next';
 import { Toaster } from "@/components/ui/toaster";
 import './globals.css';
-import { Header } from '@/components/header';
-import { Footer } from '@/components/footer';
+import { FloatingDock } from '@/components/ui/floating-dock';
 import { CursorFollower } from '@/components/cursor-follower';
 
 export const metadata: Metadata = {
-  title: 'AI Toolkit for Wikimedians',
+  title: 'Unum - AI Toolkit for Wikimedians',
   description: 'A personal suite of AI-powered tools for Wikimedians, developed by Dev Jadiya.',
 };
 
@@ -24,11 +23,10 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased flex flex-col min-h-screen" suppressHydrationWarning={true}>
         <CursorFollower />
-        <Header />
         <main className="flex-grow">
           {children}
         </main>
-        <Footer />
+        <FloatingDock />
         <Toaster />
       </body>
     </html>

@@ -3,7 +3,7 @@ import { ShieldCheck } from 'lucide-react';
 
 export default function AnonymizeTextPage() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-12" id="anonymize-text">
       <header className="text-center p-8 rounded-lg" style={{ background: 'radial-gradient(circle, hsl(var(--chart-4) / 0.1), transparent 70%)' }}>
         <div className="inline-flex items-center justify-center p-4 bg-blue-500/10 text-blue-400 rounded-full mb-4 ring-2 ring-blue-500/20">
             <ShieldCheck className="h-10 w-10" />

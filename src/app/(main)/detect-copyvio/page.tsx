@@ -3,7 +3,7 @@ import { BookCopy } from 'lucide-react';
 
 export default function DetectCopyvioPage() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-12" id="detect-copyvio">
       <header className="text-center p-8 rounded-lg" style={{ background: 'radial-gradient(circle, hsl(var(--destructive) / 0.1), transparent 70%)' }}>
         <div className="inline-flex items-center justify-center p-4 bg-red-500/10 text-red-400 rounded-full mb-4 ring-2 ring-red-500/20">
             <BookCopy className="h-10 w-10" />

@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { expandStub, ExpandStubOutput } from '@/ai/flows/expand-stub';
-import { Button } from '@/components/ui/button';
+import { Button, StatefulButton } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -18,8 +18,10 @@ const formSchema = z.object({
   existingContent: z.string().min(10, 'Please enter some existing content.'),
 });
 
+type ButtonState = 'idle' | 'loading' | 'success' | 'error';
+
 export function StubExpander() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [buttonState, setButtonState] = useState<ButtonState>('idle');
   const [suggestions, setSuggestions] = useState<ExpandStubOutput | null>(null);
   const { toast } = useToast();
 
@@ -32,12 +34,13 @@ export function StubExpander() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsLoading(true);
+    setButtonState('loading');
     setSuggestions(null);
 
     try {
       const result = await expandStub(values);
       setSuggestions(result);
+      setButtonState('success');
     } catch (error) {
       console.error('Error expanding stub:', error);
       toast({
@@ -45,8 +48,9 @@ export function StubExpander() {
         description: 'Could not generate suggestions. Please try again.',
         variant: 'destructive',
       });
+      setButtonState('error');
     } finally {
-      setIsLoading(false);
+      setTimeout(() => setButtonState('idle'), 2000);
     }
   };
 
@@ -120,16 +124,11 @@ export function StubExpander() {
             )}
           </CardContent>
           <CardFooter>
-            <Button type="submit" disabled={isLoading} className="w-full">
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Generating...
-                </>
-              ) : (
-                <><Sparkles className="mr-2 h-4 w-4" />Get Suggestions</>
-              )}
-            </Button>
+            <StatefulButton
+              type="submit"
+              buttonState={buttonState}
+              idleContent={<><Sparkles />Get Suggestions</>}
+            />
           </CardFooter>
         </form>
       </Form>

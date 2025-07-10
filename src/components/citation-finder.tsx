@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { findCitation, FindCitationOutput } from '@/ai/flows/find-citations';
-import { Button } from '@/components/ui/button';
+import { Button, StatefulButton } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -17,8 +17,10 @@ const formSchema = z.object({
   statement: z.string().min(10, 'Please enter a statement of at least 10 characters.'),
 });
 
+type ButtonState = 'idle' | 'loading' | 'success' | 'error';
+
 export function CitationFinder() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [buttonState, setButtonState] = useState<ButtonState>('idle');
   const [citation, setCitation] = useState<FindCitationOutput | null>(null);
   const { toast } = useToast();
 
@@ -30,12 +32,13 @@ export function CitationFinder() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsLoading(true);
+    setButtonState('loading');
     setCitation(null);
 
     try {
       const result = await findCitation(values);
       setCitation(result);
+      setButtonState('success');
     } catch (error) {
       console.error('Error finding citation:', error);
       toast({
@@ -43,8 +46,9 @@ export function CitationFinder() {
         description: 'Could not find a citation. Please try a different statement.',
         variant: 'destructive',
       });
+      setButtonState('error');
     } finally {
-      setIsLoading(false);
+        setTimeout(() => setButtonState('idle'), 2000);
     }
   };
   
@@ -113,16 +117,11 @@ export function CitationFinder() {
             )}
           </CardContent>
           <CardFooter>
-            <Button type="submit" disabled={isLoading} className="w-full">
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Searching...
-                </>
-              ) : (
-                <><FileSearch className="mr-2 h-4 w-4" />Find Source</>
-              )}
-            </Button>
+            <StatefulButton
+                type="submit"
+                buttonState={buttonState}
+                idleContent={<><FileSearch />Find Source</>}
+             />
           </CardFooter>
         </form>
       </Form>

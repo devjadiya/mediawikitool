@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { factCheckText, FactCheckTextOutput } from '@/ai/flows/fact-checker';
-import { Button } from '@/components/ui/button';
+import { StatefulButton } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -18,6 +18,7 @@ const formSchema = z.object({
   text: z.string().min(20, 'Please enter at least 20 characters for fact-checking.'),
 });
 
+type ButtonState = 'idle' | 'loading' | 'success' | 'error';
 type Claim = FactCheckTextOutput['claims'][0];
 
 const statusConfig = {
@@ -40,7 +41,7 @@ const statusConfig = {
 
 
 export function FactChecker() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [buttonState, setButtonState] = useState<ButtonState>('idle');
   const [result, setResult] = useState<FactCheckTextOutput | null>(null);
   const { toast } = useToast();
 
@@ -52,12 +53,13 @@ export function FactChecker() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsLoading(true);
+    setButtonState('loading');
     setResult(null);
 
     try {
       const apiResult = await factCheckText(values);
       setResult(apiResult);
+      setButtonState('success');
     } catch (error) {
       console.error('Error fact-checking text:', error);
       toast({
@@ -65,8 +67,9 @@ export function FactChecker() {
         description: 'Could not perform fact-check. Please try again.',
         variant: 'destructive',
       });
+      setButtonState('error');
     } finally {
-      setIsLoading(false);
+        setTimeout(() => setButtonState('idle'), 2000);
     }
   };
 
@@ -134,16 +137,11 @@ export function FactChecker() {
             )}
           </CardContent>
           <CardFooter>
-            <Button type="submit" disabled={isLoading} className="w-full">
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Analyzing...
-                </>
-              ) : (
-                <><ShieldQuestion className="mr-2 h-4 w-4" />Verify Claims</>
-              )}
-            </Button>
+            <StatefulButton
+              type="submit"
+              buttonState={buttonState}
+              idleContent={<><ShieldQuestion />Verify Claims</>}
+            />
           </CardFooter>
         </form>
       </Form>

@@ -3,7 +3,7 @@ import { BarChartHorizontal } from 'lucide-react';
 
 export default function TrustVisualizerPage() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-12" id="trust-visualizer">
       <header className="text-center p-8 rounded-lg" style={{ background: 'radial-gradient(circle, hsl(var(--chart-4) / 0.1), transparent 70%)' }}>
         <div className="inline-flex items-center justify-center p-4 bg-purple-500/10 text-purple-400 rounded-full mb-4 ring-2 ring-purple-500/20">
             <BarChartHorizontal className="h-10 w-10" />

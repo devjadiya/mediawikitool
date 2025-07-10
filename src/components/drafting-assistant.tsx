@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { draftArticle, DraftArticleOutput } from '@/ai/flows/draft-article';
-import { Button } from '@/components/ui/button';
+import { Button, StatefulButton } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -17,8 +17,10 @@ const formSchema = z.object({
   topic: z.string().min(3, 'Please enter a topic.'),
 });
 
+type ButtonState = 'idle' | 'loading' | 'success' | 'error';
+
 export function DraftingAssistant() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [buttonState, setButtonState] = useState<ButtonState>('idle');
   const [article, setArticle] = useState<DraftArticleOutput | null>(null);
   const { toast } = useToast();
 
@@ -30,12 +32,13 @@ export function DraftingAssistant() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIsLoading(true);
+    setButtonState('loading');
     setArticle(null);
 
     try {
       const result = await draftArticle(values);
       setArticle(result);
+      setButtonState('success');
     } catch (error) {
       console.error('Error drafting article:', error);
       toast({
@@ -43,8 +46,9 @@ export function DraftingAssistant() {
         description: 'Could not draft the article. Please try another topic.',
         variant: 'destructive',
       });
+      setButtonState('error');
     } finally {
-      setIsLoading(false);
+        setTimeout(() => setButtonState('idle'), 2000);
     }
   };
   
@@ -100,16 +104,11 @@ export function DraftingAssistant() {
             )}
           </CardContent>
           <CardFooter>
-            <Button type="submit" disabled={isLoading} className="w-full">
-              {isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Drafting...
-                </>
-              ) : (
-                <><FileText className="mr-2 h-4 w-4" />Generate Draft</>
-              )}
-            </Button>
+            <StatefulButton
+                type="submit"
+                buttonState={buttonState}
+                idleContent={<><FileText />Generate Draft</>}
+            />
           </CardFooter>
         </form>
       </Form>
