@@ -4,77 +4,78 @@
 
 @layer base {
   :root {
-    --background: 20 14.3% 4.1%;
-    --foreground: 0 0% 95%;
+    --background: 222 84% 4.9%; /* Deep space blue */
+    --foreground: 210 40% 98%; /* Clean white */
 
-    --card: 24 9.8% 10%;
-    --card-foreground: 0 0% 95%;
+    --card: 222 84% 8%; /* Slightly lighter blue */
+    --card-foreground: 210 40% 98%;
 
-    --popover: 20 14.3% 4.1%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 222 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 346.8 77.2% 49.8%;
-    --primary-foreground: 355.7 100% 97.3%;
+    --primary: 333 91% 71%; /* Rose gold pink */
+    --primary-foreground: 333 84% 10%; /* Dark text for rose gold */
 
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 217 32.6% 17.5%; /* Darker card elements */
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted: 217 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 217 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 346.8 77.2% 49.8%;
+    --border: 217 32.6% 17.5%;
+    --input: 217 32.6% 17.5%;
+    --ring: 333 91% 71%; /* Rose gold for focus rings */
+    
     --radius: 0.5rem;
 
-    --chart-1: 346.8 77.2% 49.8%;
-    --chart-2: 23.9 97.1% 62.2%;
-    --chart-3: 193.8 91.3% 46.9%;
-    --chart-4: 261.8 74.4% 60.2%;
-    --chart-5: 45.9 92.9% 51.2%;
+    --chart-1: 333 91% 71%; /* Rose gold */
+    --chart-2: 172 76% 40%; /* Teal */
+    --chart-3: 43 96% 56%; /* Gold */
+    --chart-4: 262 86% 67%; /* Lavender */
+    --chart-5: 210 93% 60%; /* Sky blue */
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 0 0% 95%;
+    --background: 222 84% 4.9%;
+    --foreground: 210 40% 98%;
 
-    --card: 24 9.8% 10%;
-    --card-foreground: 0 0% 95%;
+    --card: 222 84% 8%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 20 14.3% 4.1%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 222 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 346.8 77.2% 49.8%;
-    --primary-foreground: 355.7 100% 97.3%;
+    --primary: 333 91% 71%;
+    --primary-foreground: 333 84% 10%;
 
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 217 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
+    --muted: 217 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 217 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 346.8 77.2% 49.8%;
+    --border: 217 32.6% 17.5%;
+    --input: 217 32.6% 17.5%;
+    --ring: 333 91% 71%;
     --radius: 0.5rem;
-    
-    --chart-1: 346.8 77.2% 49.8%;
-    --chart-2: 23.9 97.1% 62.2%;
-    --chart-3: 193.8 91.3% 46.9%;
-    --chart-4: 261.8 74.4% 60.2%;
-    --chart-5: 45.9 92.9% 51.2%;
+
+    --chart-1: 333 91% 71%;
+    --chart-2: 172 76% 40%;
+    --chart-3: 43 96% 56%;
+    --chart-4: 262 86% 67%;
+    --chart-5: 210 93% 60%;
   }
 }
 
@@ -85,4 +86,18 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.cursor-follower {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 400px; /* size of the gradient blob */
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsl(var(--primary) / 0.15), transparent 70%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  transition: transform 0.1s ease-out;
 }

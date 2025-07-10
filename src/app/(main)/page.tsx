@@ -1,4 +1,6 @@
+'use client';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { 
   FileSearch, 
@@ -133,17 +135,22 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {section.tools.map((tool) => (
               <Link key={tool.href} href={tool.href} className="group block">
-                <Card className="h-full bg-card/50 backdrop-blur-sm border-white/10 hover:border-primary/50 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1">
-                   <CardHeader className="flex flex-row items-center gap-4">
-                      <div className="p-3 rounded-lg bg-secondary">
-                        {tool.icon}
-                      </div>
-                      <CardTitle className="font-headline text-xl">{tool.name}</CardTitle>
-                   </CardHeader>
-                  <CardContent>
-                    <CardDescription>{tool.description}</CardDescription>
-                  </CardContent>
-                </Card>
+                <motion.div
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <Card className="h-full bg-card/50 backdrop-blur-sm border-white/10 group-hover:border-primary/50 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-primary/10">
+                    <CardHeader className="flex flex-row items-center gap-4">
+                        <div className="p-3 rounded-lg bg-secondary">
+                          {tool.icon}
+                        </div>
+                        <CardTitle className="font-headline text-xl">{tool.name}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <CardDescription>{tool.description}</CardDescription>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               </Link>
             ))}
           </div>
