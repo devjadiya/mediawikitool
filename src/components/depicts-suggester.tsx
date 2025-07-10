@@ -37,14 +37,16 @@ export function DepictsSuggester() {
   });
 
   const handleDemo = async () => {
-    form.reset();
+    setIsLoading(true);
     setGeneratedContent(null);
-    setPreview(null);
-    form.setValue('context', 'A wooden pier extending into the sea on a clear day.');
+    form.reset();
+    
+    const imageUrl = 'https://placehold.co/600x400.png';
+    const context = 'A wooden pier extending into the sea on a clear day.';
+    setPreview(imageUrl);
+    form.setValue('context', context);
 
     try {
-        const imageUrl = 'https://placehold.co/600x400.png';
-        setPreview(imageUrl);
         const response = await fetch(imageUrl);
         const blob = await response.blob();
         const file = new File([blob], "demo-image.png", { type: blob.type });
@@ -54,18 +56,15 @@ export function DepictsSuggester() {
         const fileList = dataTransfer.files;
 
         form.setValue('image', fileList);
-        await form.trigger('image');
         
-        const isValid = await form.trigger();
-        if (isValid) {
-            await onSubmit(form.getValues());
-        }
+        await onSubmit(form.getValues());
     } catch(e) {
         toast({
             title: 'Demo Error',
             description: 'Could not fetch the demo image. Please try again.',
             variant: 'destructive',
         });
+        setIsLoading(false);
     }
   };
 
@@ -182,22 +181,22 @@ export function DepictsSuggester() {
                 </FormItem>
               )}
             />
-            <div className="flex justify-center gap-4 items-start">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start mt-4">
                 {preview && (
-                    <div className="mt-4">
+                    <div className="flex flex-col items-center">
                         <Image
-                        src={preview}
-                        alt="Image preview"
-                        width={300}
-                        height={200}
-                        className="rounded-lg object-cover aspect-video"
-                        data-ai-hint="wooden pier ocean"
+                            src={preview}
+                            alt="Image preview"
+                            width={300}
+                            height={200}
+                            className="rounded-lg object-cover aspect-video"
+                            data-ai-hint="wooden pier ocean"
                         />
                     </div>
                 )}
                 {generatedContent && (
-                    <div className="pt-4 space-y-4 flex-1">
-                        <h3 className="font-semibold mb-2 text-center">Suggested Statements</h3>
+                    <div className="space-y-4">
+                        <h3 className="font-semibold text-center">Suggested Statements</h3>
                         <div className="space-y-2">
                             {generatedContent.depictedItems.length > 0 ? generatedContent.depictedItems.map(item => (
                                 <Card key={item.wikidataId} className="bg-secondary/50">
