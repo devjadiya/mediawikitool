@@ -20,8 +20,17 @@ import {
   PenSquare,
   Lightbulb,
   GitCompare,
-  ArrowRightLeft
+  ArrowRightLeft,
+  Trophy
 } from 'lucide-react';
+
+const commonsTools = [
+    { id: "generate-caption", href: "/generate-caption", name: "AI Caption Writer", description: "Generates encyclopedic, high-quality titles and descriptions for images, making your uploads more valuable to the community.", icon: <PenSquare className="h-8 w-8 text-cyan-400" /> },
+    { id: "suggest-category", href: "/suggest-category", name: "Category Suggester", description: "Analyzes an image and suggests the most relevant categories, helping with proper organization and discoverability on Wikimedia Commons.", icon: <Lightbulb className="h-8 w-8 text-yellow-400" /> },
+    { id: "suggest-license", href: "/suggest-license", name: "License Suggester", description: "Helps you choose the correct Creative Commons license for your media uploads based on the content and its origins.", icon: <ShieldCheck className="h-8 w-8 text-green-400" /> },
+    { id: "validate-image", href: "/validate-image", name: "Image Validator", description: "Automatically checks images for common issues like watermarks or low quality, and provides constructive feedback before you upload.", icon: <GitCompare className="h-8 w-8 text-orange-400" /> },
+    { id: "generate-prizes", href: "/generate-prizes", name: "Prize Generator", description: "Brainstorm creative, themed prize ideas for photography competitions and edit-a-thons to engage your community.", icon: <Trophy className="h-8 w-8 text-amber-500" /> },
+];
 
 const toolSections = [
   {
@@ -36,16 +45,6 @@ const toolSections = [
       { id: "check-notability", href: "/check-notability", name: "Notability Checker", description: "Assesses whether a topic is significant enough for its own Wikipedia article by searching for significant coverage in reliable sources.", icon: <BadgeCheck className="h-8 w-8 text-lime-400" /> },
       { id: "detect-inconsistencies", href: "/detect-inconsistencies", name: "Cross-Wiki Inconsistency Detector", description: "Finds factual discrepancies between two language versions of the same article, helping you synchronize information across wikis.", icon: <GitCompareArrows className="h-8 w-8 text-fuchsia-400" /> },
       { id: "translate-text", href: "/translate-text", name: "Wikitext Translator", description: "Translates text between languages while perfectly preserving complex table and template formatting, a critical tool for multilingual editors.", icon: <ArrowRightLeft className="h-8 w-8 text-indigo-400" /> },
-    ]
-  },
-  {
-    title: "Media & Uploads",
-    id: "media-uploads",
-    tools: [
-      { id: "caption-generator", href: "/generate-caption", name: "AI Caption Writer", description: "Generates encyclopedic, high-quality titles and descriptions for images, making your uploads more valuable to the community.", icon: <PenSquare className="h-8 w-8 text-cyan-400" /> },
-      { id: "suggest-category", href: "/suggest-category", name: "Category Suggester", description: "Analyzes an image and suggests the most relevant categories, helping with proper organization and discoverability on Wikimedia Commons.", icon: <Lightbulb className="h-8 w-8 text-yellow-400" /> },
-      { id: "suggest-license", href: "/suggest-license", name: "License Suggester", description: "Helps you choose the correct Creative Commons license for your media uploads based on the content and its origins.", icon: <ShieldCheck className="h-8 w-8 text-green-400" /> },
-      { id: "validate-image", href: "/validate-image", name: "Image Validator", description: "Automatically checks images for common issues like watermarks, signatures, or low quality, and provides constructive feedback before you upload.", icon: <GitCompare className="h-8 w-8 text-orange-400" /> },
     ]
   },
   {
@@ -80,15 +79,12 @@ const HeroSection = () => {
 
   return (
      <div className="relative mx-auto my-4 flex max-w-7xl flex-col items-center justify-center">
-      {/* Decorative lines */}
       <div className="absolute inset-y-0 left-0 h-full w-px bg-neutral-200/20 dark:bg-neutral-800/20">
         <div className="absolute top-0 h-40 w-px bg-gradient-to-b from-transparent via-primary to-transparent" />
       </div>
       <div className="absolute inset-y-0 right-0 h-full w-px bg-neutral-200/20 dark:bg-neutral-800/20">
         <div className="absolute h-40 w-px bg-gradient-to-b from-transparent via-primary to-transparent" />
       </div>
-
-      {/* Content */}
       <div className="px-4 py-10 md:py-20 text-center">
         <h1 className="relative z-10 mx-auto max-w-4xl text-3xl font-bold md:text-5xl lg:text-7xl font-headline tracking-tighter">
           {headline.map((word, index) => (
@@ -124,6 +120,32 @@ const HeroSection = () => {
   )
 }
 
+const ToolGrid = ({ tools }: { tools: any[] }) => (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {tools.map((tool) => (
+            <motion.div
+                key={tool.id}
+                whileHover={{ y: -5, scale: 1.02 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+            >
+                <Link href={`/${tool.id}`}>
+                    <Card className="min-h-[250px] bg-card/50 backdrop-blur-sm border-white/10 shadow-lg hover:border-primary/50 transition-colors duration-300 flex flex-col">
+                        <CardHeader className="flex flex-row items-center gap-4">
+                            <div className="p-2 bg-secondary rounded-lg">
+                                {tool.icon}
+                            </div>
+                            <CardTitle className="font-headline text-2xl">{tool.name}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <CardDescription className="text-base">{tool.description}</CardDescription>
+                        </CardContent>
+                    </Card>
+                </Link>
+            </motion.div>
+        ))}
+    </div>
+);
+
 export default function HomePage() {
   return (
     <>
@@ -132,32 +154,15 @@ export default function HomePage() {
       <div className="container mx-auto px-4 max-w-6xl -mt-12 relative z-10">
         <TracingBeam className="px-6">
           <div className="space-y-24 mb-24 relative">
+              <section id="commons-tools">
+                 <h2 className="text-3xl font-headline font-bold mb-8 text-center">Commons & Competition Tools</h2>
+                 <ToolGrid tools={commonsTools} />
+              </section>
+
               {toolSections.map((section) => (
               <section key={section.id} id={section.id}>
                   <h2 className="text-3xl font-headline font-bold mb-8 text-center">{section.title}</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {section.tools.map((tool) => (
-                      <motion.div
-                      key={tool.id}
-                      whileHover={{ y: -5, scale: 1.02 }}
-                      transition={{ type: 'spring', stiffness: 300 }}
-                      >
-                      <Link href={`/${tool.id}`}>
-                          <Card className="min-h-[250px] bg-card/50 backdrop-blur-sm border-white/10 shadow-lg hover:border-primary/50 transition-colors duration-300 flex flex-col">
-                          <CardHeader className="flex flex-row items-center gap-4">
-                              <div className="p-2 bg-secondary rounded-lg">
-                                  {tool.icon}
-                              </div>
-                              <CardTitle className="font-headline text-2xl">{tool.name}</CardTitle>
-                          </CardHeader>
-                          <CardContent>
-                              <CardDescription className="text-base">{tool.description}</CardDescription>
-                          </CardContent>
-                          </Card>
-                      </Link>
-                      </motion.div>
-                  ))}
-                  </div>
+                  <ToolGrid tools={section.tools} />
               </section>
               ))}
           </div>
