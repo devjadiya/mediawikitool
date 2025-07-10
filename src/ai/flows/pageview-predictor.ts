@@ -35,27 +35,6 @@ const PageviewPredictorOutputSchema = z.object({
 });
 export type PageviewPredictorOutput = z.infer<typeof PageviewPredictorOutputSchema>;
 
-// Tool to get pageviews for articles
-const getPageviewsTool = ai.defineTool(
-    {
-        name: 'getPageviewsForArticles',
-        description: 'Fetches the monthly pageviews for a list of Wikipedia articles over the last year.',
-        inputSchema: z.object({
-            pageNames: z.array(z.string()),
-            project: z.string() 
-        }),
-        outputSchema: z.array(z.object({
-            title: z.string(),
-            pageviews: z.array(z.object({ date: z.string(), views: z.number() })),
-            totalViews: z.number(),
-            averageDailyViews: z.number(),
-        })),
-    },
-    async ({ pageNames, project }) => {
-        return await getPageviews({ pageNames, project });
-    }
-);
-
 const pageviewPredictorFlow = ai.defineFlow(
   {
     name: 'pageviewPredictorFlow',
@@ -63,8 +42,8 @@ const pageviewPredictorFlow = ai.defineFlow(
     outputSchema: PageviewPredictorOutputSchema,
   },
   async (input) => {
-    // 1. Fetch pageview data for all articles in a single call
-    const pageviewData = await getPageviewsTool({
+    // 1. Fetch pageview data for all articles directly using the service
+    const pageviewData = await getPageviews({
         pageNames: input.articleTitles,
         project: input.project,
     });
