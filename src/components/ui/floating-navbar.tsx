@@ -8,26 +8,20 @@ import {
 } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { Home } from "lucide-react";
 
-export const FloatingNav = ({
-  navItems,
-  className,
-}: {
-  navItems: {
-    name: string;
-    link: string;
-    icon?: JSX.Element;
-  }[];
-  className?: string;
-}) => {
+export const FloatingNav = () => {
   const { scrollYProgress } = useScroll();
 
+  // setVisible to true if user scrolls up
   const [visible, setVisible] = useState(false);
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
+    // Check if current is not undefined and is a number
     if (typeof current === "number") {
       let direction = current! - scrollYProgress.getPrevious()!;
-      if (scrollYProgress.get() < 0.05) {
+
+      if (scrollYProgress.get() < 0.1) {
         setVisible(false);
       } else {
         if (direction < 0) {
@@ -43,7 +37,7 @@ export const FloatingNav = ({
     <AnimatePresence mode="wait">
       <motion.div
         initial={{
-          opacity: 1,
+          opacity: 0,
           y: -100,
         }}
         animate={{
@@ -54,11 +48,13 @@ export const FloatingNav = ({
           duration: 0.2,
         }}
         className={cn(
-          "flex max-w-fit fixed top-10 inset-x-0 mx-auto border border-white/20 rounded-full bg-background/80 backdrop-blur-sm z-50 pr-2 pl-8 py-2 items-center justify-center space-x-4",
-          className
+          "flex max-w-fit fixed top-4 inset-x-0 mx-auto border border-white/20 rounded-full bg-background/80 backdrop-blur-sm z-50",
         )}
       >
-        <span className="font-bold font-headline">Unum</span>
+         <Link href="/" className="px-4 py-2 text-sm font-medium flex items-center gap-2">
+            <Home className="h-4 w-4"/>
+            Home
+        </Link>
       </motion.div>
     </AnimatePresence>
   );

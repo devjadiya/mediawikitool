@@ -3,6 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import './globals.css';
 import { FloatingDock } from '@/components/ui/floating-dock';
 import { CursorFollower } from '@/components/cursor-follower';
+import { FloatingNav } from '@/components/ui/floating-navbar';
 
 export const metadata: Metadata = {
   title: 'Wikimedia AI Toolkit',
@@ -23,6 +24,7 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased flex flex-col min-h-screen" suppressHydrationWarning={true}>
         <CursorFollower />
+        <FloatingNav />
         <main className="flex-grow">
           {children}
         </main>
