@@ -37,7 +37,8 @@ const prompt = ai.definePrompt({
   prompt: `You are an experienced Wikipedia editor who excels at expanding stub articles.
 Given the article title and its existing content, suggest 3-5 new sections that could be added to expand it into a more comprehensive article.
 
-For each suggested section, provide a title, a brief reasoning for its inclusion, and a few key points that should be covered.
+First, identify the language of the provided text (e.g., English, Hindi).
+Then, provide all your suggestions (section titles, reasoning, and key points) in that same language.
 
 Article Title: {{{articleTitle}}}
 

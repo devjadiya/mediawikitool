@@ -53,6 +53,12 @@ const findSourceTool = ai.defineTool(
                 title: 'Sun Fact Sheet - NASA',
             };
         }
+        if (query.toLowerCase().includes("vidisha")) {
+             return {
+                url: 'https://vidisha.nic.in/en/history/',
+                title: 'History of Vidisha - Official District Website',
+            };
+        }
         return {
             url: 'https://www.example.com/source-for-statement',
             title: 'A Reliable Source for Your Statement',

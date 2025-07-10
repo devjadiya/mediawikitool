@@ -48,7 +48,7 @@ const findSourceTool = ai.defineTool(
     async ({ claim }) => {
         // This is a mock. A real implementation would use a search API.
         console.log(`Simulating search for claim: ${claim}`);
-         if (claim.toLowerCase().includes("moon")) {
+         if (claim.toLowerCase().includes("moon") || claim.includes("चंद्रमा")) {
              return {
                 url: 'https://science.nasa.gov/moon/facts/',
                 title: 'Moon Fact Sheet - NASA',
@@ -71,11 +71,13 @@ const prompt = ai.definePrompt({
   prompt: `You are an expert fact-checker for Wikipedia. Your task is to analyze the provided text, identify each individual factual claim, and verify it using reliable sources.
 
 Here is the process:
-1.  Read the user's text and break it down into a list of distinct, verifiable claims.
-2.  For each claim, use the \`findSourceForClaim\` tool to find a relevant source online.
-3.  Analyze the search result (title and snippet) returned by the tool.
-4.  Determine if the source supports the claim, contradicts it, or if you cannot determine a clear relationship (unsupported).
-5.  For each claim, provide the claim itself, the verification status ('Supported', 'Unsupported', or 'Contradicted'), the source URL you found, and a brief reasoning for your determination.
+1.  First, identify the language of the user's text (e.g., English, Hindi).
+2.  Read the text and break it down into a list of distinct, verifiable claims.
+3.  For each claim, use the \`findSourceForClaim\` tool to find a relevant source online.
+4.  Analyze the search result (title and snippet) returned by the tool.
+5.  Determine if the source supports the claim, contradicts it, or if you cannot determine a clear relationship (unsupported).
+6.  For each claim, provide the claim itself, the verification status ('Supported', 'Unsupported', or 'Contradicted'), the source URL you found, and a brief reasoning for your determination.
+7.  IMPORTANT: Your entire final output (the claims, reasoning, etc.) must be in the same language as the original text provided by the user.
 
 User's Text:
 {{{text}}}

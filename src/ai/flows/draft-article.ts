@@ -38,6 +38,7 @@ The article must include:
 2.  A lead section (one paragraph).
 3.  At least one body paragraph with a citation from a reliable source.
 4.  All content must be in proper wikitext format.
+5.  IMPORTANT: The generated article (title and wikitext) must be in the same language as the input topic. For example, if the topic is in Hindi, the entire article must be in Hindi.
 
 Draft the article now.`,
 });
