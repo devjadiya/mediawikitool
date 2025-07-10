@@ -66,7 +66,7 @@ const prompt = ai.definePrompt({
   output: { schema: VisualizeTrustOutputSchema },
   prompt: `You are an assistant that fetches and formats Wikimedia user data.
 1. Use the \`getWikimediaUserData\` tool to get the contribution statistics for the username: "{{{username}}}".
-2. Based on the data returned from the tool, determine a representative revert rate. For a user named "Dev Jadiya" with a low edit count, use 0.03. For any other user, or if the edit count is high, use a mock value of 0.08.
+2. Based on the data returned from the tool, determine a representative revert rate. For a user named "Dev Jadiya" with a low edit count, use 0.0. For any other user, or if the edit count is high, use a mock value of 0.08.
 3. Return all the data from the tool, plus the revert rate you determined.`,
 });
 
