@@ -1,4 +1,4 @@
-import { Bot, PenSquare, ScanSearch, ShieldCheck, Languages, FileText, Code, BookCopy, FileSearch, Sparkles, Wand2, ShieldQuestion, Shield, GitCompareArrows, BadgeCheck } from 'lucide-react';
+import { Bot, PenSquare, ScanSearch, ShieldCheck, Languages, FileText, Code, BookCopy, FileSearch as FileSearchIcon, Sparkles, Wand2, ShieldQuestion, Shield, GitCompareArrows, BadgeCheck, BarChartHorizontal } from 'lucide-react';
 
 export type Tool = {
   href: string;
@@ -58,7 +58,7 @@ export const tools: Tool[] = [
     title: 'Citation Finder',
     description: 'Find reliable sources for statements and format citations.',
     category: 'Content',
-    icon: <FileSearch className="h-8 w-8 text-primary" />,
+    icon: <FileSearchIcon className="h-8 w-8 text-primary" />,
   },
   {
     href: '/expand-stub',
@@ -111,6 +111,13 @@ export const tools: Tool[] = [
     icon: <BookCopy className="h-8 w-8 text-primary" />,
   },
   // Development Tools
+  {
+    href: '/trust-visualizer',
+    title: 'Trust Visualizer',
+    description: 'Visualize the editing behavior and trust signals of Wikimedia users.',
+    category: 'Development',
+    icon: <BarChartHorizontal className="h-8 w-8 text-primary" />,
+  },
   {
     href: '/debug-regex',
     title: 'Regex Debugger',
