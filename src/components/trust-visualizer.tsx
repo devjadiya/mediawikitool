@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -11,32 +11,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Search } from 'lucide-react';
-import { ResponsiveContainer, PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, LineChart, Line } from 'recharts';
+import { Loader2, Search, Link as LinkIcon } from 'lucide-react';
+import { ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from './ui/command';
+import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from './ui/command';
 import { useDebounce } from '@/hooks/use-debounce';
+import { ChartContainer, ChartTooltipContent } from './ui/chart';
 
 const formSchema = z.object({
   username: z.string().min(1, 'Please enter a username.'),
 });
 
-const MOCK_NAMESPACE_DATA = [
-    { name: 'Main', value: 400 },
-    { name: 'User', value: 300 },
-    { name: 'Talk', value: 300 },
-    { name: 'Template', value: 200 },
-];
-const MOCK_ACTIVITY_DATA = [
-  { name: 'Jan', edits: 30 }, { name: 'Feb', edits: 45 }, { name: 'Mar', edits: 80 },
-  { name: 'Apr', edits: 50 }, { name: 'May', edits: 95 }, { name: 'Jun', edits: 120 },
-];
-const MOCK_REVERT_DATA = [ { name: 'Reverted', value: 13 }, { name: 'Unreverted', value: 87 } ];
-
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const PIE_CHART_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#ff7300'];
 const REVERT_COLORS = ['#FF8042', '#00C49F'];
 
 export function TrustVisualizer() {
+  const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<VisualizeTrustOutput | null>(null);
   const { toast } = useToast();
@@ -96,6 +86,16 @@ export function TrustVisualizer() {
     }
   };
 
+  const handleUserClick = (username: string) => {
+    startTransition(() => {
+      form.setValue('username', username);
+      setSearchQuery(username);
+      onSubmit({ username });
+    });
+  };
+
+  const MOCK_REVERT_DATA = result ? [ { name: 'Reverted', value: Math.round(result.revertRate * 100) }, { name: 'Unreverted', value: Math.round((1 - result.revertRate) * 100) } ] : [];
+
   return (
     <Card className="border-2">
       <Form {...form}>
@@ -128,8 +128,8 @@ export function TrustVisualizer() {
                                 </FormItem>
                             )}
                         />
-                         <Button type="submit" disabled={isLoading} size="icon">
-                            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
+                         <Button type="submit" disabled={isLoading || isPending} size="icon">
+                            {isLoading || isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
                         </Button>
                     </div>
                 </PopoverTrigger>
@@ -155,9 +155,9 @@ export function TrustVisualizer() {
                 </PopoverContent>
             </Popover>
 
-            {isLoading && <div className="text-center p-8"><Loader2 className="h-8 w-8 animate-spin mx-auto" /></div>}
+            {(isLoading || isPending) && <div className="text-center p-8"><Loader2 className="h-8 w-8 animate-spin mx-auto" /></div>}
             
-            {result && (
+            {result && !isPending && (
               <div className="pt-8 space-y-6">
                 <div className="p-4 bg-secondary rounded-lg">
                     <h2 className="text-2xl font-bold font-headline">{result.username}</h2>
@@ -169,76 +169,81 @@ export function TrustVisualizer() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {/* Namespace Distribution */}
                     <Card>
                         <CardHeader>
                             <CardTitle>Contributions by Namespace</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <ResponsiveContainer width="100%" height={200}>
+                             <ChartContainer config={{}} className="h-[200px] w-full">
                                 <PieChart>
-                                <Pie data={MOCK_NAMESPACE_DATA} cx="50%" cy="50%" labelLine={false} outerRadius={80} fill="#8884d8" dataKey="value">
-                                    {MOCK_NAMESPACE_DATA.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                <Tooltip
+                                    cursor={false}
+                                    content={<ChartTooltipContent indicator="dot" />}
+                                />
+                                <Pie data={result.namespaceData} dataKey="edits" nameKey="name" cx="50%" cy="50%" outerRadius={80} labelLine={false}>
+                                    {result.namespaceData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={PIE_CHART_COLORS[index % PIE_CHART_COLORS.length]} />
                                     ))}
                                 </Pie>
-                                <Tooltip />
                                 <Legend />
                                 </PieChart>
-                            </ResponsiveContainer>
+                            </ChartContainer>
                         </CardContent>
                     </Card>
 
-                     {/* Revert Analysis */}
                     <Card>
                         <CardHeader>
                             <CardTitle>Revert Analysis</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <ResponsiveContainer width="100%" height={200}>
+                             <ChartContainer config={{}} className="h-[200px] w-full">
                                 <PieChart>
-                                <Pie data={MOCK_REVERT_DATA} cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#8884d8" paddingAngle={5} dataKey="value">
+                                <Tooltip
+                                    cursor={false}
+                                    content={<ChartTooltipContent indicator="dot" />}
+                                />
+                                <Pie data={MOCK_REVERT_DATA} cx="50%" cy="50%" innerRadius={60} outerRadius={80} fill="#8884d8" paddingAngle={5} dataKey="value" nameKey="name">
                                     {MOCK_REVERT_DATA.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={REVERT_COLORS[index % REVERT_COLORS.length]} />
                                     ))}
                                 </Pie>
-                                 <Tooltip />
                                 <Legend />
                                 </PieChart>
-                            </ResponsiveContainer>
+                            </ChartContainer>
                         </CardContent>
                     </Card>
 
-                    {/* Top Edited Categories */}
                     <Card>
                         <CardHeader>
-                            <CardTitle>Top Edited Categories</CardTitle>
+                            <CardTitle>Top Edited Pages</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-sm text-muted-foreground mb-4">Note: This data is currently representative.</p>
-                            <ul className="space-y-2 text-sm">
-                                {result.topCategories.map((cat, i) => (
-                                    <li key={i} className="flex justify-between">
-                                        <span>{cat.name}</span>
-                                        <span className="font-semibold text-muted-foreground">{cat.pages} pages</span>
-                                    </li>
+                            <div className="space-y-2 text-sm">
+                                {result.topPages.slice(0, 5).map((page) => (
+                                    <div key={page.title} className="flex justify-between items-center gap-2">
+                                        <a href={`https://${result.project}/wiki/${page.title}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-primary truncate hover:underline">
+                                            <LinkIcon className="h-3 w-3" />
+                                            <span className="truncate">{page.title.replace(/_/g, ' ')}</span>
+                                        </a>
+                                        <span className="font-semibold text-muted-foreground flex-shrink-0">{page.edits.toLocaleString()}</span>
+                                    </div>
                                 ))}
-                            </ul>
+                                {result.topPages.length === 0 && <p className="text-muted-foreground">No top pages found.</p>}
+                            </div>
                         </CardContent>
                     </Card>
                 </div>
 
-                {/* Edit Activity Timeline */}
                 <Card>
                     <CardHeader>
-                        <CardTitle>Edit Activity Timeline</CardTitle>
+                        <CardTitle>Edit Activity Timeline (Last 12 Months)</CardTitle>
                     </CardHeader>
                     <CardContent>
                          <ResponsiveContainer width="100%" height={300}>
-                            <LineChart data={MOCK_ACTIVITY_DATA}>
-                                <XAxis dataKey="name" />
-                                <YAxis />
-                                <Tooltip />
+                            <LineChart data={result.monthlyEdits}>
+                                <XAxis dataKey="date" stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
+                                <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} tickLine={false} axisLine={false} />
+                                <Tooltip content={<ChartTooltipContent />} />
                                 <Legend />
                                 <Line type="monotone" dataKey="edits" stroke="hsl(var(--primary))" activeDot={{ r: 8 }} />
                             </LineChart>
