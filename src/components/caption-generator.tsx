@@ -45,15 +45,14 @@ export function CaptionGenerator() {
     form.reset();
     setGeneratedContent(null);
     setPreview(null);
-    const context = 'A photo of a bengal tiger in the wild, taken in India.';
-    form.setValue('context', context);
+    form.setValue('context', '');
 
     try {
-        const imageUrl = 'https://source.unsplash.com/random/600x400?bengal-tiger';
+        const imageUrl = 'https://picsum.photos/600/400';
         setPreview(imageUrl);
         const response = await fetch(imageUrl);
         const blob = await response.blob();
-        const file = new File([blob], "demo-tiger.png", { type: blob.type });
+        const file = new File([blob], "demo-image.png", { type: blob.type });
 
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);

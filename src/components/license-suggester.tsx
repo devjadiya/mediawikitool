@@ -39,14 +39,13 @@ export function LicenseSuggester() {
     form.reset();
     setSuggestions(null);
     setPreview(null);
-    const context = "This is a photo I took myself of a public monument.";
-    form.setValue('context', context);
+    form.setValue('context', '');
     try {
-        const imageUrl = 'https://source.unsplash.com/random/500x500?monument';
+        const imageUrl = 'https://picsum.photos/500/500';
         setPreview(imageUrl);
         const response = await fetch(imageUrl);
         const blob = await response.blob();
-        const file = new File([blob], "demo-monument.png", { type: blob.type });
+        const file = new File([blob], "demo-image.png", { type: blob.type });
         
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);

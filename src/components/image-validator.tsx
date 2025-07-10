@@ -45,7 +45,7 @@ export function ImageValidator() {
     setValidationResult(null);
     setPreview(null);
     try {
-        const imageUrl = 'https://source.unsplash.com/random/400x400?blurry-photo';
+        const imageUrl = 'https://picsum.photos/400/400';
         setPreview(imageUrl); 
         const response = await fetch(imageUrl);
         const blob = await response.blob();

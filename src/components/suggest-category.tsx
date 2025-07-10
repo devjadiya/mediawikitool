@@ -42,11 +42,11 @@ export function CategorySuggester() {
     setSuggestedCategories([]);
     setPreview(null);
     try {
-        const imageUrl = 'https://source.unsplash.com/random/600x600?microscope-slide';
+        const imageUrl = 'https://picsum.photos/600/600';
         setPreview(imageUrl);
         const response = await fetch(imageUrl);
         const blob = await response.blob();
-        const file = new File([blob], "demo-microscope.png", { type: blob.type });
+        const file = new File([blob], "demo-image.png", { type: blob.type });
 
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
