@@ -1,4 +1,4 @@
-import { ImageUploader } from '@/components/image-uploader';
+import { CategorySuggester } from '@/components/suggest-category';
 import { Lightbulb } from 'lucide-react';
 
 export default function SuggestCategoryPage() {
@@ -14,7 +14,7 @@ export default function SuggestCategoryPage() {
         </p>
       </header>
       <div className="max-w-2xl mx-auto">
-        <ImageUploader />
+        <CategorySuggester />
       </div>
     </div>
   );
