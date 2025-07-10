@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { FlipWords } from '@/components/ui/flip-words';
 import { TracingBeam } from '@/components/ui/tracing-beam';
+import { GoogleGeminiEffect } from '@/components/ui/google-gemini-effect';
 import { 
   FileSearch, 
   Sparkles, 
@@ -78,52 +79,51 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="container mx-auto px-4 max-w-6xl">
-      <header className="text-center py-24 md:py-32">
-        <h1 className="text-4xl md:text-6xl font-bold mx-auto mb-4 font-headline tracking-tighter">
-          Wikimedia AI Toolkit
-        </h1>
-        <div className="text-3xl md:text-5xl font-bold mx-auto mb-4">
-          AI-powered tools to
-          <FlipWords words={flipWords} />
-        </div>
-        <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-          A suite of powerful, modern tools designed to accelerate editing workflows, assist with development, and analyze community data.
-        </p>
-      </header>
-
-      <TracingBeam className="px-6">
-        <div className="space-y-24 mb-24 relative">
-            {toolSections.map((section) => (
-            <section key={section.id} id={section.id}>
-                <h2 className="text-3xl font-headline font-bold mb-8 text-center">{section.title}</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {section.tools.map((tool) => (
-                    <motion.div
-                    key={tool.id}
-                    whileHover={{ y: -5, scale: 1.02 }}
-                    transition={{ type: 'spring', stiffness: 300 }}
-                    >
-                    <Link href={tool.href}>
-                        <Card className="min-h-[250px] bg-card/50 backdrop-blur-sm border-white/10 shadow-lg hover:border-primary/50 transition-colors duration-300 flex flex-col">
-                        <CardHeader className="flex flex-row items-center gap-4">
-                            <div className="p-2 bg-secondary rounded-lg">
-                                {tool.icon}
-                            </div>
-                            <CardTitle className="font-headline text-2xl">{tool.name}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <CardDescription className="text-base">{tool.description}</CardDescription>
-                        </CardContent>
-                        </Card>
-                    </Link>
-                    </motion.div>
-                ))}
-                </div>
-            </section>
-            ))}
-        </div>
-      </TracingBeam>
-    </div>
+    <>
+      <GoogleGeminiEffect
+        title="Wikimedia AI Toolkit"
+        description={
+          <>
+            AI-powered tools to
+            <FlipWords words={flipWords} className="text-primary" /> <br />
+            A suite of powerful, modern tools designed to accelerate editing workflows, assist with development, and analyze community data.
+          </>
+        }
+      />
+      <div className="container mx-auto px-4 max-w-6xl -mt-48 relative z-10">
+        <TracingBeam className="px-6">
+          <div className="space-y-24 mb-24 relative">
+              {toolSections.map((section) => (
+              <section key={section.id} id={section.id}>
+                  <h2 className="text-3xl font-headline font-bold mb-8 text-center">{section.title}</h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {section.tools.map((tool) => (
+                      <motion.div
+                      key={tool.id}
+                      whileHover={{ y: -5, scale: 1.02 }}
+                      transition={{ type: 'spring', stiffness: 300 }}
+                      >
+                      <Link href={tool.href}>
+                          <Card className="min-h-[250px] bg-card/50 backdrop-blur-sm border-white/10 shadow-lg hover:border-primary/50 transition-colors duration-300 flex flex-col">
+                          <CardHeader className="flex flex-row items-center gap-4">
+                              <div className="p-2 bg-secondary rounded-lg">
+                                  {tool.icon}
+                              </div>
+                              <CardTitle className="font-headline text-2xl">{tool.name}</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                              <CardDescription className="text-base">{tool.description}</CardDescription>
+                          </CardContent>
+                          </Card>
+                      </Link>
+                      </motion.div>
+                  ))}
+                  </div>
+              </section>
+              ))}
+          </div>
+        </TracingBeam>
+      </div>
+    </>
   );
 }
