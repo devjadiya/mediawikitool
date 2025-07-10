@@ -41,15 +41,17 @@ export function DepictsSuggester() {
     setGeneratedContent(null);
     form.reset();
     
-    const imageUrl = 'https://placehold.co/600x400.png';
-    const context = 'A wooden pier extending into the sea on a clear day.';
+    // Use picsum.photos and add a unique query parameter to bust the cache
+    const imageUrl = `https://picsum.photos/600/400?random=${new Date().getTime()}`;
+    const context = ''; // Let the AI analyze the image without context for a true test
+    
     setPreview(imageUrl);
     form.setValue('context', context);
 
     try {
         const response = await fetch(imageUrl);
         const blob = await response.blob();
-        const file = new File([blob], "demo-image.png", { type: blob.type });
+        const file = new File([blob], "demo-image.jpg", { type: 'image/jpeg' });
 
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
@@ -190,7 +192,7 @@ export function DepictsSuggester() {
                             width={300}
                             height={200}
                             className="rounded-lg object-cover aspect-video"
-                            data-ai-hint="wooden pier ocean"
+                            key={preview} // Add key to force re-render
                         />
                     </div>
                 )}
