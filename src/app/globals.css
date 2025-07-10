@@ -13,8 +13,8 @@
     --popover: 222 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 333 91% 71%; /* Rose gold pink */
-    --primary-foreground: 333 84% 10%; /* Dark text for rose gold */
+    --primary: 172 76% 40%; /* Vibrant Teal */
+    --primary-foreground: 210 40% 98%; /* White text */
 
     --secondary: 217 32.6% 17.5%; /* Darker card elements */
     --secondary-foreground: 210 40% 98%;
@@ -30,12 +30,12 @@
 
     --border: 217 32.6% 17.5%;
     --input: 217 32.6% 17.5%;
-    --ring: 333 91% 71%; /* Rose gold for focus rings */
+    --ring: 172 76% 40%; /* Teal for focus rings */
     
     --radius: 0.5rem;
 
-    --chart-1: 333 91% 71%; /* Rose gold */
-    --chart-2: 172 76% 40%; /* Teal */
+    --chart-1: 172 76% 40%; /* Teal */
+    --chart-2: 333 91% 71%; /* Rose gold */
     --chart-3: 43 96% 56%; /* Gold */
     --chart-4: 262 86% 67%; /* Lavender */
     --chart-5: 210 93% 60%; /* Sky blue */
@@ -51,8 +51,8 @@
     --popover: 222 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 333 91% 71%;
-    --primary-foreground: 333 84% 10%;
+    --primary: 172 76% 40%;
+    --primary-foreground: 210 40% 98%;
 
     --secondary: 217 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -68,11 +68,11 @@
 
     --border: 217 32.6% 17.5%;
     --input: 217 32.6% 17.5%;
-    --ring: 333 91% 71%;
+    --ring: 172 76% 40%;
     --radius: 0.5rem;
 
-    --chart-1: 333 91% 71%;
-    --chart-2: 172 76% 40%;
+    --chart-1: 172 76% 40%;
+    --chart-2: 333 91% 71%;
     --chart-3: 43 96% 56%;
     --chart-4: 262 86% 67%;
     --chart-5: 210 93% 60%;

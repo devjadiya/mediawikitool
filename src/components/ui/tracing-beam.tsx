@@ -114,10 +114,10 @@ export const TracingBeam = ({
               y1={y1}
               y2={y2}
             >
-              <stop stopColor="hsl(var(--primary))" stopOpacity="0"></stop>
-              <stop stopColor="hsl(var(--primary))"></stop>
+              <stop stopColor="hsl(var(--chart-2))" stopOpacity="0"></stop>
+              <stop stopColor="hsl(var(--chart-2))"></stop>
               <stop offset="0.325" stopColor="hsl(var(--chart-4))"></stop>
-              <stop offset="1" stopColor="hsl(var(--chart-2))" stopOpacity="0"></stop>
+              <stop offset="1" stopColor="hsl(var(--primary))" stopOpacity="0"></stop>
             </motion.linearGradient>
           </defs>
         </svg>

@@ -5,7 +5,7 @@ import { FloatingDock } from '@/components/ui/floating-dock';
 import { CursorFollower } from '@/components/cursor-follower';
 
 export const metadata: Metadata = {
-  title: 'Unum - AI Toolkit for Wikimedians',
+  title: 'Wikimedia AI Toolkit',
   description: 'A personal suite of AI-powered tools for Wikimedians, developed by Dev Jadiya.',
 };
 
