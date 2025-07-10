@@ -17,7 +17,7 @@ const GenerateApiQueryInputSchema = z.object({
 export type GenerateApiQueryInput = z.infer<typeof GenerateApiQueryInputSchema>;
 
 const GenerateApiQueryOutputSchema = z.object({
-  apiUrl: z.string().url().describe('The generated, ready-to-use MediaWiki Action API URL.'),
+  apiUrl: z.string().describe('The generated, ready-to-use MediaWiki Action API URL.'),
   explanation: z.string().describe('A brief explanation of what the generated query does and what its parameters mean.'),
 });
 export type GenerateApiQueryOutput = z.infer<typeof GenerateApiQueryOutputSchema>;
