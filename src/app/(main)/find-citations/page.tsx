@@ -3,10 +3,10 @@ import { FileSearch } from 'lucide-react';
 
 export default function FindCitationsPage() {
   return (
-    <div className="container mx-auto">
-      <header className="mb-8 text-center">
-        <div className="inline-flex items-center justify-center p-3 bg-secondary rounded-full mb-4">
-            <FileSearch className="h-10 w-10 text-primary" />
+    <div className="space-y-12">
+      <header className="text-center p-8 rounded-lg" style={{ background: 'radial-gradient(circle, hsl(var(--primary) / 0.1), transparent 70%)' }}>
+        <div className="inline-flex items-center justify-center p-4 bg-primary/20 text-primary rounded-full mb-4 ring-2 ring-primary/30">
+            <FileSearch className="h-10 w-10" />
         </div>
         <h1 className="text-5xl font-headline font-bold mb-2">Citation Finder</h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">

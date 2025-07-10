@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { 
-  Code, 
   Menu, 
   FileSearch, 
   Sparkles, 
@@ -13,11 +12,11 @@ import {
   BookCopy,
   GitCompareArrows,
   Wand2,
+  Code,
   Languages,
   BadgeCheck,
   BarChartHorizontal
 } from 'lucide-react';
-import { Logo } from './logo';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -27,7 +26,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuGroup
 } from "@/components/ui/dropdown-menu";
-import { useIsMobile } from '@/hooks/use-mobile';
 import {
   Sheet,
   SheetContent,
@@ -147,7 +145,6 @@ function MobileNav() {
                 <SheetHeader>
                     <SheetTitle>
                         <Link href="/" className="flex items-center gap-2">
-                             <Logo className="h-8 w-auto" />
                              <span className="font-bold font-headline">AI Toolkit</span>
                         </Link>
                     </SheetTitle>
@@ -176,23 +173,16 @@ function MobileNav() {
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
         <div className="mr-4 md:flex md:flex-1">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <Logo className="h-8 w-auto" />
-            <span className="font-bold font-headline hidden sm:inline-block">Wikimedia AI Toolkit</span>
+            <span className="font-bold font-headline text-lg">Dev Jadiya's AI Toolkit</span>
           </Link>
           <DesktopNav />
         </div>
 
         <div className="flex items-center justify-end flex-1 md:flex-none">
-           <Button asChild className="hidden md:flex">
-            <Link href="#" target="_blank" rel="noopener noreferrer">
-                <Code className="mr-2" />
-                Contribute
-            </Link>
-          </Button>
           <MobileNav />
         </div>
       </div>

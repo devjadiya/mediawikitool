@@ -3,10 +3,10 @@ import { Wand2 } from 'lucide-react';
 
 export default function ExplainCodePage() {
   return (
-    <div className="container mx-auto">
-      <header className="mb-8 text-center">
-        <div className="inline-flex items-center justify-center p-3 bg-secondary rounded-full mb-4">
-            <Wand2 className="h-10 w-10 text-primary" />
+    <div className="space-y-12">
+      <header className="text-center p-8 rounded-lg" style={{ background: 'radial-gradient(circle, hsl(var(--chart-3) / 0.1), transparent 70%)' }}>
+        <div className="inline-flex items-center justify-center p-4 bg-cyan-500/10 text-cyan-400 rounded-full mb-4 ring-2 ring-cyan-500/20">
+            <Wand2 className="h-10 w-10" />
         </div>
         <h1 className="text-5xl font-headline font-bold mb-2">Code Explainer</h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">

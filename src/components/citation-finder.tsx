@@ -54,7 +54,7 @@ export function CitationFinder() {
   }
 
   return (
-    <Card className="border-2">
+    <Card className="border-2 border-white/10 bg-card/50">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardHeader>
@@ -82,7 +82,7 @@ export function CitationFinder() {
             {citation && (
               <div className="pt-4 space-y-4">
                 <h3 className="font-semibold">Result:</h3>
-                <Card className="bg-secondary">
+                <Card className="bg-secondary/80">
                     <CardContent className="p-4 space-y-4">
                         <div>
                             <p className="text-sm font-medium mb-1">Source</p>

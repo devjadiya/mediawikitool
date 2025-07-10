@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Search, Link as LinkIcon } from 'lucide-react';
-import { ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from './ui/command';
 import { useDebounce } from '@/hooks/use-debounce';
@@ -23,8 +23,8 @@ const formSchema = z.object({
   username: z.string().min(1, 'Please enter a username.'),
 });
 
-const PIE_CHART_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#ff7300'];
-const REVERT_COLORS = ['#FF8042', '#00C49F'];
+const PIE_CHART_COLORS = ['hsl(var(--chart-1))', 'hsl(var(--chart-2))', 'hsl(var(--chart-3))', 'hsl(var(--chart-4))', 'hsl(var(--chart-5))'];
+const REVERT_COLORS = ['hsl(var(--chart-2))', 'hsl(var(--chart-1))'];
 
 const loadingSteps = [
     { progress: 10, text: 'Kicking things off...' },
@@ -81,7 +81,6 @@ export function TrustVisualizer() {
     setIsLoading(true);
     setResult(null);
 
-    // Animate loading progress
     let stepIndex = 0;
     const interval = setInterval(() => {
         if (stepIndex < loadingSteps.length) {
@@ -112,7 +111,7 @@ export function TrustVisualizer() {
   const MOCK_REVERT_DATA = result ? [ { name: 'Reverted', value: Math.round(result.revertRate * 100) }, { name: 'Unreverted', value: Math.round((1 - result.revertRate) * 100) } ] : [];
 
   return (
-    <Card className="border-2">
+    <Card className="border-2 border-white/10 bg-card/50">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <CardHeader>
@@ -172,8 +171,8 @@ export function TrustVisualizer() {
 
             {isLoading && (
                  <div className="w-full text-center p-8 space-y-4">
-                    <Progress value={loadingState.progress} />
-                    <p className="text-sm text-muted-foreground animate-pulse">{loadingState.text}</p>
+                    <h3 className="text-lg font-semibold text-primary animate-pulse">{loadingState.text}</h3>
+                    <Progress value={loadingState.progress} className="h-2" />
                  </div>
             )}
             
