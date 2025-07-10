@@ -17,6 +17,7 @@ import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from './ui/command';
 import { useDebounce } from '@/hooks/use-debounce';
 import { ChartContainer, ChartTooltipContent } from './ui/chart';
+import { Progress } from './ui/progress';
 
 const formSchema = z.object({
   username: z.string().min(1, 'Please enter a username.'),
@@ -25,9 +26,18 @@ const formSchema = z.object({
 const PIE_CHART_COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#ff7300'];
 const REVERT_COLORS = ['#FF8042', '#00C49F'];
 
+const loadingSteps = [
+    { progress: 10, text: 'Kicking things off...' },
+    { progress: 25, text: 'Fetching user profile...' },
+    { progress: 50, text: 'Analyzing contributions...' },
+    { progress: 75, text: 'Generating visualizations...' },
+    { progress: 100, text: 'Almost there...' },
+];
+
 export function TrustVisualizer() {
   const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingState, setLoadingState] = useState({ progress: 0, text: '' });
   const [result, setResult] = useState<VisualizeTrustOutput | null>(null);
   const { toast } = useToast();
   
@@ -44,7 +54,7 @@ export function TrustVisualizer() {
   });
 
   useEffect(() => {
-    if (debouncedSearchQuery) {
+    if (debouncedSearchQuery && debouncedSearchQuery.length > 1) {
       const fetchSuggestions = async () => {
         const users = await searchUsers(debouncedSearchQuery);
         setSuggestions(users);
@@ -71,6 +81,17 @@ export function TrustVisualizer() {
     setIsLoading(true);
     setResult(null);
 
+    // Animate loading progress
+    let stepIndex = 0;
+    const interval = setInterval(() => {
+        if (stepIndex < loadingSteps.length) {
+            setLoadingState(loadingSteps[stepIndex]);
+            stepIndex++;
+        } else {
+            clearInterval(interval);
+        }
+    }, 500);
+
     try {
       const apiResult = await visualizeTrust(values);
       setResult(apiResult);
@@ -82,16 +103,10 @@ export function TrustVisualizer() {
         variant: 'destructive',
       });
     } finally {
+      clearInterval(interval);
       setIsLoading(false);
+      setLoadingState({ progress: 0, text: '' });
     }
-  };
-
-  const handleUserClick = (username: string) => {
-    startTransition(() => {
-      form.setValue('username', username);
-      setSearchQuery(username);
-      onSubmit({ username });
-    });
   };
 
   const MOCK_REVERT_DATA = result ? [ { name: 'Reverted', value: Math.round(result.revertRate * 100) }, { name: 'Unreverted', value: Math.round((1 - result.revertRate) * 100) } ] : [];
@@ -128,8 +143,8 @@ export function TrustVisualizer() {
                                 </FormItem>
                             )}
                         />
-                         <Button type="submit" disabled={isLoading || isPending} size="icon">
-                            {isLoading || isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
+                         <Button type="submit" disabled={isLoading} size="icon">
+                            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
                         </Button>
                     </div>
                 </PopoverTrigger>
@@ -155,9 +170,14 @@ export function TrustVisualizer() {
                 </PopoverContent>
             </Popover>
 
-            {(isLoading || isPending) && <div className="text-center p-8"><Loader2 className="h-8 w-8 animate-spin mx-auto" /></div>}
+            {isLoading && (
+                 <div className="w-full text-center p-8 space-y-4">
+                    <Progress value={loadingState.progress} />
+                    <p className="text-sm text-muted-foreground animate-pulse">{loadingState.text}</p>
+                 </div>
+            )}
             
-            {result && !isPending && (
+            {result && !isLoading && (
               <div className="pt-8 space-y-6">
                 <div className="p-4 bg-secondary rounded-lg">
                     <h2 className="text-2xl font-bold font-headline">{result.username}</h2>
@@ -223,7 +243,7 @@ export function TrustVisualizer() {
                                     <div key={page.title} className="flex justify-between items-center gap-2">
                                         <a href={`https://${result.project}/wiki/${page.title}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-primary truncate hover:underline">
                                             <LinkIcon className="h-3 w-3" />
-                                            <span className="truncate">{page.title.replace(/_/g, ' ')}</span>
+                                            <span className="truncate">{page.title}</span>
                                         </a>
                                         <span className="font-semibold text-muted-foreground flex-shrink-0">{page.edits.toLocaleString()}</span>
                                     </div>

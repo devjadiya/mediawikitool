@@ -50,7 +50,7 @@ export type VisualizeTrustOutput = z.infer<typeof VisualizeTrustOutputSchema>;
 const getUserDataTool = ai.defineTool(
   {
     name: 'getWikimediaUserData',
-    description: 'Fetches comprehensive contribution statistics for a given Wikimedia username.',
+    description: 'Fetches comprehensive contribution statistics for a given Wikimedia username using the XTools API.',
     inputSchema: z.object({ username: z.string() }),
     outputSchema: VisualizeTrustOutputSchema.omit({ revertRate: true }),
   },
@@ -59,18 +59,15 @@ const getUserDataTool = ai.defineTool(
   }
 );
 
-
 const prompt = ai.definePrompt({
   name: 'visualizeTrustPrompt',
   tools: [getUserDataTool],
   input: { schema: VisualizeTrustInputSchema },
   output: { schema: VisualizeTrustOutputSchema },
-  prompt: `You are an assistant that fetches Wikimedia user data.
-Use the \`getWikimediaUserData\` tool to get the contribution statistics for the username: "{{{username}}}".
-
-Based on the data, provide a revert rate. For "Dev Jadiya", use 0.03. For all other users, use a mock value of 0.08.
-
-Return all the data, including the revert rate you determined.`,
+  prompt: `You are an assistant that fetches and formats Wikimedia user data.
+1. Use the \`getWikimediaUserData\` tool to get the contribution statistics for the username: "{{{username}}}".
+2. Based on the data returned from the tool, determine a representative revert rate. For a user named "Dev Jadiya" with a low edit count, use 0.03. For any other user, or if the edit count is high, use a mock value of 0.08.
+3. Return all the data from the tool, plus the revert rate you determined.`,
 });
 
 const visualizeTrustFlow = ai.defineFlow(
