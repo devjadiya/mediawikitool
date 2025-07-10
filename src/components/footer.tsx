@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Logo } from './logo';
 import { Button } from './ui/button';
 import { Github, Mail } from 'lucide-react';
-import { tools } from '@/lib/data';
+import { tools } from '@/lib/data.tsx';
 
 const mainLinks = [
   { href: '/', label: 'Home' },

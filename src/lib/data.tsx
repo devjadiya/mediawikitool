@@ -1,4 +1,4 @@
-import { Bot, PenSquare, ScanSearch, ShieldCheck } from 'lucide-react';
+import { Bot, PenSquare, ScanSearch, ShieldCheck, Languages, FileText, Code, GitCommit, FileType, BookCopy, FileSearch, Sparkles, Wand2 } from 'lucide-react';
 
 export type Tool = {
   href: string;
@@ -9,6 +9,7 @@ export type Tool = {
 };
 
 export const tools: Tool[] = [
+  // Existing Tools
   {
     href: '/suggest-category',
     title: 'Category Suggester',
@@ -35,6 +36,77 @@ export const tools: Tool[] = [
     title: 'Wiki-Anonymizer',
     description: 'Redact Personally Identifiable Information (PII) from text.',
     category: 'Privacy & Security',
+    icon: <ShieldCheck className="h-8 w-8 text-primary" />,
+  },
+  // New Tools
+  {
+    href: '/translate-text',
+    title: 'Translation Assistant',
+    description: 'Translate wikitext between languages while preserving markup.',
+    category: 'Content',
+    icon: <Languages className="h-8 w-8 text-primary" />,
+  },
+  {
+    href: '/find-citations',
+    title: 'Citation Finder',
+    description: 'Find reliable sources for statements and format citations.',
+    category: 'Content',
+    icon: <FileSearch className="h-8 w-8 text-primary" />,
+  },
+  {
+    href: '/expand-stub',
+    title: 'Article Stub Expander',
+    description: 'Generate suggestions to expand short articles and stubs.',
+    category: 'Content',
+    icon: <Sparkles className="h-8 w-8 text-primary" />,
+  },
+  {
+    href: '/detect-copyvio',
+    title: 'Copyvio Detector',
+    description: 'Check if a piece of text is likely a copyright violation.',
+    category: 'Privacy & Security',
+    icon: <BookCopy className="h-8 w-8 text-primary" />,
+  },
+   {
+    href: '/draft-article',
+    title: 'Drafting Assistant',
+    description: 'Generate a short, sourced draft article on a topic.',
+    category: 'Content',
+    icon: <FileText className="h-8 w-8 text-primary" />,
+  },
+  {
+    href: '/debug-regex',
+    title: 'Regex Debugger',
+    description: 'Get a natural language explanation of a regular expression.',
+    category: 'Development',
+    icon: <Code className="h-8 w-8 text-primary" />,
+  },
+  {
+    href: '/explain-code',
+    title: 'Code Explainer',
+    description: 'Explain a snippet of Lua or JS code used in Wikimedia projects.',
+    category: 'Development',
+    icon: <Wand2 className="h-8 w-8 text-primary" />,
+  },
+   {
+    href: '/generate-commit',
+    title: 'Commit Message Generator',
+    description: 'Create a conventional commit message from your code changes.',
+    category: 'Development',
+    icon: <GitCommit className="h-8 w-8 text-primary" />,
+  },
+  {
+    href: '/generate-svg',
+    title: 'SVG Generator',
+    description: 'Create simple SVG icons from a text description.',
+    category: 'Media',
+    icon: <FileType className="h-8 w-8 text-primary" />,
+  },
+  {
+    href: '/suggest-license',
+    title: 'License Suggester',
+    description: 'Suggest appropriate content licenses for your uploaded image.',
+    category: 'Media',
     icon: <ShieldCheck className="h-8 w-8 text-primary" />,
   },
 ];

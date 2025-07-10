@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
-import { tools } from '@/lib/data';
+import { tools } from '@/lib/data.tsx';
 
 const mainLinks = [
   { href: '/about', label: 'About' },

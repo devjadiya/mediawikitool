@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Bot, PenSquare, ScanSearch, ShieldQuestion } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { tools } from '@/lib/data';
+import { tools } from '@/lib/data.tsx';
 
 export default function HomePage() {
   return (
