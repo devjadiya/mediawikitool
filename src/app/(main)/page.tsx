@@ -22,7 +22,8 @@ import {
   GitCompare,
   ArrowRightLeft,
   Trophy,
-  Database
+  Database,
+  Terminal,
 } from 'lucide-react';
 
 const commonsTools = [
@@ -54,6 +55,7 @@ const toolSections = [
       { id: "code-guardian", href: "/code-guardian", name: "MediaWiki Code Guardian", description: "Analyzes code snippets (JS/Lua) for security vulnerabilities, performance issues, and adherence to best practices, ideal for gadget and script developers.", icon: <ShieldCheck className="h-8 w-8 text-emerald-400" /> },
       { id: "explain-code", href: "/explain-code", name: "Code Explainer", description: "Provides a detailed, line-by-line explanation of what a block of code does, making it easier to understand and contribute to existing scripts.", icon: <Wand2 className="h-8 w-8 text-cyan-400" /> },
       { id: "debug-regex", href: "/debug-regex", name: "Regex Debugger", description: "Translates complex Regular Expressions into a simple, natural language explanation. A lifesaver for working with templates and filters.", icon: <Code className="h-8 w-8 text-slate-400" /> },
+      { id: "api-query-generator", href: "/api-query-generator", name: "API Query Generator", description: "Translates a natural language task description into a ready-to-use MediaWiki Action API query URL, simplifying development.", icon: <Terminal className="h-8 w-8 text-amber-400" /> },
     ]
   },
   {
