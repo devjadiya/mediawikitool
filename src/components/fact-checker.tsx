@@ -5,12 +5,12 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { factCheckText, FactCheckTextOutput } from '@/ai/flows/fact-checker';
-import { StatefulButton } from '@/components/ui/button';
+import { Button, StatefulButton } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, ShieldQuestion, CheckCircle, XCircle, HelpCircle, Link as LinkIcon, Quote } from 'lucide-react';
+import { Loader2, ShieldQuestion, CheckCircle, XCircle, HelpCircle, Link as LinkIcon, Quote, Wand2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Badge } from './ui/badge';
 
@@ -52,6 +52,14 @@ export function FactChecker() {
     },
   });
 
+  const handleDemo = async () => {
+    const demoText = 'The Moon is Earth\'s only natural satellite. The Sun is a planet, not a star.';
+    form.setValue('text', demoText);
+    await form.trigger('text');
+    onSubmit({ text: demoText });
+  };
+
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setButtonState('loading');
     setResult(null);
@@ -78,8 +86,16 @@ export function FactChecker() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <CardHeader>
-            <CardTitle className="font-headline">Fact-Check Article Content</CardTitle>
-            <CardDescription>The AI will break the text into claims and attempt to verify each one.</CardDescription>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="font-headline">Fact-Check Article Content</CardTitle>
+                <CardDescription>The AI will break the text into claims and attempt to verify each one.</CardDescription>
+              </div>
+               <Button type="button" variant="outline" size="sm" onClick={handleDemo} disabled={buttonState === 'loading'}>
+                <Wand2 className="mr-2 h-4 w-4" />
+                Try Demo
+              </Button>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <FormField
