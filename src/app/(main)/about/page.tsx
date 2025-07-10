@@ -1,50 +1,53 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Bot, Code, ShieldCheck } from 'lucide-react';
 import Image from 'next/image';
 
 export default function AboutPage() {
   return (
     <div className="container mx-auto space-y-12">
       <header className="text-center">
-        <h1 className="text-5xl font-headline font-bold mb-2">About Wiki Science Competition India</h1>
-        <p className="text-xl text-muted-foreground">Celebrating Indian science through the lens of open knowledge.</p>
+        <h1 className="text-5xl font-headline font-bold mb-2">About The Wikimedia AI Toolkit</h1>
+        <p className="text-xl text-muted-foreground">Empowering Wikimedians with cutting-edge tools.</p>
       </header>
 
       <Card>
         <CardHeader>
-          <CardTitle className="font-headline">Our Mission in India</CardTitle>
+          <CardTitle className="font-headline">Our Mission</CardTitle>
         </CardHeader>
         <CardContent className="text-lg space-y-4">
           <p>
-            Wiki Science Competition is an annual international photographic competition. For the first time in 2025, India is officially hosting its own national event!
-            We invite people from all corners of India to contribute high-quality, freely licensed images related to science.
+            The Wikimedia AI Toolkit is an open-source project dedicated to building powerful, intuitive, and innovative tools for the Wikimedia community. 
+            Our mission is to streamline workflows, enhance content quality, and help Wikimedians with their vital work of curating the world's knowledge.
           </p>
           <p>
-            Our goal is to build a rich repository of scientific images that reflect India's unique research, biodiversity, and technological advancements.
-            By sharing these images on Wikimedia Commons, we make scientific knowledge from an Indian perspective more accessible,
-            understandable, and engaging for everyone, everywhere. These images are used to illustrate
-            Wikipedia articles and other educational projects, enriching learning for millions globally.
+            We believe that by leveraging modern technologies like generative AI, we can create solutions that address the unique challenges faced by editors, admins, developers, and volunteers. 
+            Whether it's simplifying content creation, ensuring privacy, or analyzing data, our toolkit is here to help.
           </p>
         </CardContent>
       </Card>
       
-      <div className="grid md:grid-cols-2 gap-8 items-center">
-        <div className="space-y-4">
-            <h2 className="text-3xl font-headline font-bold">The Impact of Your Contribution</h2>
-            <p className="text-lg">
-                Your contributions have a lasting impact. Images from Wiki Science Competition India will be
-                featured in thousands of Wikipedia articles, viewed millions of times, and will help
-                students, researchers, and the curious public better understand complex scientific topics from an Indian context.
-                Each photo is a step towards democratizing science.
+      <div className="grid md:grid-cols-3 gap-8 text-center">
+        <div className="flex flex-col items-center gap-4 p-4 rounded-lg">
+            <Bot className="h-12 w-12 text-primary" />
+            <h3 className="text-2xl font-headline font-bold">AI-Powered Assistance</h3>
+            <p className="text-muted-foreground">
+                Harness the power of generative AI to assist with tasks like captioning images, suggesting categories, and validating content.
             </p>
         </div>
-        <Image 
-            src="https://placehold.co/600x400.png"
-            alt="A collage of winning science images"
-            width={600}
-            height={400}
-            className="rounded-lg shadow-md"
-            data-ai-hint="indian science collage"
-        />
+        <div className="flex flex-col items-center gap-4 p-4 rounded-lg">
+            <Code className="h-12 w-12 text-primary" />
+            <h3 className="text-2xl font-headline font-bold">Developer Focused</h3>
+            <p className="text-muted-foreground">
+                Built with modern DevOps principles in mind, providing tools and workflows that are efficient, scalable, and easy to contribute to.
+            </p>
+        </div>
+        <div className="flex flex-col items-center gap-4 p-4 rounded-lg">
+            <ShieldCheck className="h-12 w-12 text-primary" />
+            <h3 className="text-2xl font-headline font-bold">Privacy & Security</h3>
+            <p className="text-muted-foreground">
+                Including tools to help with cybersecurity and privacy-related tasks, ensuring the safety and integrity of Wikimedia projects.
+            </p>
+        </div>
       </div>
     </div>
   );

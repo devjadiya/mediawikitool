@@ -1,15 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { teamMembers } from '@/lib/data';
-import { Mail, Twitter } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Github, Mail, Code } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function ContactPage() {
   return (
     <div className="container mx-auto space-y-12">
       <header className="text-center">
-        <h1 className="text-5xl font-headline font-bold mb-2">Contact & Team</h1>
-        <p className="text-xl text-muted-foreground">Meet the people behind the competition and get in touch.</p>
+        <h1 className="text-5xl font-headline font-bold mb-2">Contact & Contribute</h1>
+        <p className="text-xl text-muted-foreground">We're an open-source project. Get in touch or get involved!</p>
       </header>
 
       <Card>
@@ -19,52 +19,44 @@ export default function ContactPage() {
         <CardContent className="flex flex-col md:flex-row gap-8 items-center">
           <div className="flex-1 space-y-4">
             <p className="text-lg">
-              Have questions, suggestions, or want to collaborate? We'd love to hear from you.
-              You can reach out to us via email or our social media channels.
+              Have questions, feedback, or an idea for a new tool? We'd love to hear from you. 
+              The best way to reach out or contribute is through our GitHub repository.
             </p>
             <div className="flex flex-col gap-4">
-              <a href="mailto:wsc-india@example.com" className="flex items-center gap-2 text-primary hover:underline">
+              <a href="mailto:wikimedia-toolkit-contact@example.com" className="flex items-center gap-2 text-primary hover:underline">
                 <Mail className="h-5 w-5" />
-                <span>wsc-india@example.com</span>
+                <span>wikimedia-toolkit-contact@example.com</span>
               </a>
-              <a href="https://twitter.com/wscindia" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline">
-                <Twitter className="h-5 w-5" />
-                <span>@WSCIndia on Twitter</span>
+               <a href="#" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline">
+                <Github className="h-5 w-5" />
+                <span>View Project on GitHub</span>
               </a>
             </div>
           </div>
           <div className="flex-shrink-0">
             <Image 
                 src="https://placehold.co/400x300.png"
-                alt="A group of volunteers at a Wikimedia event"
+                alt="A computer screen with code"
                 width={400}
                 height={300}
                 className="rounded-lg shadow-md"
-                data-ai-hint="volunteers group photo"
+                data-ai-hint="computer code screen"
             />
           </div>
         </CardContent>
       </Card>
 
-      <section>
-        <h2 className="text-4xl font-headline font-bold text-center mb-8">Organizing Team (India)</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {teamMembers.map(member => (
-            <Card key={member.id} className="text-center border-2">
-              <CardContent className="pt-6 flex flex-col items-center gap-4">
-                <Avatar className="h-24 w-24 border-2 border-primary">
-                  <AvatarImage src={member.avatar} alt={member.name} data-ai-hint={member.hint} />
-                  <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-bold text-lg">{member.name}</p>
-                  <p className="text-sm text-muted-foreground font-semibold">{member.role}</p>
-                  <p className="text-sm text-muted-foreground mt-2">{member.bio}</p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+      <section className="text-center">
+        <h2 className="text-4xl font-headline font-bold text-center mb-4">Want to Contribute?</h2>
+        <p className="text-lg text-muted-foreground mb-6">
+            This toolkit is built by and for the community. If you have an idea for a tool or want to help improve the existing ones, please check out our GitHub repository.
+        </p>
+        <Button asChild size="lg">
+          <Link href="#" target="_blank" rel="noopener noreferrer">
+            <Code className="mr-2 h-5 w-5" />
+            Contribute on GitHub
+          </Link>
+        </Button>
       </section>
     </div>
   );

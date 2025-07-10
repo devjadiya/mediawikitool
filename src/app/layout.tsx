@@ -5,8 +5,8 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 
 export const metadata: Metadata = {
-  title: 'Wiki Science Competition 2025 in India',
-  description: 'Participate in the Wiki Science Competition 2025 in India. An annual science photography competition.',
+  title: 'Wikimedia AI Toolkit',
+  description: 'A suite of AI-powered tools for the Wikimedia community.',
 };
 
 export default function RootLayout({

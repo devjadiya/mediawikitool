@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
-import { Menu, ChevronDown, Bot } from 'lucide-react';
+import { Menu, ChevronDown, Bot, Code } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from './logo';
 import {
@@ -14,21 +14,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
+import { tools } from '@/lib/data';
 
 const mainLinks = [
-  { href: '/gallery', label: 'Gallery' },
   { href: '/about', label: 'About' },
-  { href: '/timeline', label: 'Timeline' },
-  { href: '/contribute', label: 'Contribute' },
   { href: '/contact', label: 'Contact' },
 ];
 
-const toolLinks = [
-    { href: '/suggest-category', label: 'Category Suggester' },
-    { href: '/generate-caption', label: 'Caption Writer' },
-    { href: '/validate-image', label: 'Image Validator' },
-    { href: '/prize-ideas', label: 'Prize Idea Generator' },
-]
+const toolLinks = tools.map(tool => ({ href: tool.href, label: tool.title }));
 
 export function Header() {
   const pathname = usePathname();
@@ -66,16 +59,15 @@ export function Header() {
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <Logo className="h-8 w-auto" />
+            <span className="font-bold font-headline">Wikimedia AI Toolkit</span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
-            {mainLinks.map(link => (
-              <NavLink key={link.href} href={link.href}>
-                {link.label}
+             <NavLink href="/">
+                Home
               </NavLink>
-            ))}
             <DropdownMenu>
                 <DropdownMenuTrigger className="flex items-center gap-1 text-sm font-medium transition-colors text-foreground/60 hover:text-foreground/80 focus:outline-none">
-                    AI Tools <Bot className="h-4 w-4" /> <ChevronDown className="h-4 w-4" />
+                    Tools <Bot className="h-4 w-4" /> <ChevronDown className="h-4 w-4" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     {toolLinks.map(link => (
@@ -85,6 +77,11 @@ export function Header() {
                     ))}
                 </DropdownMenuContent>
             </DropdownMenu>
+            {mainLinks.map(link => (
+              <NavLink key={link.href} href={link.href}>
+                {link.label}
+              </NavLink>
+            ))}
           </nav>
         </div>
 
@@ -101,14 +98,16 @@ export function Header() {
                 <div className="p-4">
                     <Link href="/" className="mb-8 flex items-center space-x-2">
                         <Logo className="h-8 w-auto" />
+                        <span className="font-bold font-headline">WM AI Toolkit</span>
                     </Link>
                     <nav className="flex flex-col space-y-2">
+                        <MobileNavLink href="/">Home</MobileNavLink>
                         {mainLinks.map(link => (
                             <MobileNavLink key={link.href} href={link.href}>{link.label}</MobileNavLink>
                         ))}
                          <Accordion type="single" collapsible className="w-full">
                             <AccordionItem value="item-1" className="border-b-0">
-                                <AccordionTrigger className="text-lg text-muted-foreground py-2 hover:no-underline">AI Tools</AccordionTrigger>
+                                <AccordionTrigger className="text-lg text-muted-foreground py-2 hover:no-underline">Tools</AccordionTrigger>
                                 <AccordionContent className="pl-4">
                                     <div className="flex flex-col space-y-2">
                                         {toolLinks.map(link => (
@@ -131,8 +130,9 @@ export function Header() {
                 </Link>
             </div>
           <Button asChild>
-            <Link href="https://commons.wikimedia.org/wiki/Special:UploadWizard?campaign=wsc-in" target="_blank" rel="noopener noreferrer">
-                Upload Image
+            <Link href="#" target="_blank" rel="noopener noreferrer">
+                <Code className="mr-2" />
+                Contribute
             </Link>
           </Button>
         </div>

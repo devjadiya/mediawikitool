@@ -1,22 +1,16 @@
 import Link from 'next/link';
 import { Logo } from './logo';
 import { Button } from './ui/button';
-import { Twitter, Facebook } from 'lucide-react';
+import { Github, Mail } from 'lucide-react';
+import { tools } from '@/lib/data';
 
 const mainLinks = [
-  { href: '/gallery', label: 'Gallery' },
+  { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
-  { href: '/timeline', label: 'Timeline' },
-  { href: '/contribute', label: 'Contribute' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/contact', label: 'Contact & Contribute' },
 ];
 
-const toolLinks = [
-    { href: '/suggest-category', label: 'Category Suggester' },
-    { href: '/generate-caption', label: 'Caption Writer' },
-    { href: '/validate-image', label: 'Image Validator' },
-    { href: '/prize-ideas', label: 'Prize Idea Generator' },
-]
+const toolLinks = tools.map(tool => ({ href: tool.href, label: tool.title }));
 
 export function Footer() {
   return (
@@ -25,13 +19,12 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Logo and About */}
           <div className="flex flex-col items-start">
-            <Link href="/" className="mb-4">
+            <Link href="/" className="mb-4 flex items-center gap-2">
                 <Logo className="h-10 w-auto" />
+                <span className="font-headline text-lg font-bold">Wikimedia AI Toolkit</span>
             </Link>
             <p className="text-muted-foreground text-sm">
-              Wiki Science Competition 2025 in India.
-              <br />
-              Part of the global Wiki Science Competition.
+              An open-source project to empower the Wikimedia community with modern tools.
             </p>
           </div>
           
@@ -50,7 +43,7 @@ export function Footer() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-3">AI Tools</h3>
+              <h3 className="font-semibold mb-3">Tools</h3>
               <ul className="space-y-2">
                 {toolLinks.map((link) => (
                   <li key={link.href}>
@@ -65,24 +58,24 @@ export function Footer() {
           
           {/* Social and Credits */}
           <div className="flex flex-col items-start md:items-end">
-            <h3 className="font-semibold mb-3">Follow Us</h3>
+            <h3 className="font-semibold mb-3">Get Involved</h3>
             <div className="flex gap-2 mb-4">
               <Button variant="outline" size="icon" asChild>
-                <a href="https://twitter.com/wscindia" target="_blank" rel="noopener noreferrer"><Twitter className="h-4 w-4" /></a>
+                <a href="#" target="_blank" rel="noopener noreferrer"><Github className="h-4 w-4" /></a>
               </Button>
-              <Button variant="outline" size="icon" asChild>
-                <a href="https://facebook.com/wscindia" target="_blank" rel="noopener noreferrer"><Facebook className="h-4 w-4" /></a>
+               <Button variant="outline" size="icon" asChild>
+                <a href="mailto:wikimedia-toolkit-contact@example.com"><Mail className="h-4 w-4" /></a>
               </Button>
             </div>
             <p className="text-xs text-muted-foreground text-left md:text-right">
-              Powered by Wikimedia volunteers in India.
+              Powered by Gemini and open-source contributors.
               <br/>
-              This website is a project for the Indian community.
+              This is a community-driven project.
             </p>
           </div>
         </div>
         <div className="mt-8 border-t pt-4 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} Wiki Science Competition India Team. All content is freely licensed.
+          © {new Date().getFullYear()} Wikimedia AI Toolkit Project. Freely licensed.
         </div>
       </div>
     </footer>
