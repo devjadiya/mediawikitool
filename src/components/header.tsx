@@ -2,7 +2,21 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Code, Menu, FileSearch, Sparkles, ShieldQuestion, FileText } from 'lucide-react';
+import { 
+  Code, 
+  Menu, 
+  FileSearch, 
+  Sparkles, 
+  ShieldQuestion, 
+  FileText,
+  ShieldCheck,
+  BookCopy,
+  GitCompareArrows,
+  Wand2,
+  Languages,
+  BadgeCheck,
+  BarChartHorizontal
+} from 'lucide-react';
 import { Logo } from './logo';
 import {
   DropdownMenu,
@@ -10,7 +24,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-  DropdownMenuLabel
+  DropdownMenuLabel,
+  DropdownMenuGroup
 } from "@/components/ui/dropdown-menu";
 import { useIsMobile } from '@/hooks/use-mobile';
 import {
@@ -28,11 +43,29 @@ const mainNavLinks = [
     { name: "Contact", href: "/contact" },
 ];
 
-const toolLinks = [
+const contentTools = [
   { name: "Citation Finder", href: "/find-citations", icon: <FileSearch /> },
   { name: "Article Stub Expander", href: "/expand-stub", icon: <Sparkles /> },
   { name: "Fact Checker", href: "/fact-checker", icon: <ShieldQuestion /> },
   { name: "Drafting Assistant", href: "/draft-article", icon: <FileText /> },
+  { name: "Notability Checker", href: "/check-notability", icon: <BadgeCheck /> },
+  { name: "Cross-Wiki Inconsistency Detector", href: "/detect-inconsistencies", icon: <GitCompareArrows /> },
+];
+
+const langTools = [
+  { name: "Translation Assistant", href: "/translate-text", icon: <Languages /> },
+]
+
+const devTools = [
+   { name: "MediaWiki Code Guardian", href: "/code-guardian", icon: <ShieldCheck /> },
+   { name: "Code Explainer", href: "/explain-code", icon: <Wand2 /> },
+   { name: "Regex Debugger", href: "/debug-regex", icon: <Code /> },
+];
+
+const policyTools = [
+  { name: "Copyright Violation Detector", href: "/detect-copyvio", icon: <BookCopy /> },
+  { name: "Text Anonymizer", href: "/anonymize-text", icon: <ShieldCheck /> },
+  { name: "Contribution Trust Visualizer", href: "/trust-visualizer", icon: <BarChartHorizontal /> },
 ];
 
 function DesktopNav() {
@@ -47,17 +80,54 @@ function DesktopNav() {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="text-foreground/60">Tools</Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Editing Tools</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {toolLinks.map((tool) => (
-                <DropdownMenuItem key={tool.href} asChild>
-                  <Link href={tool.href}>
-                    {tool.icon}
-                    <span>{tool.name}</span>
-                  </Link>
-                </DropdownMenuItem>
-              ))}
+            <DropdownMenuContent align="end" className="w-64">
+                <DropdownMenuGroup>
+                    <DropdownMenuLabel>Content & Editing</DropdownMenuLabel>
+                    {contentTools.map((tool) => (
+                        <DropdownMenuItem key={tool.href} asChild>
+                        <Link href={tool.href}>
+                            {tool.icon}
+                            <span>{tool.name}</span>
+                        </Link>
+                        </DropdownMenuItem>
+                    ))}
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                 <DropdownMenuGroup>
+                    <DropdownMenuLabel>Translation</DropdownMenuLabel>
+                    {langTools.map((tool) => (
+                        <DropdownMenuItem key={tool.href} asChild>
+                        <Link href={tool.href}>
+                            {tool.icon}
+                            <span>{tool.name}</span>
+                        </Link>
+                        </DropdownMenuItem>
+                    ))}
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                    <DropdownMenuLabel>Development & Security</DropdownMenuLabel>
+                    {devTools.map((tool) => (
+                        <DropdownMenuItem key={tool.href} asChild>
+                        <Link href={tool.href}>
+                            {tool.icon}
+                            <span>{tool.name}</span>
+                        </Link>
+                        </DropdownMenuItem>
+                    ))}
+                </DropdownMenuGroup>
+                 <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                    <DropdownMenuLabel>Community & Policy</DropdownMenuLabel>
+                     {policyTools.map((tool) => (
+                        <DropdownMenuItem key={tool.href} asChild>
+                        <Link href={tool.href}>
+                            {tool.icon}
+                            <span>{tool.name}</span>
+                        </Link>
+                        </DropdownMenuItem>
+                    ))}
+                </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
         </nav>
@@ -73,7 +143,7 @@ function MobileNav() {
                     <span className="sr-only">Toggle Menu</span>
                 </Button>
             </SheetTrigger>
-            <SheetContent side="left">
+            <SheetContent side="left" className="w-full max-w-sm">
                 <SheetHeader>
                     <SheetTitle>
                         <Link href="/" className="flex items-center gap-2">
@@ -89,8 +159,8 @@ function MobileNav() {
                         </Link>
                     ))}
                      <div className="border-t pt-4">
-                        <h3 className="font-semibold mb-2">Tools</h3>
-                        {toolLinks.map((tool) => (
+                        <h3 className="font-semibold mb-2 px-2">Tools</h3>
+                        {[...contentTools, ...langTools, ...devTools, ...policyTools].map((tool) => (
                              <Link key={tool.href} href={tool.href} className="flex items-center gap-3 rounded-md p-2 text-muted-foreground hover:text-foreground">
                                 {tool.icon}
                                 {tool.name}
