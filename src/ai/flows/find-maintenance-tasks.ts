@@ -43,6 +43,7 @@ const queryWikiTool = ai.defineTool(
     apiUrl.searchParams.set('list', 'querypage');
     apiUrl.searchParams.set('qppage', taskType);
     apiUrl.searchParams.set('qplimit', limit.toString());
+    apiUrl.searchParams.set('qptype', 'page'); // IMPORTANT: Filter for only pages, not other types
     apiUrl.searchParams.set('format', 'json');
     apiUrl.searchParams.set('origin', '*');
 

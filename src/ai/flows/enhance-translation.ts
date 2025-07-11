@@ -53,8 +53,8 @@ const extractArticleTool = ai.defineTool(
 );
 
 const PromptInputSchema = z.object({
-  sourceArticle: z.object({ title: z.any(), content: z.any() }),
-  targetArticle: z.object({ title: z.any(), content: z.any() })
+  sourceArticle: z.object({ title: z.string(), content: z.string() }),
+  targetArticle: z.object({ title: z.string(), content: z.string() })
 });
 
 const prompt = ai.definePrompt({
@@ -83,15 +83,25 @@ Provide your detailed translation enhancement analysis now.`
 
 
 export async function enhanceTranslation(input: EnhanceTranslationInput): Promise<EnhanceTranslationOutput> {
-  const [sourceArticle, targetArticle] = await Promise.all([
+  const [sourceArticleResult, targetArticleResult] = await Promise.all([
       extractArticleTool({url: input.sourceUrl}),
       extractArticleTool({url: input.targetUrl})
   ]);
 
-  if (!sourceArticle.content || !targetArticle.content) {
+  if (!sourceArticleResult.content || !targetArticleResult.content) {
       throw new Error("Could not extract content from one or both URLs. Please check the URLs and try again.");
   }
   
+  const sourceArticle = {
+      title: sourceArticleResult.title || '',
+      content: sourceArticleResult.content || '',
+  }
+
+  const targetArticle = {
+      title: targetArticleResult.title || '',
+      content: targetArticleResult.content || '',
+  }
+
   const {output} = await prompt({ sourceArticle, targetArticle });
   return output!;
 }
