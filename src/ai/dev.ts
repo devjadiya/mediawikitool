@@ -23,3 +23,4 @@ import '@/ai/flows/generate-api-query.ts';
 import '@/ai/flows/find-maintenance-tasks.ts';
 import '@/ai/flows/enhance-translation.ts';
 import '@/ai/flows/object-locator.ts';
+import '@/ai/flows/search-wikidata.ts';

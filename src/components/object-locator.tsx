@@ -5,13 +5,15 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { locateObjects, LocateObjectsOutput } from '@/ai/flows/object-locator';
+import { searchWikidata, WikidataSearchOutput } from '@/ai/flows/search-wikidata';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Upload, Locate, Wand2 } from 'lucide-react';
+import { Loader2, Upload, Locate, Wand2, Search, Link as LinkIcon, Info } from 'lucide-react';
 import Image from 'next/image';
+import { Skeleton } from './ui/skeleton';
 
 const formSchema = z.object({
   image: z.any()
@@ -20,6 +22,7 @@ const formSchema = z.object({
 });
 
 type LocatedObject = LocateObjectsOutput['objects'][0];
+type WikidataEntity = WikidataSearchOutput['results'][0];
 
 const BOX_COLORS = [
     'border-red-500', 'border-blue-500', 'border-green-500', 
@@ -34,31 +37,15 @@ export function ObjectLocator() {
   const imageRef = useRef<HTMLImageElement>(null);
   const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 
+  const [wikidataResults, setWikidataResults] = useState<Record<string, WikidataEntity[]>>({});
+  const [searchingFor, setSearchingFor] = useState<string | null>(null);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       image: undefined,
     }
   });
-
-  useEffect(() => {
-    const resizeObserver = new ResizeObserver(entries => {
-        for (let entry of entries) {
-            setImageDimensions({
-                width: entry.contentRect.width,
-                height: entry.contentRect.height,
-            });
-        }
-    });
-
-    if (imageRef.current) {
-        resizeObserver.observe(imageRef.current);
-    }
-
-    return () => {
-        resizeObserver.disconnect();
-    };
-}, [preview, result]);
 
   const handleDemo = async () => {
     setIsLoading(true);
@@ -93,6 +80,7 @@ export function ObjectLocator() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
     setResult(null);
+    setWikidataResults({});
 
     const file = values.image[0];
     const reader = new FileReader();
@@ -131,30 +119,28 @@ export function ObjectLocator() {
       const url = URL.createObjectURL(file);
       setPreview(url);
       setResult(null);
+      setWikidataResults({});
     } else {
       setPreview(null);
     }
   };
-
-  const renderBoundingBoxLabel = (obj: LocatedObject, colorClass: string, index: number) => {
-    const labelContent = (
-      <span className={`text-xs text-white px-1.5 py-0.5 rounded-sm ${colorClass.replace('border-', 'bg-')}`}>
-        {index + 1}. {obj.label}
-      </span>
-    );
-    if (obj.wikidataId) {
-      return (
-        <a href={`https://www.wikidata.org/wiki/${obj.wikidataId}`} target="_blank" rel="noopener noreferrer" className="absolute -top-5 left-0 hover:z-20 transition-transform hover:scale-110">
-            {labelContent}
-        </a>
-      );
+  
+  const handleWikidataSearch = async (label: string) => {
+    setSearchingFor(label);
+    try {
+      const searchResult = await searchWikidata({ query: label });
+      setWikidataResults(prev => ({ ...prev, [label]: searchResult.results }));
+    } catch (error) {
+        toast({
+          title: 'Wikidata Search Error',
+          description: `Could not search for "${label}". Please try again.`,
+          variant: 'destructive',
+        });
+    } finally {
+      setSearchingFor(null);
     }
-    return (
-        <div className="absolute -top-5 left-0 z-10">
-            {labelContent}
-        </div>
-    );
-  };
+  }
+
 
   return (
     <Card className="border-2">
@@ -164,7 +150,7 @@ export function ObjectLocator() {
              <div className="flex justify-between items-start">
                 <div>
                     <CardTitle className="font-headline">Locate & Identify Objects</CardTitle>
-                    <CardDescription>Upload an image to detect objects and see their bounding boxes.</CardDescription>
+                    <CardDescription>Upload an image to detect objects, then search for their Wikidata entries.</CardDescription>
                 </div>
                  <Button type="button" variant="outline" size="sm" onClick={handleDemo} disabled={isLoading}>
                     <Wand2 className="mr-2 h-4 w-4" />
@@ -201,16 +187,17 @@ export function ObjectLocator() {
             />
             {preview && (
               <div className="mt-4 flex justify-center items-center">
-                <div className="relative w-full max-w-2xl" style={{ width: imageDimensions.width, height: imageDimensions.height }}>
+                <div className="relative w-full max-w-2xl">
                     <Image
                         ref={imageRef}
                         src={preview}
                         alt="Image preview"
-                        layout="fill"
+                        width={800}
+                        height={600}
                         className="rounded-lg object-contain"
                         onLoad={(e) => {
                             const img = e.currentTarget;
-                            setImageDimensions({ width: img.naturalWidth, height: img.naturalHeight });
+                            setImageDimensions({ width: img.width, height: img.height });
                         }}
                         key={preview}
                     />
@@ -226,12 +213,58 @@ export function ObjectLocator() {
                         } as React.CSSProperties;
                         return (
                             <div key={index} style={style} className={`border-2 ${colorClass} transition-all duration-300`}>
-                               {renderBoundingBoxLabel(obj, colorClass, index)}
+                               <span className={`absolute -top-5 left-0 text-xs text-white px-1.5 py-0.5 rounded-sm ${colorClass.replace('border-', 'bg-')}`}>
+                                 {index + 1}. {obj.label}
+                               </span>
                             </div>
                         )
                     })}
                  </div>
               </div>
+            )}
+            {result && result.objects.length > 0 && (
+                <div className="pt-6 space-y-4">
+                    <h3 className="text-lg font-semibold">Identified Objects</h3>
+                    <div className="space-y-4">
+                        {result.objects.map((obj, index) => (
+                            <Card key={obj.label} className="bg-secondary/50">
+                                <CardContent className="p-4">
+                                    <div className="flex justify-between items-center">
+                                        <p className="font-semibold">{index + 1}. {obj.label}</p>
+                                        <Button size="sm" onClick={() => handleWikidataSearch(obj.label)} disabled={searchingFor === obj.label}>
+                                            {searchingFor === obj.label ? <Loader2 className="h-4 w-4 animate-spin"/> : <Search className="h-4 w-4" />}
+                                            <span className="ml-2">Search Wikidata</span>
+                                        </Button>
+                                    </div>
+                                    {wikidataResults[obj.label] && (
+                                        <div className="mt-4 space-y-2">
+                                            {wikidataResults[obj.label].length > 0 ? (
+                                                wikidataResults[obj.label].map(entity => (
+                                                    <div key={entity.id} className="p-3 border rounded-md bg-background">
+                                                         <div className="flex justify-between items-center">
+                                                            <a href={`https://www.wikidata.org/wiki/${entity.id}`} target="_blank" rel="noopener noreferrer" className="font-bold hover:underline">{entity.label}</a>
+                                                            <p className="font-mono text-xs bg-secondary px-2 py-1 rounded">{entity.id}</p>
+                                                        </div>
+                                                        <p className="text-xs text-muted-foreground mt-1">{entity.description}</p>
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <p className="text-sm text-muted-foreground text-center p-2">No relevant Wikidata entries found for "{obj.label}".</p>
+                                            )}
+                                        </div>
+                                    )}
+                                    {searchingFor === obj.label && !wikidataResults[obj.label] && (
+                                        <div className="mt-4 space-y-2">
+                                            <Skeleton className="h-12 w-full" />
+                                            <Skeleton className="h-12 w-full" />
+                                            <Skeleton className="h-12 w-full" />
+                                        </div>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                </div>
             )}
           </CardContent>
           <CardFooter>
