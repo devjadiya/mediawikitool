@@ -126,6 +126,26 @@ export function ObjectLocator() {
     }
   };
 
+  const renderBoundingBoxLabel = (obj: LocatedObject, colorClass: string) => {
+    const labelContent = (
+      <span className={`text-xs text-white px-1.5 py-0.5 rounded-sm ${colorClass.replace('border-', 'bg-')}`}>
+        {obj.label}
+      </span>
+    );
+    if (obj.wikidataId) {
+      return (
+        <a href={`https://www.wikidata.org/wiki/${obj.wikidataId}`} target="_blank" rel="noopener noreferrer" className="absolute -top-6 left-0 hover:z-10">
+            {labelContent}
+        </a>
+      );
+    }
+    return (
+        <div className="absolute -top-6 left-0">
+            {labelContent}
+        </div>
+    );
+  };
+
   return (
     <Card className="border-2">
       <Form {...form}>
@@ -195,14 +215,7 @@ export function ObjectLocator() {
                         };
                         return (
                             <div key={index} style={style} className={`absolute border-2 ${colorClass} transition-all duration-300`}>
-                                <a
-                                    href={`https://www.wikidata.org/wiki/${obj.wikidataId}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={`absolute -top-6 left-0 text-xs text-white px-1.5 py-0.5 rounded-sm ${colorClass.replace('border-', 'bg-')}`}
-                                >
-                                    {obj.label}
-                                </a>
+                               {renderBoundingBoxLabel(obj, colorClass)}
                             </div>
                         )
                     })}

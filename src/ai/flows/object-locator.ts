@@ -23,7 +23,7 @@ export type LocateObjectsInput = z.infer<typeof LocateObjectsInputSchema>;
 
 const LocatedObjectSchema = z.object({
     label: z.string().describe("The human-readable label for the identified object (e.g., 'Eiffel Tower')."),
-    wikidataId: z.string().describe("The corresponding Wikidata Q-ID for the object (e.g., 'Q243')."),
+    wikidataId: z.string().optional().describe("The corresponding Wikidata Q-ID for the object (e.g., 'Q243'), if a specific entity can be found."),
     box: z.array(z.number()).length(4).describe("The bounding box of the object in [x_min, y_min, x_max, y_max] format. Coordinates are normalized between 0 and 1.")
 });
 
@@ -42,7 +42,8 @@ const prompt = ai.definePrompt({
   output: {schema: LocateObjectsOutputSchema},
   prompt: `You are an expert at analyzing images and identifying all significant objects within them. Your task is to perform object detection on the given image.
 
-- For each distinct object you identify, provide its common English label, its corresponding Wikidata Q-ID, and its bounding box.
+- For each distinct object you identify, provide its common English label and its bounding box.
+- If you can identify a specific, unique entity, provide its corresponding Wikidata Q-ID. If the object is generic (like 'sky' or 'tree'), do not provide a wikidataId.
 - The bounding box must be in a normalized format [x_min, y_min, x_max, y_max], where each coordinate is a value between 0 and 1 representing its position relative to the image dimensions.
 - Identify as many distinct objects as possible.
 
