@@ -13,6 +13,7 @@ import {z} from 'genkit';
 
 const WikidataSearchInputSchema = z.object({
   query: z.string().describe('The search query for the Wikidata entity.'),
+  context: z.array(z.string()).optional().describe("A list of other items identified in the same context, to help with disambiguation."),
 });
 export type WikidataSearchInput = z.infer<typeof WikidataSearchInputSchema>;
 
@@ -80,11 +81,15 @@ const prompt = ai.definePrompt({
   input: {schema: WikidataSearchInputSchema},
   output: {schema: WikidataSearchOutputSchema},
   tools: [searchWikidataTool],
-  prompt: `You are an expert at finding the correct Wikidata entries for a given query.
+  prompt: `You are an expert at finding the correct Wikidata entries for a given query by using context to disambiguate.
 
-1.  Use the \`searchWikidataEntities\` tool to search for the user's query: "{{{query}}}".
-2.  Analyze the results from the tool.
-3.  Return the top 3-5 most relevant results that are most likely to be what the user is looking for. Pay close attention to the descriptions to disambiguate. For example, for "Eiffel Tower", you should return the one in Paris, not replicas.
+1.  Your primary search term is: "{{{query}}}".
+{{#if context}}
+2.  To get the most relevant results, use these other items found in the same context: {{#each context}}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}. For example, if the query is "Jerry" and the context includes "Tom Cat", you should search for the cartoon mouse.
+{{/if}}
+3.  Use the \`searchWikidataEntities\` tool to search for the query, using the context to refine your search term if needed.
+4.  Analyze the results from the tool. Pay close attention to the descriptions to disambiguate.
+5.  Return the top 3-5 most relevant results that are most likely to be what the user is looking for.
 
 Provide your results now.`,
 });

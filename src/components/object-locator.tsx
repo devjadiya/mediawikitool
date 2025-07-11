@@ -125,15 +125,19 @@ export function ObjectLocator() {
     }
   };
   
-  const handleWikidataSearch = async (label: string) => {
-    setSearchingFor(label);
+  const handleWikidataSearch = async (objectToSearch: LocatedObject) => {
+    setSearchingFor(objectToSearch.label);
+    const context = result?.objects
+      .filter(obj => obj.label !== objectToSearch.label)
+      .map(obj => obj.label) || [];
+
     try {
-      const searchResult = await searchWikidata({ query: label });
-      setWikidataResults(prev => ({ ...prev, [label]: searchResult.results }));
+      const searchResult = await searchWikidata({ query: objectToSearch.label, context });
+      setWikidataResults(prev => ({ ...prev, [objectToSearch.label]: searchResult.results }));
     } catch (error) {
         toast({
           title: 'Wikidata Search Error',
-          description: `Could not search for "${label}". Please try again.`,
+          description: `Could not search for "${objectToSearch.label}". Please try again.`,
           variant: 'destructive',
         });
     } finally {
@@ -231,7 +235,7 @@ export function ObjectLocator() {
                                 <CardContent className="p-4">
                                     <div className="flex justify-between items-center">
                                         <p className="font-semibold">{index + 1}. {obj.label}</p>
-                                        <Button size="sm" onClick={() => handleWikidataSearch(obj.label)} disabled={searchingFor === obj.label}>
+                                        <Button size="sm" onClick={() => handleWikidataSearch(obj)} disabled={searchingFor === obj.label}>
                                             {searchingFor === obj.label ? <Loader2 className="h-4 w-4 animate-spin"/> : <Search className="h-4 w-4" />}
                                             <span className="ml-2">Search Wikidata</span>
                                         </Button>
