@@ -1,3 +1,4 @@
+![Gif](Mediawiki_tools.gif)
 # AI Toolkit for Wikimedians
 
 ## About This Project
