@@ -22,3 +22,4 @@ import '@/ai/flows/suggest-depicts.ts';
 import '@/ai/flows/generate-api-query.ts';
 import '@/ai/flows/find-maintenance-tasks.ts';
 import '@/ai/flows/enhance-translation.ts';
+import '@/ai/flows/object-locator.ts';

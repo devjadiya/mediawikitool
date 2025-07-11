@@ -40,6 +40,7 @@ const commonsTools = [
     { href: "/suggest-category", name: "Category Suggester", description: "Analyzes an image and suggests the most relevant categories, helping with proper organization and discoverability on Wikimedia Commons.", icon: <Lightbulb className="h-8 w-8 text-yellow-400" /> },
     { href: "/validate-image", name: "Image Validator", description: "Automatically checks for common issues like watermarks or low quality, and provides constructive feedback before you upload.", icon: <GitCompare className="h-8 w-8 text-orange-400" /> },
     { href: "/suggest-depicts", name: "Depicts Suggester", description: "Analyzes an image to suggest structured 'depicts' statements, linking its content to Wikidata entities for better discoverability.", icon: <Database className="h-8 w-8 text-violet-400" /> },
+    { href: "/object-locator", name: "Object Locator & Identifier", description: "Draws bounding boxes around multiple objects in an image and identifies each one with its Wikidata ID.", icon: <Locate className="h-8 w-8 text-emerald-400" /> },
 ];
 
 const toolSections = [
@@ -83,7 +84,6 @@ const toolSections = [
         { href: "#", name: "Copyright Status Assessor", description: "Assesses an image's likely copyright status based on its source and metadata to help users make better licensing decisions.", icon: <BadgeCheck className="h-8 w-8 text-sky-400" />, comingSoon: true },
         { href: "#", name: "Audio Pronunciation Generator", description: "Generates a spoken audio file for a name or term, which can then be added to articles to improve accessibility.", icon: <FileAudio className="h-8 w-8 text-indigo-400" />, comingSoon: true },
         { href: "#", name: "Accessibility Alt-Text Generator", description: "Generates descriptive alt-text for images to make them accessible to screen readers for visually impaired users.", icon: <Accessibility className="h-8 w-8 text-fuchsia-400" />, comingSoon: true },
-        { href: "#", name: "Object Locator & Identifier", description: "Draws bounding boxes around multiple objects in an image and identifies each one with its Wikidata ID.", icon: <Locate className="h-8 w-8 text-emerald-400" />, comingSoon: true },
         { href: "#", name: "Page History Summarizer", description: "Analyzes a page's entire revision history and provides a summary of its development, major contributors, and edit wars.", icon: <History className="h-8 w-8 text-cyan-400" />, comingSoon: true },
         { href: "#", name: "Template Optimizer", description: "Analyzes complex template wikitext for performance issues and suggests optimizations to reduce server load.", icon: <Cpu className="h-8 w-8 text-slate-400" />, comingSoon: true },
     ]
