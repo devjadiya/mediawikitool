@@ -1,15 +1,15 @@
 'use server';
 
 /**
- * @fileOverview A Genkit flow to search Wikidata for entities.
+ * @fileOverview A flow to search Wikidata for entities. This is now a direct wrapper around a server action.
  *
  * @exports searchWikidata - An async function that takes a query and returns potential Wikidata entities.
  * @exports WikidataSearchInput - The input type for the function.
  * @exports WikidataSearchOutput - The output type for the function.
  */
 
-import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { searchWikidataEntities } from '@/app/actions/wikimedia';
 
 const WikidataSearchInputSchema = z.object({
   query: z.string().describe('The search query for the Wikidata entity.'),
@@ -20,7 +20,7 @@ export type WikidataSearchInput = z.infer<typeof WikidataSearchInputSchema>;
 const WikidataEntitySchema = z.object({
     id: z.string().describe("The Wikidata Q-ID of the entity."),
     label: z.string().describe("The primary label of the entity."),
-    description: z.string().describe("A brief description of the entity to help with disambiguation."),
+    description: z.string().optional().describe("A brief description of the entity to help with disambiguation."),
 });
 
 const WikidataSearchOutputSchema = z.object({
@@ -29,79 +29,9 @@ const WikidataSearchOutputSchema = z.object({
 export type WikidataSearchOutput = z.infer<typeof WikidataSearchOutputSchema>;
 
 export async function searchWikidata(input: WikidataSearchInput): Promise<WikidataSearchOutput> {
-  return searchWikidataFlow(input);
+  // The context can be used to refine the search term in the future if needed.
+  // For now, we do a direct search for simplicity and reliability.
+  const searchTerm = input.context ? `${input.query} (${input.context.join(", ")})` : input.query;
+  const results = await searchWikidataEntities({ searchTerm: input.query, limit: 5 });
+  return { results };
 }
-
-const searchWikidataTool = ai.defineTool(
-  {
-    name: 'searchWikidataEntities',
-    description: 'Searches the Wikidata database for entities matching a search term.',
-    inputSchema: z.object({
-      searchTerm: z.string(),
-      limit: z.number().default(10),
-    }),
-    outputSchema: z.array(
-      z.object({
-        id: z.string(),
-        label: z.string(),
-        description: z.string().optional(),
-      })
-    ),
-  },
-  async ({ searchTerm, limit }) => {
-    const url = new URL('https://www.wikidata.org/w/api.php');
-    url.searchParams.set('action', 'wbsearchentities');
-    url.searchParams.set('search', searchTerm);
-    url.searchParams.set('language', 'en');
-    url.searchParams.set('limit', limit.toString());
-    url.searchParams.set('format', 'json');
-    url.searchParams.set('origin', '*');
-
-    try {
-      const response = await fetch(url.toString());
-      if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
-      }
-      const data = await response.json();
-      return data.search?.map((item: any) => ({
-        id: item.id,
-        label: item.label,
-        description: item.description,
-      })) || [];
-    } catch (error) {
-      console.error('Failed to search Wikidata API:', error);
-      return [];
-    }
-  }
-);
-
-
-const prompt = ai.definePrompt({
-  name: 'searchWikidataPrompt',
-  input: {schema: WikidataSearchInputSchema},
-  output: {schema: WikidataSearchOutputSchema},
-  tools: [searchWikidataTool],
-  prompt: `You are an expert at finding the correct Wikidata entries for a given query by using context to disambiguate.
-
-1.  Your primary search term is: "{{{query}}}".
-{{#if context}}
-2.  To get the most relevant results, use these other items found in the same context: {{#each context}}'{{this}}'{{#unless @last}}, {{/unless}}{{/each}}. For example, if the query is "Jerry" and the context includes "Tom Cat", you should search for the cartoon mouse.
-{{/if}}
-3.  Use the \`searchWikidataEntities\` tool to search for the query, using the context to refine your search term if needed.
-4.  Analyze the results from the tool. Pay close attention to the descriptions to disambiguate.
-5.  Return the top 3-5 most relevant results that are most likely to be what the user is looking for.
-
-Provide your results now.`,
-});
-
-const searchWikidataFlow = ai.defineFlow(
-  {
-    name: 'searchWikidataFlow',
-    inputSchema: WikidataSearchInputSchema,
-    outputSchema: WikidataSearchOutputSchema,
-  },
-  async input => {
-    const {output} = await prompt(input);
-    return output!;
-  }
-);

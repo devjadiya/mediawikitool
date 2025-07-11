@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -11,7 +11,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Upload, Locate, Wand2, Search, Link as LinkIcon, Info } from 'lucide-react';
+import { Loader2, Upload, Locate, Wand2, Search, Info } from 'lucide-react';
 import Image from 'next/image';
 import { Skeleton } from './ui/skeleton';
 
@@ -35,7 +35,6 @@ export function ObjectLocator() {
   const [preview, setPreview] = useState<string | null>(null);
   const { toast } = useToast();
   const imageRef = useRef<HTMLImageElement>(null);
-  const [imageDimensions, setImageDimensions] = useState({ width: 0, height: 0 });
 
   const [wikidataResults, setWikidataResults] = useState<Record<string, WikidataEntity[]>>({});
   const [searchingFor, setSearchingFor] = useState<string | null>(null);
@@ -198,11 +197,7 @@ export function ObjectLocator() {
                         alt="Image preview"
                         width={800}
                         height={600}
-                        className="rounded-lg object-contain"
-                        onLoad={(e) => {
-                            const img = e.currentTarget;
-                            setImageDimensions({ width: img.width, height: img.height });
-                        }}
+                        className="rounded-lg object-contain w-full h-auto"
                         key={preview}
                     />
                     {result && result.objects.map((obj, index) => {

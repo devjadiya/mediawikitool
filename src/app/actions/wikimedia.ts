@@ -36,3 +36,35 @@ export async function searchUsers(prefix: string): Promise<string[]> {
     return [];
   }
 }
+
+/**
+ * Searches the Wikidata database for entities matching a search term.
+ * @param searchTerm The term to search for.
+ * @param limit The number of results to return.
+ * @returns A promise resolving to an array of Wikidata entities.
+ */
+export async function searchWikidataEntities({ searchTerm, limit = 7 }: { searchTerm: string; limit?: number; }) {
+    const url = new URL('https://www.wikidata.org/w/api.php');
+    url.searchParams.set('action', 'wbsearchentities');
+    url.searchParams.set('search', searchTerm);
+    url.searchParams.set('language', 'en');
+    url.searchParams.set('limit', limit.toString());
+    url.searchParams.set('format', 'json');
+    url.searchParams.set('origin', '*');
+
+    try {
+      const response = await fetch(url.toString());
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+      const data = await response.json();
+      return data.search?.map((item: any) => ({
+        id: item.id,
+        label: item.label,
+        description: item.description,
+      })) || [];
+    } catch (error) {
+      console.error('Failed to search Wikidata API:', error);
+      return [];
+    }
+}
