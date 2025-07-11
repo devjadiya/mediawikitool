@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -39,15 +40,15 @@ const extractArticleTool = ai.defineTool(
         outputSchema: z.object({
             title: z.string().optional(),
             content: z.string().optional()
-        }),
+        }).nullable(),
     },
     async ({ url }) => {
         try {
             const article = await extract(url);
-            return { title: article?.title, content: article?.content };
+            return article;
         } catch (e) {
             console.error(`Failed to extract article from ${url}`, e);
-            return { title: '', content: `Failed to extract content from URL: ${url}.` };
+            return null;
         }
     }
 );
@@ -88,7 +89,7 @@ export async function enhanceTranslation(input: EnhanceTranslationInput): Promis
       extractArticleTool({url: input.targetUrl})
   ]);
 
-  if (!sourceArticleResult.content || !targetArticleResult.content) {
+  if (!sourceArticleResult || !targetArticleResult || !sourceArticleResult.content || !targetArticleResult.content) {
       throw new Error("Could not extract content from one or both URLs. Please check the URLs and try again.");
   }
   
