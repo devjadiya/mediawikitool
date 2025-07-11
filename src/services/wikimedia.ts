@@ -12,6 +12,34 @@ const WIKI_API_USER_AGENT = 'Wikimedia-AI-Toolkit/1.0 (https://w.wiki/9sE9; )';
 const XTOOLS_BASE_URL = 'https://xtools.wmcloud.org/api';
 
 /**
+ * Searches for Wikidata entities and returns a list of candidates.
+ * @param query The primary search term.
+ * @param description An optional secondary term to refine the search.
+ * @returns A promise that resolves to an array of entity data.
+ */
+export async function searchWikidataEntities(query: string, description?: string) {
+    const searchString = description ? `${query} ${description}` : query;
+    const url = `https://www.wikidata.org/w/api.php?action=wbsearchentities&search=${encodeURIComponent(searchString)}&language=en&limit=7&format=json&origin=*`;
+
+    try {
+        const response = await fetch(url, { headers: { 'User-Agent': WIKI_API_USER_AGENT } });
+        if (!response.ok) {
+            throw new Error('Wikidata API request failed');
+        }
+        const data = await response.json();
+        return data.search.map((item: any) => ({
+            id: item.id,
+            label: item.label,
+            description: item.description,
+        }));
+    } catch (error) {
+        console.error('Failed to search Wikidata entities:', error);
+        return [];
+    }
+}
+
+
+/**
  * Fetches basic user info for a given username to find their home project.
  * @param username The username to fetch data for.
  * @returns A promise that resolves to the user's basic info.

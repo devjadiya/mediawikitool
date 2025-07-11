@@ -201,17 +201,16 @@ export function ObjectLocator() {
             />
             {preview && (
               <div className="mt-4 flex justify-center items-center">
-                <div className="relative w-full max-w-2xl">
+                <div className="relative w-full max-w-2xl" style={{ width: imageDimensions.width, height: imageDimensions.height }}>
                     <Image
                         ref={imageRef}
                         src={preview}
                         alt="Image preview"
-                        width={800}
-                        height={600}
-                        className="rounded-lg object-contain w-full h-auto"
+                        layout="fill"
+                        className="rounded-lg object-contain"
                         onLoad={(e) => {
                             const img = e.currentTarget;
-                            setImageDimensions({ width: img.offsetWidth, height: img.offsetHeight });
+                            setImageDimensions({ width: img.naturalWidth, height: img.naturalHeight });
                         }}
                         key={preview}
                     />
