@@ -23,7 +23,7 @@ type LocatedObject = LocateObjectsOutput['objects'][0];
 
 const BOX_COLORS = [
     'border-red-500', 'border-blue-500', 'border-green-500', 
-    'border-yellow-500', 'border-purple-500', 'border-pink-500'
+    'border-yellow-500', 'border-purple-500', 'border-pink-500', 'border-cyan-500', 'border-orange-500'
 ];
 
 export function ObjectLocator() {
@@ -42,13 +42,23 @@ export function ObjectLocator() {
   });
 
   useEffect(() => {
+    const resizeObserver = new ResizeObserver(entries => {
+        for (let entry of entries) {
+            setImageDimensions({
+                width: entry.contentRect.width,
+                height: entry.contentRect.height,
+            });
+        }
+    });
+
     if (imageRef.current) {
-        setImageDimensions({
-            width: imageRef.current.offsetWidth,
-            height: imageRef.current.offsetHeight,
-        });
+        resizeObserver.observe(imageRef.current);
     }
-  }, [preview, result]);
+
+    return () => {
+        resizeObserver.disconnect();
+    };
+}, [preview, result]);
 
   const handleDemo = async () => {
     setIsLoading(true);
@@ -126,21 +136,21 @@ export function ObjectLocator() {
     }
   };
 
-  const renderBoundingBoxLabel = (obj: LocatedObject, colorClass: string) => {
+  const renderBoundingBoxLabel = (obj: LocatedObject, colorClass: string, index: number) => {
     const labelContent = (
       <span className={`text-xs text-white px-1.5 py-0.5 rounded-sm ${colorClass.replace('border-', 'bg-')}`}>
-        {obj.label}
+        {index + 1}. {obj.label}
       </span>
     );
     if (obj.wikidataId) {
       return (
-        <a href={`https://www.wikidata.org/wiki/${obj.wikidataId}`} target="_blank" rel="noopener noreferrer" className="absolute -top-6 left-0 hover:z-10">
+        <a href={`https://www.wikidata.org/wiki/${obj.wikidataId}`} target="_blank" rel="noopener noreferrer" className="absolute -top-5 left-0 hover:z-20 transition-transform hover:scale-110">
             {labelContent}
         </a>
       );
     }
     return (
-        <div className="absolute -top-6 left-0">
+        <div className="absolute -top-5 left-0 z-10">
             {labelContent}
         </div>
     );
@@ -203,19 +213,21 @@ export function ObjectLocator() {
                             const img = e.currentTarget;
                             setImageDimensions({ width: img.offsetWidth, height: img.offsetHeight });
                         }}
+                        key={preview}
                     />
                     {result && result.objects.map((obj, index) => {
                         const [x_min, y_min, x_max, y_max] = obj.box;
                         const colorClass = BOX_COLORS[index % BOX_COLORS.length];
                         const style = {
+                            position: 'absolute',
                             left: `${x_min * 100}%`,
                             top: `${y_min * 100}%`,
                             width: `${(x_max - x_min) * 100}%`,
                             height: `${(y_max - y_min) * 100}%`,
-                        };
+                        } as React.CSSProperties;
                         return (
-                            <div key={index} style={style} className={`absolute border-2 ${colorClass} transition-all duration-300`}>
-                               {renderBoundingBoxLabel(obj, colorClass)}
+                            <div key={index} style={style} className={`border-2 ${colorClass} transition-all duration-300`}>
+                               {renderBoundingBoxLabel(obj, colorClass, index)}
                             </div>
                         )
                     })}

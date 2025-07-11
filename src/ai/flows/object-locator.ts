@@ -22,8 +22,8 @@ export type LocateObjectsInput = z.infer<typeof LocateObjectsInputSchema>;
 
 
 const LocatedObjectSchema = z.object({
-    label: z.string().describe("The human-readable label for the identified object (e.g., 'Eiffel Tower')."),
-    wikidataId: z.string().optional().describe("The corresponding Wikidata Q-ID for the object (e.g., 'Q243'), if a specific entity can be found."),
+    label: z.string().describe("The human-readable label for the identified object (e.g., 'Eiffel Tower', 'Tree', 'Cloud')."),
+    wikidataId: z.string().optional().describe("The corresponding Wikidata Q-ID for the object (e.g., 'Q243' for Eiffel Tower, 'Q10884' for Tree). This should be provided for all identified objects."),
     box: z.array(z.number()).length(4).describe("The bounding box of the object in [x_min, y_min, x_max, y_max] format. Coordinates are normalized between 0 and 1.")
 });
 
@@ -40,12 +40,13 @@ const prompt = ai.definePrompt({
   name: 'locateObjectsPrompt',
   input: {schema: LocateObjectsInputSchema},
   output: {schema: LocateObjectsOutputSchema},
-  prompt: `You are an expert at analyzing images and identifying all significant objects within them. Your task is to perform object detection on the given image.
+  prompt: `You are an expert at analyzing images and identifying all significant objects within them. Your task is to perform object detection with high accuracy.
 
-- For each distinct object you identify, provide its common English label and its bounding box.
-- If you can identify a specific, unique entity, provide its corresponding Wikidata Q-ID. If the object is generic (like 'sky' or 'tree'), do not provide a wikidataId.
-- The bounding box must be in a normalized format [x_min, y_min, x_max, y_max], where each coordinate is a value between 0 and 1 representing its position relative to the image dimensions.
-- Identify as many distinct objects as possible.
+- Analyze the provided image carefully.
+- Identify between 1 and 5 of the most significant, distinct objects. Do not identify objects that are not clearly visible or are ambiguous.
+- For EACH object you identify, you MUST provide its common English label and its corresponding Wikidata Q-ID. This includes generic objects (e.g., for 'tree', use 'Q10884'; for 'cloud', use 'Q8074'; for 'sky', use 'Q527').
+- For EACH object, you MUST provide a precise bounding box in a normalized format [x_min, y_min, x_max, y_max]. The coordinates must be between 0 and 1 and accurately surround the object you have identified.
+- Double-check your work to ensure the labels are correct and the bounding boxes are accurately placed.
 
 Image: {{media url=photoDataUri}}
 
