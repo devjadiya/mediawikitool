@@ -40,7 +40,7 @@ const extractArticleTool = ai.defineTool(
         outputSchema: z.object({
             title: z.string().optional(),
             content: z.string().optional()
-        }),
+        }).nullable(),
     },
     async ({ url }) => {
         try {
@@ -48,8 +48,8 @@ const extractArticleTool = ai.defineTool(
             return { title: article?.title, content: article?.content };
         } catch (e) {
             console.error(`Failed to extract article from ${url}`, e);
-            // Return an empty object or throw, depending on desired error handling
-            return { title: '', content: `Failed to extract content from URL: ${url}.` };
+            // Return null to indicate failure
+            return null;
         }
     }
 );
@@ -58,8 +58,8 @@ const extractArticleTool = ai.defineTool(
 const prompt = ai.definePrompt({
     name: 'detectInconsistenciesPrompt',
     input: { schema: z.object({
-        article1: z.object({ title: z.any(), content: z.any() }),
-        article2: z.object({ title: z.any(), content: z.any() })
+        article1: z.object({ title: z.string(), content: z.string() }),
+        article2: z.object({ title: z.string(), content: z.string() })
     })},
     output: { schema: DetectInconsistenciesOutputSchema },
     prompt: `You are an expert data analyst specializing in comparing documents for factual inconsistencies. You will be given content from two articles on the same topic from different language Wikipedias.
@@ -82,15 +82,25 @@ Provide your detailed analysis now.`
 
 
 export async function detectInconsistencies(input: DetectInconsistenciesInput): Promise<DetectInconsistenciesOutput> {
-  const [article1, article2] = await Promise.all([
+  const [article1Result, article2Result] = await Promise.all([
       extractArticleTool({url: input.url1}),
       extractArticleTool({url: input.url2})
   ]);
 
-  if (!article1.content || !article2.content) {
-      throw new Error("Could not extract content from one or both URLs.");
+  if (!article1Result || !article2Result || !article1Result.content || !article2Result.content) {
+      throw new Error("Could not extract content from one or both URLs. Please check the URLs and try again.");
   }
   
+  const article1 = {
+      title: article1Result.title || '',
+      content: article1Result.content || '',
+  }
+
+  const article2 = {
+      title: article2Result.title || '',
+      content: article2Result.content || '',
+  }
+
   const {output} = await prompt({ article1, article2 });
   return output!;
 }

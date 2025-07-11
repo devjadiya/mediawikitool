@@ -43,7 +43,6 @@ const queryWikiTool = ai.defineTool(
     apiUrl.searchParams.set('list', 'querypage');
     apiUrl.searchParams.set('qppage', taskType);
     apiUrl.searchParams.set('qplimit', limit.toString());
-    apiUrl.searchParams.set('qptype', 'page'); // IMPORTANT: Filter for only pages, not other types
     apiUrl.searchParams.set('format', 'json');
     apiUrl.searchParams.set('origin', '*');
 
@@ -53,13 +52,18 @@ const queryWikiTool = ai.defineTool(
         throw new Error(`API request failed with status ${response.status}`);
       }
       const data = await response.json();
-      const pages = data.query.querypage.results.map((page: any) => {
+      
+      // Filter for main namespace (articles) which is ns: 0
+      const pages = data.query.querypage.results
+        .filter((page: any) => page.ns === 0) 
+        .map((page: any) => {
           const title = page.title;
           return {
               title: title,
               url: `https://hi.wikipedia.org/wiki/${encodeURIComponent(title.replace(/ /g, '_'))}`
           };
       });
+      
       return { pages };
     } catch (error) {
       console.error("Failed to query Wikipedia API:", error);
