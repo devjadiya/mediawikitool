@@ -32,13 +32,15 @@ const prompt = ai.definePrompt({
   output: {schema: SparqlQueryBuilderOutputSchema},
   prompt: `You are an expert in Wikidata and the SPARQL query language. Your task is to convert a user's natural language request into a functional, commented SPARQL query that can be run on the Wikidata Query Service (https://query.wikidata.org/).
 
-- The query should be efficient and well-formed.
-- Add comments to the query to explain complex parts.
-- Provide a separate, brief, natural-language explanation of what the query does.
+**CRITICAL INSTRUCTIONS:**
+1.  **Handle Units:** When dealing with properties that have quantities (like length, height, population), you MUST be aware of different units. For example, a river's length (P2043) could be in kilometers or meters. Your query must handle this to produce correct sorted results. Often this means filtering for a specific unit (like kilometers, wd:Q828224) or converting values.
+2.  **Be Specific:** For broad queries like "longest rivers" or "tallest buildings", add filters to ensure you are querying for major, significant items, not minor or obscure ones. For example, you might check that an item has a sitelink to the English Wikipedia.
+3.  **Comment your code:** Add comments to the query to explain complex parts, especially any filters or unit handling.
+4.  **Provide an Explanation:** Provide a separate, brief, natural-language explanation of what the query does and how it works.
 
 User's Request: "{{{naturalLanguageQuery}}}"
 
-Generate the SPARQL query and explanation.`,
+Generate the SPARQL query and explanation now.`,
 });
 
 const sparqlQueryBuilderFlow = ai.defineFlow(
