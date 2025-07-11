@@ -8,7 +8,7 @@ import * as z from 'zod';
 import { getPageviews } from '@/services/wikimedia';
 import { predictPageviews, PredictPageviewsOutput } from '@/ai/flows/pageview-predictor';
 import { Button, StatefulButton } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
