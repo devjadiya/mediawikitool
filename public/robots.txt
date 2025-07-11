@@ -1,0 +1,7 @@
+# See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+#
+# To allow crawling of all content
+User-agent: *
+Allow: /
+
+Sitemap: https://mediawikitool.vercel.app/sitemap.xml

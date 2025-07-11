@@ -8,13 +8,6 @@ import { Home } from 'lucide-react';
 import { FloatingDock } from '@/components/ui/floating-dock';
 import { AnimatePresence } from 'framer-motion';
 
-// Metadata object is not a valid export from a client component.
-// We'll handle the title in the head tag directly.
-// export const metadata: Metadata = {
-//   title: 'AI Toolkit for Wikimedians',
-//   description: 'A suite of AI-powered tools to enhance contributions for Wikimedia editors and developers.',
-// };
-
 const navItems = [
     { name: "Home", href: "/", icon: <Home className="h-4 w-4" /> },
 ];
@@ -28,7 +21,7 @@ export default function RootLayout({
     <html lang="en" className="dark" style={{ scrollBehavior: 'smooth' }}>
       <head>
         <title>AI Toolkit for Wikimedians</title>
-        <meta name="description" content="A suite of AI-powered tools to enhance contributions for Wikimedia editors and developers." />
+        <meta name="description" content="An experimental, web-based suite of AI-powered tools designed to assist and accelerate the work of Wikimedia editors, developers, and contributors. Created by Dev Jadiya." />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Mono&display=swap" rel="stylesheet" />
