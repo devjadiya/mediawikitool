@@ -1,6 +1,5 @@
 
 'use client';
-import type { Metadata } from 'next';
 import { Toaster } from "@/components/ui/toaster";
 import './globals.css';
 import { CursorFollower } from '@/components/cursor-follower';
@@ -36,9 +35,9 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased flex flex-col min-h-screen bg-background text-foreground" suppressHydrationWarning={true}>
         <AnimatePresence>
-            <CursorFollower />
-            <FloatingNav navItems={navItems} />
-            <FloatingDock />
+            <CursorFollower key="cursor-follower" />
+            <FloatingNav key="floating-nav" navItems={navItems} />
+            <FloatingDock key="floating-dock" />
         </AnimatePresence>
         <main className="flex-grow">
           {children}
