@@ -97,8 +97,8 @@ export function PropertySuggester() {
                 <h3 className="font-semibold text-lg">Suggestions for {result.itemLabel}:</h3>
                  <div className="space-y-3">
                     {result.suggestions.length > 0 ? (
-                        result.suggestions.map((prop) => (
-                            <Card key={prop.propertyId} className="bg-secondary/50">
+                        result.suggestions.map((prop, index) => (
+                            <Card key={`${prop.propertyId}-${index}`} className="bg-secondary/50">
                                 <CardContent className="p-3">
                                     <div className="flex justify-between items-center mb-2">
                                         <a href={`https://www.wikidata.org/wiki/Property:${prop.propertyId}`} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-primary hover:underline">
