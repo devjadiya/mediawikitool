@@ -32,7 +32,14 @@ import {
   Wrench,
   Locate,
   History,
-  Timer
+  Timer,
+  Share2,
+  Network,
+  GitMerge,
+  BookCheck,
+  BookUp,
+  ListPlus,
+  BookText
 } from 'lucide-react';
 
 const commonsTools = [
@@ -44,6 +51,11 @@ const commonsTools = [
 const wikidataTools = [
     { href: "/suggest-depicts", name: "Depicts Suggester", description: "Analyzes an image to suggest structured 'depicts' statements, linking its content to Wikidata entities for better discoverability.", icon: <Database className="h-8 w-8 text-violet-400" /> },
     { href: "/object-locator", name: "Object Locator & Identifier", description: "Draws bounding boxes around multiple objects in an image and lets you find their Wikidata IDs.", icon: <Locate className="h-8 w-8 text-emerald-400" /> },
+    { href: "/sparql-query-builder", name: "SPARQL Query Builder", description: "Translates a natural language question into a formal SPARQL query to search Wikidata's vast database.", icon: <Network className="h-8 w-8 text-sky-400" /> },
+    { href: "/item-merger-suggester", name: "Item Merger Suggester", description: "Compares two Wikidata items and provides an AI-powered recommendation on whether they should be merged.", icon: <GitMerge className="h-8 w-8 text-orange-400" /> },
+    { href: "/reference-resolver", name: "Reference Resolver", description: "Takes a URL and automatically creates a fully formatted 'cite web' reference that you can paste into Wikidata.", icon: <BookCheck className="h-8 w-8 text-lime-400" /> },
+    { href: "/cited-in-finder", name: "Cited In Finder", description: "Finds where a specific source (URL, DOI, book) is cited across Wikipedia, helping track its usage.", icon: <BookText className="h-8 w-8 text-rose-400" /> },
+    { href: "/property-suggester", name: "Property Suggester", description: "Analyzes a Wikidata item and suggests relevant new properties to add based on items of a similar class.", icon: <ListPlus className="h-8 w-8 text-teal-400" /> },
 ];
 
 const toolSections = [

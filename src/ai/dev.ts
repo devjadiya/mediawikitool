@@ -24,3 +24,8 @@ import '@/ai/flows/find-maintenance-tasks.ts';
 import '@/ai/flows/enhance-translation.ts';
 import '@/ai/flows/object-locator.ts';
 import '@/ai/flows/search-wikidata.ts';
+import '@/ai/flows/sparql-query-builder.ts';
+import '@/ai/flows/item-merger-suggester.ts';
+import '@/ai/flows/reference-resolver.ts';
+import '@/ai/flows/cited-in-finder.ts';
+import '@/ai/flows/property-suggester.ts';
